@@ -1,0 +1,22 @@
+{
+	"name": "mejt/fiche",
+	"license": "MIT",
+	"description": "Autodidactic learning",
+	"authors": [
+		{
+			"name": "Mateusz Książek",
+			"email": "mksiazek@future-processing.com"
+		}
+	],
+	"scripts": {
+	},
+	"autoload": {
+		"psr-4": {"Fiche\\": "src/"}
+	},
+	"require": {
+		"php": ">=7"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "4.7"
+	}
+}
