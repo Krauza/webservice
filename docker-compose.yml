@@ -3,7 +3,7 @@ app:
   links:
    - db
   volumes:
-   - . /var/www/html
+   - ./:/var/www/html
   ports:
    - "8765:80"
 
