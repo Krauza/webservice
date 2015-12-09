@@ -1,5 +1,6 @@
 <?php
-namespace Fiche;
+
+namespace Fiche\Domain\Entity;
 
 class Fiche
 {

@@ -1,8 +1,10 @@
 <?php
-namespace Fiche;
+
+namespace Fiche\Domain\Entity;
 
 class Attachment
 {
+    private $id;
     private $filename;
     private $path;
 
