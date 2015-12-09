@@ -3,7 +3,6 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Fiche\Application\ControllerFactory;
-use Fiche\Application\Controllers\BaseController;
 use Fiche\Application\Exceptions\ControllerNotExists;
 use Fiche\Application\Exceptions\ActionNotExists;
 
@@ -28,8 +27,7 @@ function getContentFromController(Silex\Application $app, string $controller = '
 }
 
 $app->get('/', function() use ($app) {
-    $base = new BaseController();
-    return $app['twig']->render('index.html.twig', $base->index());
+    return getContentFromController($app);
 });
 
 $app->get('/{controller}', function($controller) use ($app) {

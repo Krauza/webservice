@@ -6,8 +6,6 @@ class BaseController
 {
     public function index()
     {
-        return array(
-            'name' => 'response from controller'
-        );
+        return array();
     }
 }
