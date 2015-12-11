@@ -2,7 +2,7 @@
 
 namespace Fiche\Application\Controllers;
 
-class BaseController
+class BaseController extends Controller
 {
     public function index()
     {

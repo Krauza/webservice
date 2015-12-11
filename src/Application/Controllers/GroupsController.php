@@ -2,13 +2,11 @@
 
 namespace Fiche\Application\Controllers;
 
-use Fiche\Application\Models\Mysql\Group;
-
-class GroupsController
+class GroupsController extends Controller
 {
     public function index(): array
     {
-        $groups = Group::getAll();
+        $groups = "";//Group::getAll();
         return array('groups' => $groups);
     }
 

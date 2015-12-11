@@ -6,16 +6,15 @@ use Fiche\Application\Exceptions\ControllerNotExists;
 
 class ControllerFactory
 {
-    static public function getController($controller)
+    static public function getController($controller, $storage)
     {
-        $controller = strtolower($controller);
-        $controllerName = ucfirst($controller) . 'Controller';
+        $controllerName = self::prepareControllerName($controller);
 
         if(file_exists(__DIR__."/Controllers/$controllerName.php")) {
             $controllerClass = "Fiche\\Application\\Controllers\\$controllerName";
 
             if(class_exists($controllerClass)) {
-                return new $controllerClass;
+                return new $controllerClass($storage);
             }
         }
 
@@ -29,5 +28,27 @@ class ControllerFactory
         }
 
         throw new ActionNotExists();
+    }
+
+    static public function prepareControllerName(string $controller)
+    {
+        $controller = strtolower($controller);
+        return implode('', self::convertFromUnderLines($controller)) . 'Controller';
+    }
+
+    static public function prepareMethodName(string $method)
+    {
+        $method = strtolower($method);
+        $method = self::convertFromUnderLines($method);
+        $method[0] = strtolower($method[0]);
+
+        return implode('', $method);
+    }
+
+    static public function convertFromUnderLines(string $string)
+    {
+        return array_map(function($el) {
+            return ucfirst($el);
+        }, explode('_', $string));
     }
 }

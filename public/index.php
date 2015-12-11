@@ -1,10 +1,8 @@
 <?php
 
 require_once __DIR__.'/../vendor/autoload.php';
-
-use Fiche\Application\ControllerFactory;
-use Fiche\Application\Exceptions\ControllerNotExists;
-use Fiche\Application\Exceptions\ActionNotExists;
+require_once __DIR__.'/functions.php';
+$config = require_once __DIR__.'/../config/config.php';
 
 $app = new Silex\Application();
 
@@ -13,18 +11,14 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../src/Application/views',
 ));
 
-function getContentFromController(Silex\Application $app, string $controller = 'base', string $action = 'index', $params = null) {
-    try {
-        $controllerInstance = ControllerFactory::getController($controller);
-        $template = $app['twig']->render("/$controller/$action.html.twig", ControllerFactory::callMethod($controllerInstance, $action, $params));
-    } catch(ControllerNotExists $e) {
-        $template = $app['twig']->render('error-404.html', array('content' => ''));
-    } catch(ActionNotExists $e) {
-        $template = $app['twig']->render('error-404.html', array('content' => ''));
-    }
+$app['storage'] = $app->share(function () use ($config) {
+    $user = $config['database']['mysql']['db_user'];
+    $pass = $config['database']['mysql']['db_pass'];
+    $name = $config['database']['mysql']['db_name'];
+    $host = $config['database']['mysql']['db_host'];
 
-    return $template;
-}
+    return new \Fiche\Application\Infrastructure\DbPdoConnector($user, $pass, $name, $host, 'mysql');
+});
 
 $app->get('/', function() use ($app) {
     return getContentFromController($app);
