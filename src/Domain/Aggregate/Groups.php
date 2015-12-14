@@ -2,7 +2,15 @@
 
 namespace Fiche\Domain\Aggregate;
 
-class Groups extends \ArrayObject
-{
+use Fiche\Domain\Entity\Group;
+use Fiche\Domain\Service\AggregateInterface;
 
+class Groups extends \ArrayObject implements AggregateInterface
+{
+    private $entityClass = Group::class;
+
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
 }

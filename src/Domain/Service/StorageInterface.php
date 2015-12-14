@@ -4,5 +4,5 @@ namespace Fiche\Domain\Service;
 
 interface StorageInterface
 {
-    public function fetchAll($command, $arrayObject);
+    public function fetchAll(AggregateInterface $arrayObject);
 }

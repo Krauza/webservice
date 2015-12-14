@@ -2,7 +2,12 @@
 
 namespace Fiche\Domain\Aggregate;
 
-class Fiches extends \ArrayObject
-{
+use Fiche\Domain\Service\AggregateInterface;
 
+class Fiches extends \ArrayObject implements AggregateInterface
+{
+    public function getEntityClass()
+    {
+
+    }
 }

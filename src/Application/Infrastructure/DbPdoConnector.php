@@ -2,6 +2,7 @@
 
 namespace Fiche\Application\Infrastructure;
 
+use Fiche\Domain\Service\AggregateInterface;
 use Fiche\Domain\Service\StorageInterface;
 
 class DbPdoConnector implements StorageInterface
@@ -13,8 +14,17 @@ class DbPdoConnector implements StorageInterface
 		$this->pdo = new \PDO("$db_type:host=$db_host;dbname=$db_name", $db_user, $db_pass);
 	}
 
-	public function fetchAll($command, $arrayObject)
+	public function fetchAll(AggregateInterface $aggregator)
 	{
+		$entityClass = $aggregator->getEntityClass();
+		$classFields = $entityClass::getFieldsNames();
+//		$stmt = $this->pdo->query('SELECT id FROM groups');
+//
+//		$stmt->closeCursor();
+	}
 
+	private function getClassName($className) {
+		$path = explode('\\', $className);
+		return array_pop($path);
 	}
 }
