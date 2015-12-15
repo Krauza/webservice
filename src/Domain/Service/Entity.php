@@ -2,7 +2,7 @@
 
 namespace Fiche\Domain\Service;
 
-interface Entity
+abstract class Entity
 {
-
+	abstract public static function getFieldsNames(): array;
 }
