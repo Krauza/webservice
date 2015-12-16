@@ -89,7 +89,10 @@ class DbPdoConnector implements StorageInterface
 
 	public function insert(Entity $entity)
 	{
+		$values = $entity->getValues();
+		$tableName = $this->getTableName($entity);
 
+		$stmt = $this->pdo->prepare("INSERT INTO $tableName VALUES ()");
 	}
 
 	public function update(Entity $entity)

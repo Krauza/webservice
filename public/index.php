@@ -4,6 +4,8 @@ require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/functions.php';
 $config = require_once __DIR__.'/../config/config.php';
 
+use Symfony\Component\HttpFoundation\Request;
+
 $app = new Silex\Application();
 
 $app['debug'] = true;
@@ -20,20 +22,20 @@ $app['storage'] = $app->share(function () use ($config) {
     return new \Fiche\Application\Infrastructure\DbPdoConnector($user, $pass, $name, $host, 'mysql');
 });
 
-$app->get('/', function() use ($app) {
-    return getContentFromController($app);
+$app->get('/', function(Request $request) use ($app) {
+    return getContentFromController($app, $request);
 });
 
-$app->get('/{controller}', function($controller) use ($app) {
-    return getContentFromController($app, $controller);
+$app->match('/{controller}', function($controller, Request $request) use ($app) {
+    return getContentFromController($app, $request, $controller);
 });
 
-$app->get('/{controller}/{method}', function($controller, $method) use ($app) {
-    return getContentFromController($app, $controller, $method);
+$app->match('/{controller}/{method}', function($controller, $method, Request $request) use ($app) {
+    return getContentFromController($app, $request, $controller, $method);
 });
 
-$app->get('/{controller}/{method}/{params}', function($controller, $method, $params) use ($app) {
-    return getContentFromController($app, $controller, $method, $params);
+$app->match('/{controller}/{method}/{params}', function($controller, $method, $params, Request $request) use ($app) {
+    return getContentFromController($app, $request, $controller, $method, $params);
 });
 
 $app->run();

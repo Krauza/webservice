@@ -1,0 +1,13 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+    {% if groups|length > 0 %}
+        <table>
+            {% for group in groups %}
+                <tr>
+                    <td>1</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
