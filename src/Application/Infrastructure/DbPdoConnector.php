@@ -6,100 +6,82 @@ use Fiche\Domain\Service\AggregateInterface;
 use Fiche\Domain\Service\Entity;
 use Fiche\Domain\Service\StorageInterface;
 
+/**
+ * Connects to database via PDO driver
+ * Mostly it is universal class and it was prepared for easy replace db type
+ * Default database type is MySQL
+ *
+ * Class DbPdoConnector
+ * @package Fiche\Application\Infrastructure
+ */
 class DbPdoConnector implements StorageInterface
 {
+	/**
+	 * Save correct connection with database via PDO interface
+	 * @var \PDO
+	 */
 	private $pdo;
+
+	/**
+	 * Contain namespace to correct database type operations
+	 * @var string
+	 */
+	private $operations;
 
 	public function __construct($db_user, $db_pass, $db_name, $db_host, $db_type = 'mysql')
 	{
 		$this->pdo = new \PDO("$db_type:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+
+		$db_type = ucfirst($db_type);
+		$this->operations = "Fiche\\Application\\Infrastructure\\Pdo\\$db_type";
 	}
 
-	public function fetchAll(AggregateInterface $aggregator, $options = [])
+	/**
+	 * Find all records for $aggregator entity type
+	 *
+	 * @param AggregateInterface $aggregator
+	 * @param array $options
+	 */
+	public function fetchAll(AggregateInterface $aggregator, array $options = [])
 	{
-		$entityClass = $aggregator->getEntityClass();
-		$classFields = $entityClass::getFieldsNames();
-		$this->setDataToAggregator($aggregator, $entityClass, $classFields);
-	}
-
-	private function getTableName($className)
-	{
-		$path = explode('\\', $className);
-		return strtolower(array_pop($path));
-	}
-
-	private function getColumns($classFields)
-	{
-		$fields = [];
-		foreach($classFields as $type => $field) {
-			if(!$this->isBasicType($type) && $this->isImplementAggregateInterface($type)) {
-				continue;
-			}
-
-			array_push($fields, $field);
-		}
-
-		return implode(', ', $fields);
-	}
-
-	private function isBasicType($type)
-	{
-		$types = ['string', 'int', 'float'];
-
-		if(in_array($type, $types)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private function isImplementAggregateInterface($type)
-	{
-		$implements = class_implements($type);
-
-		if(is_array($implements)) {
-			return in_array('AggregateInterface', $implements);
-		}
-
-		return false;
-	}
-
-	private function selectQuery($table, $columns)
-	{
-		if(!($stmt = $this->pdo->query("SELECT $columns FROM $table"))) {
-			return [];
-		}
-
-		return $stmt;
-	}
-
-	private function setDataToAggregator(AggregateInterface $aggregator, $entityClass, $classFields)
-	{
-		$reflectionEntityClass = new \ReflectionClass($entityClass);
-
-		$stmt = $this->selectQuery(
-			$this->getTableName($entityClass),
-			$this->getColumns($classFields)
-		);
+		$reflectionEntityClass = new \ReflectionClass($aggregator->getEntityClass());
+		$operation = "$this->operations\\FetchData";
+		$stmt = $operation::fetchAll($this->pdo, $reflectionEntityClass);
 
 		foreach($stmt as $row) {
 			$aggregator->append($reflectionEntityClass->newInstanceArgs(array_values($row)));
 		}
 	}
 
+	/**
+	 * Insert new Entity record to database
+	 *
+	 * @param Entity $entity
+	 */
 	public function insert(Entity $entity)
 	{
-		$values = $entity->getValues();
-		$tableName = $this->getTableName($entity);
-
-		$stmt = $this->pdo->prepare("INSERT INTO $tableName VALUES ()");
+		$operation = "$this->operations\\ModifyData";
+		$id = $operation::insert($this->pdo, new \ReflectionClass($entity), $entity->getValues());
+		$entity->setId(intval($id));
+		var_dump($entity);
+		die();
 	}
 
+	/**
+	 * Update Entity record in database
+	 *
+	 * @param Entity $entity
+	 */
 	public function update(Entity $entity)
 	{
 
 	}
 
+	/**
+	 * Delete Entity record from database
+	 *
+	 * @param Entity $entity
+	 */
 	public function delete(Entity $entity)
 	{
 

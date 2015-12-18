@@ -23,6 +23,8 @@ class GroupsController extends Controller
                 $this->storage->insert($group);
             } catch(FormNotValid $e) {
 
+            } catch(\Exception $e) {
+
             }
         }
 

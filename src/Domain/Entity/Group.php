@@ -15,10 +15,10 @@ class Group extends Entity
 
     const NAME_MAX_LENGTH = 120;
 
-    public function __construct(Integer $id = null, string $name, Fiches $fiches = null)
+    public function __construct(\int $id = null, \string $name, Fiches $fiches = null)
     {
-        $this->id = $this->setId($id);
-        $this->name = $this->setName($name);
+        $this->setId($id);
+        $this->setName($name);
         $this->fiches = $fiches;
     }
 
@@ -39,12 +39,12 @@ class Group extends Entity
         ];
     }
 
-    public function setId(Integer $id)
+    public function setId(\int $id = null)
     {
         $this->id = $id;
     }
 
-    public function setName(string $name)
+    public function setName(\string $name)
     {
         $name = trim($name);
 
@@ -73,12 +73,12 @@ class Group extends Entity
         }
     }
 
-    public function getName(): string
+    public function getName(): \string
     {
         return $this->name;
     }
 
-    public function getId(): Integer
+    public function getId()
     {
         return $this->id;
     }
