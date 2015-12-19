@@ -3,6 +3,8 @@
 namespace Fiche\Application\Controllers;
 
 use Fiche\Domain\Aggregate\Groups;
+use Fiche\Domain\Entity\Group;
+use Fiche\Domain\Service\Exceptions\FormNotValid;
 
 class GroupsController extends Controller
 {
@@ -15,7 +17,18 @@ class GroupsController extends Controller
 
     public function create(): array
     {
+        if($this->request->isMethod('POST')) {
+            try {
+                $group = new Group(null, $this->request->get('name'));
+                $this->storage->insert($group);
+            } catch(FormNotValid $e) {
 
+            } catch(\Exception $e) {
+
+            }
+        }
+
+        return array();
     }
 
     public function delete(): array

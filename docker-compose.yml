@@ -7,6 +7,13 @@ app:
   ports:
    - "8765:80"
 
+phpmyadmin:
+  build: ./run/phpmyadmin
+  links:
+   - db
+  ports:
+   - "8766:80"
+
 db:
   image: mysql:5.7
   hostname: mysql-dev

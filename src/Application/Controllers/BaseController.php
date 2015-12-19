@@ -10,6 +10,6 @@ class BaseController extends Controller
     {
         $groups = new Groups();
         $this->storage->fetchAll($groups);
-        return array();
+        return array('groups' => $groups);
     }
 }

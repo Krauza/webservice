@@ -6,7 +6,7 @@ use Fiche\Application\Exceptions\ControllerNotExists;
 
 class ControllerFactory
 {
-    static public function getController($controller, $storage)
+    static public function getController($controller, $storage, $request)
     {
         $controllerName = self::prepareControllerName($controller);
 
@@ -14,7 +14,7 @@ class ControllerFactory
             $controllerClass = "Fiche\\Application\\Controllers\\$controllerName";
 
             if(class_exists($controllerClass)) {
-                return new $controllerClass($storage);
+                return new $controllerClass($storage, $request);
             }
         }
 
@@ -32,13 +32,11 @@ class ControllerFactory
 
     static public function prepareControllerName(string $controller)
     {
-        $controller = strtolower($controller);
         return implode('', self::convertFromUnderLines($controller)) . 'Controller';
     }
 
     static public function prepareMethodName(string $method)
     {
-        $method = strtolower($method);
         $method = self::convertFromUnderLines($method);
         $method[0] = strtolower($method[0]);
 
