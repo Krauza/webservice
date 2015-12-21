@@ -7,9 +7,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 function getContentFromController(Silex\Application $app, Request $request, string $controller = 'base', string $action = 'index', $params = null) {
 	try {
-		$controllerInstance = ControllerFactory::getController($controller, $app['storage'], $request);
+		$controllerInstance = ControllerFactory::getController($controller, $app, $request);
 		$response = ControllerFactory::callMethod($controllerInstance, $action, $params);
-		return $app['twig']->render("/$controller/$action.html.twig", $response);
+
+		if(is_array($response)) {
+			return $app['twig']->render("/$controller/$action.html.twig", $response);
+		} else {
+			return $response;
+		}
 	} catch(ControllerNotExists $e) {
 		$content = 'Controller is not exists';
 	} catch(ActionNotExists $e) {

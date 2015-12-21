@@ -2,7 +2,7 @@
 
 namespace Fiche\Domain\Service\Exceptions;
 
-class ValueIsTooLong extends FormNotValid
+class ValueIsTooLong extends DataNotValid
 {
-
+	protected $message = 'Value is too long';
 }

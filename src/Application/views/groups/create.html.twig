@@ -2,8 +2,13 @@
 
 {% block content %}
     <form method="post">
-        <label for="name">Group name</label>
-        <input id="name" type="text" name="name" />
+        <div>
+            <label for="name">Group name</label>
+            <input id="name" type="text" name="name" {% if data['name'] is defined %}value="{{ data['name'] }}{% endif %}" />
+            {% if messages['field'] is defined and messages['field'] == 'name' %}
+                <p>{{ messages['message'] }}</p>
+            {% endif %}
+        </div>
         <button type="submit">Add</button>
     </form>
 {% endblock %}

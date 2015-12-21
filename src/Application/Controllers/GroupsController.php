@@ -4,39 +4,47 @@ namespace Fiche\Application\Controllers;
 
 use Fiche\Domain\Aggregate\Groups;
 use Fiche\Domain\Entity\Group;
-use Fiche\Domain\Service\Exceptions\FormNotValid;
+use Fiche\Domain\Service\Exceptions\DataNotValid;
 
 class GroupsController extends Controller
 {
-    public function index(): array
+    public function index()
     {
         $groups = new Groups();
         $this->storage->fetchAll($groups);
-        return array('groups' => $groups);
+        return ['groups' => $groups];
     }
 
-    public function create(): array
+    public function create()
     {
         if($this->request->isMethod('POST')) {
             try {
                 $group = new Group(null, $this->request->get('name'));
                 $this->storage->insert($group);
-            } catch(FormNotValid $e) {
-
-            } catch(\Exception $e) {
-
+            } catch(DataNotValid $e) {
+                return [
+                    'messages' => [
+                        'field' => $e->getFieldName(),
+                        'message' => $e->getMessage()
+                    ],
+                    'data' => [
+                        'name' => $this->request->get('name')
+                    ]
+                ];
             }
+
+            return $this->app->redirect('/groups');
         }
 
-        return array();
+        return [];
     }
 
-    public function delete(): array
+    public function delete()
     {
 
     }
 
-    public function edit(): array
+    public function edit()
     {
 
     }

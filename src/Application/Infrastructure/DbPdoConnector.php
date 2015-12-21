@@ -63,8 +63,6 @@ class DbPdoConnector implements StorageInterface
 		$operation = "$this->operations\\ModifyData";
 		$id = $operation::insert($this->pdo, new \ReflectionClass($entity), $entity->getValues());
 		$entity->setId(intval($id));
-		var_dump($entity);
-		die();
 	}
 
 	/**

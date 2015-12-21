@@ -1,17 +1,11 @@
 {% extends "index.html.twig" %}
 
 {% block content %}
-    Hi! It is early phase of development, but I hope that in future it'll very useful tool. <Br />
-    Please be patient! ;-)
-
-    {% if groups|length > 0 %}
-        <table>
-            {% for group in groups %}
-                <tr>
-                    <td>1</td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-
+    <p>
+        Hi! It is early phase of development, but I hope that in future it'll very useful tool. <Br />
+        Please be patient! ;-)
+    </p>
+    <p>
+        <a href="/groups">Groups</a>
+    </p>
 {% endblock %}
