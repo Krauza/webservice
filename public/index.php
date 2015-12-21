@@ -7,6 +7,7 @@ $config = require_once __DIR__.'/../config/config.php';
 use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application();
+Request::enableHttpMethodParameterOverride();
 
 $app['debug'] = true;
 $app->register(new Silex\Provider\TwigServiceProvider(), array(

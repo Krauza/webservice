@@ -6,6 +6,11 @@ use Fiche\Domain\Service\StorageInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class Controller
+ * @package Fiche\Application\Controllers
+ * @property StorageInterface $storage;
+ */
 abstract class Controller
 {
 	protected $app;

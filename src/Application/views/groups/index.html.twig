@@ -7,6 +7,8 @@
                 <tr>
                     <td>1</td>
                     <td>{{ group.getName() }}</td>
+                    <td><a href="/groups/edit/{{ group.getId() }}">Edit</a></td>
+                    <td><a class="delete" href="/groups/delete/{{ group.getId() }}">Delete</a></td>
                 </tr>
             {% endfor %}
         </table>

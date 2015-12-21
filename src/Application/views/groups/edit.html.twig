@@ -1,0 +1,15 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+    <form method="post">
+        <input type="hidden" id="_method" name="_method" value="PUT" />
+        <div>
+            <label for="name">Group name</label>
+            <input id="name" type="text" name="name" value="{% if group is defined %}{{ group.name }}{% else %}{{ data['name'] }}{% endif %}" />
+            {% if messages['field'] is defined and messages['field'] == 'name' %}
+                <p>{{ messages['message'] }}</p>
+            {% endif %}
+        </div>
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}

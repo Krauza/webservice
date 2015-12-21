@@ -2,6 +2,8 @@
 
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
+use Fiche\Domain\Service\Entity;
+
 class BasicFunctions
 {
 	static public function getColumns($classFields)
@@ -58,5 +60,21 @@ class BasicFunctions
 	public static function setPlaceholders(array $values): string
 	{
 		return implode(', ', array_fill(0, count($values), '?'));
+	}
+
+	public static function getTableName(Entity $entity)
+	{
+		$reflection = new \ReflectionClass($entity);
+		return strtolower($reflection->getShortName());
+	}
+
+	public static function getFieldsWithPlaceholders(array $values): string
+	{
+		return implode(', ', array_map(
+			function($field) {
+				return $field . '=?';
+			},
+			array_keys($values))
+		);
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Fiche\Application\Infrastructure;
 
+use Fiche\Application\Exceptions\RecordNotExists;
 use Fiche\Domain\Service\AggregateInterface;
 use Fiche\Domain\Service\Entity;
 use Fiche\Domain\Service\StorageInterface;
@@ -37,6 +38,26 @@ class DbPdoConnector implements StorageInterface
 	}
 
 	/**
+	 * Get record by id
+	 *
+	 * @param string $className
+	 * @param int $id
+	 * @return object
+	 * @throws RecordNotExists
+	 */
+	public function getById(\string $className, \int $id)
+	{
+		$reflection = new \ReflectionClass($className);
+		$operation = "$this->operations\\FetchData";
+		$result = $operation::getById($this->pdo, $reflection, $id);
+		if(empty($result)) {
+			throw new RecordNotExists;
+		}
+
+		return $reflection->newInstanceArgs(array_values($result));
+	}
+
+	/**
 	 * Find all records for $aggregator entity type
 	 *
 	 * @param AggregateInterface $aggregator
@@ -61,7 +82,7 @@ class DbPdoConnector implements StorageInterface
 	public function insert(Entity $entity)
 	{
 		$operation = "$this->operations\\ModifyData";
-		$id = $operation::insert($this->pdo, new \ReflectionClass($entity), $entity->getValues());
+		$id = $operation::insert($this->pdo, $entity);
 		$entity->setId(intval($id));
 	}
 
@@ -72,7 +93,8 @@ class DbPdoConnector implements StorageInterface
 	 */
 	public function update(Entity $entity)
 	{
-
+		$operation = "$this->operations\\ModifyData";
+		return $operation::update($this->pdo, $entity);
 	}
 
 	/**
@@ -82,6 +104,7 @@ class DbPdoConnector implements StorageInterface
 	 */
 	public function delete(Entity $entity)
 	{
-
+		$operation = "$this->operations\\ModifyData";
+		return $operation::delete($this->pdo, $entity);
 	}
 }

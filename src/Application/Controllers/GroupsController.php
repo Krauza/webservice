@@ -2,10 +2,17 @@
 
 namespace Fiche\Application\Controllers;
 
+use Fiche\Application\Exceptions\InvalidParameter;
 use Fiche\Domain\Aggregate\Groups;
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
+use Fiche\Domain\Service\StorageInterface;
 
+/**
+ * Class GroupsController
+ * @package Fiche\Application\Controllers
+ * @property StorageInterface $storage;
+ */
 class GroupsController extends Controller
 {
     public function index()
@@ -17,35 +24,71 @@ class GroupsController extends Controller
 
     public function create()
     {
-        if($this->request->isMethod('POST')) {
-            try {
-                $group = new Group(null, $this->request->get('name'));
-                $this->storage->insert($group);
-            } catch(DataNotValid $e) {
-                return [
-                    'messages' => [
-                        'field' => $e->getFieldName(),
-                        'message' => $e->getMessage()
-                    ],
-                    'data' => [
-                        'name' => $this->request->get('name')
-                    ]
-                ];
-            }
+        $result = [];
 
-            return $this->app->redirect('/groups');
+        if($this->request->isMethod('POST')) {
+            $result = $this->save();
         }
 
-        return [];
+        return $result;
     }
 
-    public function delete()
+    public function edit($id)
     {
+        $id = intval($id);
+        if($id === 0) {
+            throw new InvalidParameter;
+        }
 
+        $group = $this->storage->getById(Group::class, $id);
+        $result = [
+            'group' => $group
+        ];
+
+        if($this->request->isMethod('PUT')) {
+            $result = $this->save($group);
+        }
+
+        return $result;
     }
 
-    public function edit()
+    public function delete($id)
     {
+        $id = intval($id);
+        if($id === 0) {
+            throw new InvalidParameter;
+        }
 
+        if($this->request->isMethod('DELETE')) {
+            $group = $this->storage->getById(Group::class, $id);
+            $this->storage->delete($group);
+        }
+
+        return $this->app->redirect('/groups');
+    }
+
+    private function save(Group $group = null)
+    {
+        try {
+            if(empty($group)) {
+                $group = new Group(null, $this->request->get('name'));
+                $this->storage->insert($group);
+            } else {
+                $group->setName($this->request->get('name'));
+                $this->storage->update($group);
+            }
+        } catch(DataNotValid $e) {
+            return [
+                'messages' => [
+                    'field' => $e->getFieldName(),
+                    'message' => $e->getMessage()
+                ],
+                'data' => [
+                    'name' => $this->request->get('name')
+                ]
+            ];
+        }
+
+        return $this->app->redirect('/groups');
     }
 }
