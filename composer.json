@@ -9,6 +9,7 @@
 		}
 	],
 	"scripts": {
+		"test": "php vendor/phpunit/phpunit/phpunit --testdox --configuration tests/phpunit.xml --coverage-clover build/logs/clover.xml"
 	},
 	"autoload": {
 		"psr-4": {"Fiche\\": "src/"}
