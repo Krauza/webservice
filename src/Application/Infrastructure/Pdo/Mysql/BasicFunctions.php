@@ -6,7 +6,7 @@ use Fiche\Domain\Service\Entity;
 
 class BasicFunctions
 {
-	static public function getColumns($classFields)
+	public static function getColumns($classFields)
 	{
 		$fields = [];
 		foreach($classFields as $type => $field) {
@@ -31,7 +31,7 @@ class BasicFunctions
 		return false;
 	}
 
-	private function isImplementAggregateInterface($type)
+	private static function isImplementAggregateInterface($type)
 	{
 		$implements = class_implements($type);
 

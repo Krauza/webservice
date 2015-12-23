@@ -14,7 +14,7 @@ class FetchData
 	 * @param \ReflectionClass $reflection
 	 * @return string
 	 */
-	static private function baseQuery(\ReflectionClass $reflection): \string
+	private static function baseQuery(\ReflectionClass $reflection): \string
 	{
 		$className = $reflection->getName();
 		$columns = BasicFunctions::getColumns($className::getFieldsNames());
@@ -31,7 +31,7 @@ class FetchData
 	 * @param $id
 	 * @return mixed|null
 	 */
-	static public function getById(\Pdo $pdo, \ReflectionClass $reflection, $id)
+	public static function getById(\Pdo $pdo, \ReflectionClass $reflection, $id)
 	{
 		$query = self::baseQuery($reflection) . " WHERE id=$id";
 		$stmt = $pdo->prepare($query);
@@ -50,7 +50,7 @@ class FetchData
 	 * @param \ReflectionClass $reflection
 	 * @return array
 	 */
-	static public function fetchAll(\PDO $pdo, \ReflectionClass $reflection)
+	public static function fetchAll(\PDO $pdo, \ReflectionClass $reflection)
 	{
 		$stmt = $pdo->prepare(self::baseQuery($reflection));
 		if(!($stmt->execute())) {

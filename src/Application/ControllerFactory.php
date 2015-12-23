@@ -6,7 +6,7 @@ use Fiche\Application\Exceptions\ControllerNotExists;
 
 class ControllerFactory
 {
-    static public function getController($controller, $app, $request)
+    public static function getController($controller, $app, $request)
     {
         $controllerName = self::prepareControllerName($controller);
 
@@ -21,7 +21,7 @@ class ControllerFactory
         throw new ControllerNotExists();
     }
 
-    static public function callMethod($controllerInstance, \string $method, $params = null)
+    public static function callMethod($controllerInstance, \string $method, $params = null)
     {
         if(method_exists($controllerInstance, $method)) {
             return $controllerInstance->{$method}($params);
@@ -30,12 +30,12 @@ class ControllerFactory
         throw new ActionNotExists();
     }
 
-    static public function prepareControllerName(string $controller)
+    public static function prepareControllerName(string $controller)
     {
         return implode('', self::convertFromUnderLines($controller)) . 'Controller';
     }
 
-    static public function prepareMethodName(string $method)
+    public static function prepareMethodName(string $method)
     {
         $method = self::convertFromUnderLines($method);
         $method[0] = strtolower($method[0]);
@@ -43,7 +43,7 @@ class ControllerFactory
         return implode('', $method);
     }
 
-    static public function convertFromUnderLines(string $string)
+    public static function convertFromUnderLines(string $string)
     {
         return array_map(function($el) {
             return ucfirst($el);

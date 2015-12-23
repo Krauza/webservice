@@ -29,12 +29,12 @@ class DbPdoConnector implements StorageInterface
 	 */
 	private $operations;
 
-	public function __construct($db_user, $db_pass, $db_name, $db_host, $db_type = 'mysql')
+	public function __construct($dbUser, $dbPass, $dbName, $dbHost, $dbType = 'mysql')
 	{
-		$this->pdo = new \PDO("$db_type:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+		$this->pdo = new \PDO("$dbType:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 
-		$db_type = ucfirst($db_type);
-		$this->operations = "Fiche\\Application\\Infrastructure\\Pdo\\$db_type";
+		$dbType = ucfirst($dbType);
+		$this->operations = "Fiche\\Application\\Infrastructure\\Pdo\\$dbType";
 	}
 
 	/**
