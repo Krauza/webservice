@@ -1,0 +1,18 @@
+languages:
+  PHP: true
+exclude_paths:
+ - vendor/**
+ - tests/**
+ - config/**
+engines:
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    checks:
+      CleanCode/StaticAccess:
+        enabled: false
+      Naming/ShortVariable:
+        enabled: false
+      Naming/LongVariable:
+        enabled: false
