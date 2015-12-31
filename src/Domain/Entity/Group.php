@@ -25,9 +25,9 @@ class Group extends Entity
     public static function getFieldsNames(): array
     {
         return [
-            'int' => 'id',
-            'string' => 'name',
-            Fiches::class => 'fiches'
+            'id' => 'int',
+            'name' => 'string',
+            'fiches' => Fiches::class
         ];
     }
 

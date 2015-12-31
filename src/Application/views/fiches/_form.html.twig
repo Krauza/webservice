@@ -1,0 +1,12 @@
+<form method="post" action="/fiches/{% if fiche is defined %}edit/{{ fiche.id }}{% else %}create{% endif %}">
+    <input type="hidden" name="group" id="group" value="{{ group.id }}" />
+    <div>
+        <label for="word">Word</label>
+        <input type="text" name="word" id="word" />
+    </div>
+    <div>
+        <label for="explain">Explain</label>
+        <input type="text" name="explain" id="explain" />
+    </div>
+    <button type="submit">Save</button>
+</form>

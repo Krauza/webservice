@@ -9,7 +9,7 @@ class BasicFunctions
 	public static function getColumns($classFields)
 	{
 		$fields = [];
-		foreach($classFields as $type => $field) {
+		foreach($classFields as $field => $type) {
 			if(!self::isBasicType($type) && self::isImplementAggregateInterface($type)) {
 				continue;
 			}
@@ -54,7 +54,7 @@ class BasicFunctions
 	public static function getFields(array $values): string
 	{
 		$fields = array_keys($values);
-		return implode(',', $fields);
+		return implode(', ', $fields);
 	}
 
 	public static function setPlaceholders(array $values): string

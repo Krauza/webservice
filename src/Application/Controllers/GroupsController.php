@@ -22,6 +22,17 @@ class GroupsController extends Controller
         return ['groups' => $groups];
     }
 
+    public function show($id)
+    {
+        $id = intval($id);
+        if($id === 0) {
+            throw new InvalidParameter;
+        }
+
+        $group = $this->storage->getById(Group::class, $id);
+        return ['group' => $group];
+    }
+
     public function create()
     {
         $result = [];
@@ -65,6 +76,18 @@ class GroupsController extends Controller
         }
 
         return $this->app->redirect('/groups');
+    }
+
+    public function fiches($id)
+    {
+        $id = intval($id);
+        if($id === 0) {
+            throw new InvalidParameter;
+        }
+
+        $group = $this->storage->getById(Group::class, $id);
+
+        return ['group' => $group];
     }
 
     private function save(Group $group = null)

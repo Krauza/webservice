@@ -21,8 +21,8 @@ WORKDIR /data/phpmyadmin
 RUN chown -R www-data:www-data .
 RUN chmod -R 775 .
 
-ADD vhost.conf /etc/apache2/sites-available/phpmyadmin.conf
-ADD config.inc.php /data/phpmyadmin/config.inc.php
+ADD config/vhost.conf /etc/apache2/sites-available/phpmyadmin.conf
+ADD config/config.inc.php /data/phpmyadmin/config.inc.php
 
 RUN a2dissite 000-default.conf && a2ensite phpmyadmin
 RUN /etc/init.d/apache2 restart
