@@ -15,7 +15,7 @@
 		"psr-4": {"Fiche\\": "src/"}
 	},
 	"require": {
-		"php": ">=5.6",
+		"php": ">=7",
 		"twig/twig": "~1.0",
 	  	"silex/silex": "~1.3"
 	},

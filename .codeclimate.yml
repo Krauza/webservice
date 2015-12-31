@@ -1,5 +1,9 @@
 languages:
   PHP: true
+ratings:
+  paths:
+  - src/**
+  - public/**
 exclude_paths:
  - vendor/**
  - tests/**
