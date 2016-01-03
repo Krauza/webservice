@@ -1,18 +1,21 @@
 <?php
 
 use Fiche\Domain\Entity\Group;
+use Fiche\Domain\Entity\User;
 
 class GroupTest extends PHPUnit_Framework_TestCase
 {
     private $groupName;
     private $groupId;
     private $group;
+    private $user;
 
     protected function setUp()
     {
         $this->groupName = 'group';
         $this->groupId = 1;
-        $this->group = new Group($this->groupId, $this->groupName);
+        $this->user = new User(1, 'User', 'test@test.test', 'password');
+        $this->group = new Group($this->groupId, $this->user, $this->groupName);
     }
 
     /**
