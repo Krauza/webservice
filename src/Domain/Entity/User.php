@@ -25,7 +25,7 @@ class User extends Entity
         $this->setPassword($password);
     }
 
-    public function getId(): \int
+    public function getId()
     {
         return $this->id;
     }
@@ -73,13 +73,28 @@ class User extends Entity
         $this->password = $password;
     }
 
+    public function getGroups()
+    {
+
+    }
+
     public static function getFieldsNames(): array
     {
-        // TODO: Implement getFieldsNames() method.
+        return [
+            'id' => 'int',
+            'name' => 'string',
+            'email' => 'string',
+            'password' => 'string'
+        ];
     }
 
     public function getValues(): array
     {
-        // TODO: Implement getValues() method.
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+            'password' => $this->getPassword()
+        ];
     }
 }

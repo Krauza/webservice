@@ -50,7 +50,7 @@ class FetchData
 	 * @param \ReflectionClass $reflection
 	 * @return array
 	 */
-	public static function fetchAll(\PDO $pdo, \ReflectionClass $reflection)
+	public static function fetchAll(\PDO $pdo, \ReflectionClass $reflection, array $options = []): array
 	{
 		$stmt = $pdo->prepare(self::baseQuery($reflection));
 		if(!($stmt->execute())) {

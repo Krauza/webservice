@@ -67,7 +67,7 @@ class DbPdoConnector implements StorageInterface
 	{
 		$reflectionEntityClass = new \ReflectionClass($aggregator->getEntityClass());
 		$operation = "$this->operations\\FetchData";
-		$stmt = $operation::fetchAll($this->pdo, $reflectionEntityClass);
+		$stmt = $operation::fetchAll($this->pdo, $reflectionEntityClass, $options);
 
 		foreach($stmt as $row) {
 			$aggregator->append($reflectionEntityClass->newInstanceArgs(array_values($row)));

@@ -65,7 +65,7 @@ class BasicFunctions
 	public static function getTableName(Entity $entity)
 	{
 		$reflection = new \ReflectionClass($entity);
-		return strtolower($reflection->getShortName());
+		return 'fiche_' . strtolower($reflection->getShortName());
 	}
 
 	public static function getFieldsWithPlaceholders(array $values): string

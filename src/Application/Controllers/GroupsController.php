@@ -18,7 +18,12 @@ class GroupsController extends Controller
     public function index()
     {
         $groups = new Groups();
-        $this->storage->fetchAll($groups);
+        $this->storage->fetchAll($groups, [
+            'where' => [
+                'owner_id' => $this->currentUser->getId()
+            ]
+        ]);
+
         return ['groups' => $groups];
     }
 

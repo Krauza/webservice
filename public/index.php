@@ -10,6 +10,7 @@ $app = new Silex\Application();
 Request::enableHttpMethodParameterOverride();
 
 $app['debug'] = true;
+$app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../src/Application/views',
 ));
