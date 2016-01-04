@@ -9,4 +9,4 @@ before_script:
 
 script:
   - test
-  - CODECLIMATE_REPO_TOKEN=ffd7bf832393d9f1476e852e093f46709ddea80b72984f2f306ed35b8b9cbbc5 php vendor/codeclimate/php-test-reporter/composer/bin/test-reporter
+#  - CODECLIMATE_REPO_TOKEN=ffd7bf832393d9f1476e852e093f46709ddea80b72984f2f306ed35b8b9cbbc5 php vendor/codeclimate/php-test-reporter/composer/bin/test-reporter

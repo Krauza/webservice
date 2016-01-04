@@ -8,7 +8,6 @@ use Fiche\Domain\Service\Exceptions\ValueIsTooLong;
 
 class Fiche extends Entity
 {
-    const MAX_LEVELS_COUNT = 4;
     const MAX_WORD_LENGTH = 255;
     const MAX_EXPLAIN_LENGTH = 1000;
 
@@ -16,19 +15,15 @@ class Fiche extends Entity
     private $word;
     private $explain_word;
     private $attachment;
-    private $level;
-    private $archived;
     private $group;
 
-    public function __construct(\int $id = null, Group $group, \string $word, \string $explain, Attachment $attachment = null, \int $level = 0)
+    public function __construct(\int $id = null, Group $group, \string $word, \string $explain, Attachment $attachment = null)
     {
         $this->setId($id);
         $this->group = $group;
         $this->word = $word;
         $this->explain_word = $explain;
         $this->attachment = $attachment;
-        $this->level = $level;
-        $this->archived = false;
     }
 
     public function setId(\int $id = null)
@@ -43,8 +38,6 @@ class Fiche extends Entity
             'group_id' => 'int',
             'word' => 'string',
             'explain_word' => 'string',
-            'level' => 'int',
-            'archived' => 'boolean'
         ];
     }
 
@@ -54,9 +47,7 @@ class Fiche extends Entity
             'id' => $this->getId(),
             'group_id' => $this->getGroupId(),
             'word' => $this->getWord(),
-            'explain_word' => $this->getExplainWord(),
-            'level' => $this->getLevel(),
-            'archived' => $this->isArchived() ? 1 : 0
+            'explain_word' => $this->getExplainWord()
         ];
     }
 
@@ -78,39 +69,6 @@ class Fiche extends Entity
     public function getAttachment(): Attachment
     {
         return $this->attachment;
-    }
-
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
-
-    public function increaseLevel(): int
-    {
-        $this->level++;
-
-        if($this->level >= self::MAX_LEVELS_COUNT) {
-            $this->setArchived();
-        }
-
-        return $this->level;
-    }
-
-    public function resetLevel(): int
-    {
-        $this->level = 0;
-
-        return $this->level;
-    }
-
-    private function setArchived()
-    {
-        $this->archived = true;
-    }
-
-    public function isArchived()
-    {
-        return $this->archived;
     }
 
     public function setWord(\string $word)

@@ -10,15 +10,17 @@ use Fiche\Domain\Service\Exceptions\ValueIsTooLong;
 class Group extends Entity
 {
     private $id;
+    private $owner;
     private $name;
     private $fiches;
 
     const NAME_MAX_LENGTH = 120;
 
-    public function __construct(\int $id = null, \string $name, Fiches $fiches = null)
+    public function __construct(\int $id = null, User $owner, \string $name, Fiches $fiches = null)
     {
         $this->setId($id);
         $this->setName($name);
+        $this->owner = $owner;
         $this->fiches = $fiches;
     }
 
@@ -86,5 +88,15 @@ class Group extends Entity
     public function getFiches(): Fiches
     {
         return $this->fiches;
+    }
+
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    public function getOwnerId()
+    {
+        return $this->owner->getId();
     }
 }

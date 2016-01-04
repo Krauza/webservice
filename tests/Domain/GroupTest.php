@@ -3,6 +3,12 @@
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Entity\User;
 
+/**
+ * Class GroupTest
+ *
+ * @property User $user;
+ * @property Group $group;
+ */
 class GroupTest extends PHPUnit_Framework_TestCase
 {
     private $groupName;
@@ -55,5 +61,13 @@ class GroupTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException('Fiche\Domain\Service\Exceptions\ValueIsTooLong');
         $this->group->setName($str);
+    }
+
+    /**
+     * @test
+     */
+    public function groupHasCorrectOwner()
+    {
+        $this->assertEquals($this->user, $this->group->getOwner());
     }
 }
