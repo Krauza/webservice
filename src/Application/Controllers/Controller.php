@@ -2,6 +2,7 @@
 
 namespace Fiche\Application\Controllers;
 
+use Fiche\Application\Exceptions\RecordNotExists;
 use Fiche\Domain\Service\StorageInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +32,19 @@ abstract class Controller
 
 	private function setCurrentUserById($userId)
 	{
+		$result = null;
 		$userId = intval($userId);
 
 		if($userId > 0) {
-			$this->currentUser = $this->storage->getById(User::class, $userId);
-		} else {
-			$this->currentUser = null;
+			try {
+				echo $userId;
+				$result = $this->storage->getById(User::class, $userId);
+			} catch(RecordNotExists $e) {
+				$result = null;
+			}
 		}
+
+		$this->currentUser = $result;
 	}
 
 	public function setCurrentUser(User $user)

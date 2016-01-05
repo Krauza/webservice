@@ -6,12 +6,10 @@ use Fiche\Application\Exceptions\InvalidParameter;
 use Fiche\Domain\Aggregate\Groups;
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
-use Fiche\Domain\Service\StorageInterface;
 
 /**
  * Class GroupsController
  * @package Fiche\Application\Controllers
- * @property StorageInterface $storage;
  */
 class GroupsController extends Controller
 {

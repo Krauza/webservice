@@ -3,6 +3,7 @@
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
 use Fiche\Domain\Service\Entity;
+use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
 
 class ModifyData
 {

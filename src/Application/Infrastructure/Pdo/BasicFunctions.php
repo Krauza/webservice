@@ -1,6 +1,6 @@
 <?php
 
-namespace Fiche\Application\Infrastructure\Pdo\Mysql;
+namespace Fiche\Application\Infrastructure\Pdo;
 
 use Fiche\Domain\Service\Entity;
 

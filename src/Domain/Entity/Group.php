@@ -28,6 +28,7 @@ class Group extends Entity
     {
         return [
             'id' => 'int',
+            'owner_id' => User::class,
             'name' => 'string',
             'fiches' => Fiches::class
         ];
@@ -37,6 +38,7 @@ class Group extends Entity
     {
         return [
             'id' => $this->getId(),
+            'owner_id' => $this->getOwnerId(),
             'name' => $this->getName()
         ];
     }
