@@ -10,10 +10,10 @@ class ControllerFactory
     {
         $controllerName = self::prepareControllerName($controller);
 
-        if(file_exists(__DIR__."/Controllers/$controllerName.php")) {
+        if (file_exists(__DIR__."/Controllers/$controllerName.php")) {
             $controllerClass = "Fiche\\Application\\Controllers\\$controllerName";
 
-            if(class_exists($controllerClass)) {
+            if (class_exists($controllerClass)) {
                 return new $controllerClass($app, $request);
             }
         }
@@ -25,7 +25,7 @@ class ControllerFactory
     {
         $method = self::prepareMethodName($method);
 
-        if(method_exists($controllerInstance, $method)) {
+        if (method_exists($controllerInstance, $method)) {
             return $controllerInstance->{$method}($params);
         }
 

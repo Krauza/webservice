@@ -52,11 +52,11 @@ class Group extends Entity
     {
         $name = trim($name);
 
-        if(empty($name)) {
+        if (empty($name)) {
             throw new FieldIsRequired('name');
         }
 
-        if(strlen($name) > self::NAME_MAX_LENGTH) {
+        if (strlen($name) > self::NAME_MAX_LENGTH) {
             throw new ValueIsTooLong('name');
         }
 
@@ -70,7 +70,7 @@ class Group extends Entity
 
     public function addFiche(Fiche $fiche)
     {
-        if($this->fiches instanceof Fiches) {
+        if ($this->fiches instanceof Fiches) {
             $this->fiches->append($fiche);
         } else {
             throw new \Exception;

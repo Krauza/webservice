@@ -46,12 +46,12 @@ class DbPdoConnector implements StorageInterface
 	 * @return object
 	 * @throws RecordNotExists
 	 */
-	public function getById(\string $className, \int $id)
+	public function getById(\string $className, $id)
 	{
 		$reflection = new \ReflectionClass($className);
 		$operation = "$this->operations\\FetchData";
 		$result = $operation::getById($this->pdo, $reflection, $id);
-		if(empty($result)) {
+		if (empty($result)) {
 			throw new RecordNotExists;
 		}
 
@@ -115,10 +115,10 @@ class DbPdoConnector implements StorageInterface
 	private function convertRawIdsToObjects($entityClass, $row)
 	{
 		foreach($entityClass::getFieldsNames() as $key => $value) {
-			if(!BasicFunctions::isBasicType($value)) {
+			if (!BasicFunctions::isBasicType($value)) {
 				$entity = new \ReflectionClass($value);
 
-				if($entity->isSubclassOf(Entity::class)) {
+				if ($entity->isSubclassOf(Entity::class)) {
 					$row[$key] = $this->getById($value, $row[$key]);
 				}
 			}

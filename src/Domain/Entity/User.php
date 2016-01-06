@@ -57,11 +57,11 @@ class User extends Entity
 
     public function setEmail(\string $email)
     {
-        if(strlen($email) > self::EMAIL_MAX_LENGTH) {
+        if (strlen($email) > self::EMAIL_MAX_LENGTH) {
             throw new ValueIsTooLong('email');
         }
 
-        if(!preg_match(self::EMAIL_PATTERN, $email)) {
+        if (!preg_match(self::EMAIL_PATTERN, $email)) {
             throw new ValueIsNotEmail('email');
         }
 

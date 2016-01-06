@@ -38,7 +38,7 @@ class FetchData
 		$query = self::baseQuery($reflection) . " WHERE id=$id";
 		$stmt = $pdo->prepare($query);
 
-		if(!($stmt->execute())) {
+		if (!($stmt->execute())) {
 			return null;
 		}
 
@@ -56,7 +56,7 @@ class FetchData
 	public static function fetchAll(\PDO $pdo, \ReflectionClass $reflection, array $options = []): array
 	{
 		$stmt = $pdo->prepare(self::baseQuery($reflection) . self::prepareQueryFromOptions($options));
-		if(!($stmt->execute())) {
+		if (!($stmt->execute())) {
 			return [];
 		}
 
@@ -67,7 +67,7 @@ class FetchData
 	{
 		$query = '';
 
-		if(isset($options['where'])) {
+		if (isset($options['where'])) {
 			$key = array_keys($options['where'])[0];
 			$value = array_values($options['where'])[0];
 

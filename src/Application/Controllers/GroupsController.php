@@ -27,12 +27,7 @@ class GroupsController extends Controller
 
     public function show($id)
     {
-        $id = intval($id);
-        if($id === 0) {
-            throw new InvalidParameter;
-        }
-
-        $group = $this->storage->getById(Group::class, $id);
+        $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
         return ['group' => $group];
     }
 
@@ -40,7 +35,7 @@ class GroupsController extends Controller
     {
         $result = [];
 
-        if($this->request->isMethod('POST')) {
+        if ($this->request->isMethod('POST')) {
             $result = $this->save();
         }
 
@@ -49,17 +44,12 @@ class GroupsController extends Controller
 
     public function edit($id)
     {
-        $id = intval($id);
-        if($id === 0) {
-            throw new InvalidParameter;
-        }
-
-        $group = $this->storage->getById(Group::class, $id);
+        $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
         $result = [
             'group' => $group
         ];
 
-        if($this->request->isMethod('PUT')) {
+        if ($this->request->isMethod('PUT')) {
             $result = $this->save($group);
         }
 
@@ -68,13 +58,8 @@ class GroupsController extends Controller
 
     public function delete($id)
     {
-        $id = intval($id);
-        if($id === 0) {
-            throw new InvalidParameter;
-        }
-
-        if($this->request->isMethod('DELETE')) {
-            $group = $this->storage->getById(Group::class, $id);
+        if ($this->request->isMethod('DELETE')) {
+            $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
             $this->storage->delete($group);
         }
 
@@ -83,20 +68,14 @@ class GroupsController extends Controller
 
     public function fiches($id)
     {
-        $id = intval($id);
-        if($id === 0) {
-            throw new InvalidParameter;
-        }
-
-        $group = $this->storage->getById(Group::class, $id);
-
+        $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
         return ['group' => $group];
     }
 
     private function save(Group $group = null)
     {
         try {
-            if(empty($group)) {
+            if (empty($group)) {
                 $group = new Group(null, $this->request->get('name'));
                 $this->storage->insert($group);
             } else {

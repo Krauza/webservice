@@ -7,6 +7,7 @@ use Fiche\Domain\Service\StorageInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Fiche\Domain\Entity\User;
+use Fiche\Application\Exceptions\InvalidParameter;
 
 /**
  * Class Controller
@@ -30,14 +31,12 @@ abstract class Controller
 		$this->request = $request;
 	}
 
-	private function setCurrentUserById($userId)
+	protected function setCurrentUserById($userId)
 	{
 		$result = null;
-		$userId = intval($userId);
 
-		if($userId > 0) {
+		if ($this->isCorrectId($userId)) {
 			try {
-				echo $userId;
 				$result = $this->storage->getById(User::class, $userId);
 			} catch(RecordNotExists $e) {
 				$result = null;
@@ -51,5 +50,24 @@ abstract class Controller
 	{
 		$this->app['session']->set('current_user_id', $user->getId());
 		$this->currentUser = $user;
+	}
+
+	protected function isCorrectId($id)
+	{
+		if(intval($id) <= 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function convertIdToInt($id)
+	{
+		$id = intval($id);
+		if ($id === 0) {
+			throw new InvalidParameter;
+		}
+
+		return $id;
 	}
 }

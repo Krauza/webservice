@@ -2,7 +2,6 @@
 
 namespace Fiche\Application\Controllers;
 
-use Fiche\Application\Exceptions\InvalidParameter;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 use Fiche\Domain\Entity\Fiche;
 use Fiche\Domain\Entity\Group;
@@ -16,8 +15,8 @@ class FichesController extends Controller
 
     public function create()
     {
-        if($this->request->isMethod('POST')) {
-            return $result = $this->save();
+        if ($this->request->isMethod('POST')) {
+            return $this->save();
         }
 
         return $this->app->redirect('/groups');
@@ -25,17 +24,12 @@ class FichesController extends Controller
 
     public function edit($id)
     {
-        $id = intval($id);
-        if($id === 0) {
-            throw new InvalidParameter;
-        }
-
-        $group = $this->storage->getById(Fiche::class, $id);
+        $group = $this->storage->getById(Fiche::class, $this->convertIdToInt($id));
         $result = [
             'group' => $group
         ];
 
-        if($this->request->isMethod('PUT')) {
+        if ($this->request->isMethod('PUT')) {
             $result = $this->save($group);
         }
 
@@ -52,7 +46,7 @@ class FichesController extends Controller
         );
 
         try {
-            if(empty($fiche)) {
+            if (empty($fiche)) {
                 $fiche = new Fiche(null, $group, $word, $explain);
                 $this->storage->insert($fiche);
             } else {

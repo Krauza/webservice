@@ -10,7 +10,7 @@ class BasicFunctions
 	{
 		$fields = [];
 		foreach($classFields as $field => $type) {
-			if(!self::isBasicType($type) && self::isImplementAggregateInterface($type)) {
+			if (!self::isBasicType($type) && self::isImplementAggregateInterface($type)) {
 				continue;
 			}
 
@@ -24,7 +24,7 @@ class BasicFunctions
 	{
 		$types = ['string', 'int', 'float'];
 
-		if(in_array($type, $types)) {
+		if (in_array($type, $types)) {
 			return true;
 		}
 
@@ -35,7 +35,7 @@ class BasicFunctions
 	{
 		$implements = class_implements($type);
 
-		if(is_array($implements)) {
+		if (is_array($implements)) {
 			return in_array('Fiche\Domain\Service\AggregateInterface', $implements);
 		}
 
