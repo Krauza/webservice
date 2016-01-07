@@ -1,0 +1,22 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+    <form method="post">
+        <div>
+            <label for="email">E-mail</label>
+            <input id="email" type="text" name="email" {% if data['email'] is defined %}value="{{ data['email'] }}{% endif %}" />
+            {% if messages['field'] is defined and messages['field'] == 'password' %}
+                <p>{{ messages['message'] }}</p>
+            {% endif %}
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password" />
+            {% if messages['field'] is defined and messages['field'] == 'password' %}
+                <p>{{ messages['message'] }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+{% endblock %}

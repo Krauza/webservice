@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 function getContentFromController(Silex\Application $app, Request $request, \string $controller = 'base', \string $action = 'index', $params = null) {
 	if (userIsNotSigned($app) && pageIsOnlyForSignedUsers($controller, $action)) {
-		return $app->redirect('/auth/login-form');
+		return $app->redirect('/auth/login');
 	}
 
 	try {

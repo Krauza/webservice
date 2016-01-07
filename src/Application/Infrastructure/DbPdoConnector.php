@@ -48,9 +48,23 @@ class DbPdoConnector implements StorageInterface
 	 */
 	public function getById(\string $className, $id)
 	{
+		$this->getByField($className, 'id', $id);
+	}
+
+	/**
+	 * Get record by field
+	 *
+	 * @param string $className
+	 * @param string $field
+	 * @param string $value
+	 * @return object
+	 * @throws RecordNotExists
+	 */
+	public function getByField(\string $className, \string $field, \string $value)
+	{
 		$reflection = new \ReflectionClass($className);
 		$operation = "$this->operations\\FetchData";
-		$result = $operation::getById($this->pdo, $reflection, $id);
+		$result = $operation::getByField($this->pdo, $reflection, $field, $value);
 		if (empty($result)) {
 			throw new RecordNotExists;
 		}

@@ -26,16 +26,17 @@ class FetchData
 	}
 
 	/**
-	 * Fetch one record by id
+	 * Fetch one record by field name
 	 *
 	 * @param \Pdo $pdo
-	 * @param \ReflectionClass $reflection
-	 * @param $id
+	 * @param \ReflectionClass $reflectionClass
+	 * @param string $field
+	 * @param string $value
 	 * @return mixed|null
 	 */
-	public static function getById(\Pdo $pdo, \ReflectionClass $reflection, $id)
+	public static function getByField(\Pdo $pdo, \ReflectionClass $reflectionClass, \string $field, \string $value)
 	{
-		$query = self::baseQuery($reflection) . " WHERE id=$id";
+		$query = self::baseQuery($reflectionClass) . " WHERE $field=$value";
 		$stmt = $pdo->prepare($query);
 
 		if (!($stmt->execute())) {
