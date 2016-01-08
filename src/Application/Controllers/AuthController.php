@@ -41,7 +41,7 @@ class AuthController extends Controller
         }
 
         $this->setCurrentUser($user);
-        return $this->app->redirect('/base');
+        return $this->app->redirect('/groups/index');
     }
 
     public function logout()

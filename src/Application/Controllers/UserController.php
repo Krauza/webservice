@@ -46,7 +46,7 @@ class UserController extends Controller
             ]);
         }
 
-        return $this->app->redirect('/base/index');
+        return $this->app->redirect('/groups/index');
     }
 
     private function arePasswordsTheSame()

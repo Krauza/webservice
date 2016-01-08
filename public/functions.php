@@ -37,7 +37,7 @@ function userIsNotSigned($app)
 
 function pageIsOnlyForSignedUsers(\string $controller, \string $method)
 {
-	if ($controller === 'auth') {
+	if ($controller === 'auth' || $controller === 'base') {
 		return false;
 	}
 
