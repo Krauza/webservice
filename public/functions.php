@@ -15,6 +15,11 @@ function getContentFromController(Silex\Application $app, Request $request, \str
 		$response = ControllerFactory::callMethod($controllerInstance, $action, $params);
 
 		if (is_array($response)) {
+			$response['user_logged'] = $controllerInstance->isUserLogged();
+			if($response['user_logged']) {
+				$response['current_user'] = $controllerInstance->getCurrentUser();
+			}
+
 			return $app['twig']->render("/$controller/$action.html.twig", $response);
 		} else {
 			return $response;

@@ -36,7 +36,7 @@ class FetchData
 	 */
 	public static function getByField(\Pdo $pdo, \ReflectionClass $reflectionClass, \string $field, \string $value)
 	{
-		$query = self::baseQuery($reflectionClass) . " WHERE $field=$value";
+		$query = self::baseQuery($reflectionClass) . " WHERE $field='$value'";
 		$stmt = $pdo->prepare($query);
 
 		if (!($stmt->execute())) {

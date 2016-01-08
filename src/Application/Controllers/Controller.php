@@ -46,10 +46,28 @@ abstract class Controller
 		$this->currentUser = $result;
 	}
 
-	protected function setCurrentUser(User $user)
+	protected function setCurrentUser(User $user = null)
 	{
 		$this->app['session']->set('current_user_id', $user->getId());
 		$this->currentUser = $user;
+	}
+
+	public function getCurrentUser(): User
+	{
+		if(!$this->isUserLogged()) {
+			throw new InvalidParameter();
+		}
+
+		return $this->currentUser;
+	}
+
+	public function isUserLogged(): \bool
+	{
+		if(empty($this->currentUser)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	protected function logoutCurrentUser()

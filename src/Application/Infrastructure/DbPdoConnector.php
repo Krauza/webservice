@@ -48,7 +48,7 @@ class DbPdoConnector implements StorageInterface
 	 */
 	public function getById(\string $className, $id)
 	{
-		$this->getByField($className, 'id', $id);
+		return $this->getByField($className, 'id', $id);
 	}
 
 	/**

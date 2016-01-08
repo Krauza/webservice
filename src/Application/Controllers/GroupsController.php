@@ -2,7 +2,6 @@
 
 namespace Fiche\Application\Controllers;
 
-use Fiche\Application\Exceptions\InvalidParameter;
 use Fiche\Domain\Aggregate\Groups;
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
@@ -18,7 +17,7 @@ class GroupsController extends Controller
         $groups = new Groups();
         $this->storage->fetchAll($groups, [
             'where' => [
-                'owner_id' => $this->currentUser->getId()
+                'owner_id' => $this->getCurrentUser()->getId()
             ]
         ]);
 

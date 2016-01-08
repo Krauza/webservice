@@ -1,12 +1,13 @@
 <?php
 namespace Fiche\Application;
 
+use Fiche\Application\Controllers\Controller;
 use Fiche\Application\Exceptions\ActionNotExists;
 use Fiche\Application\Exceptions\ControllerNotExists;
 
 class ControllerFactory
 {
-    public static function getController($controller, $app, $request)
+    public static function getController($controller, $app, $request): Controller
     {
         $controllerName = self::prepareControllerName($controller);
 
