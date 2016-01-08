@@ -1,6 +1,14 @@
 {% extends "index.html.twig" %}
 
+{% block pageName %}
+    Subjects
+{% endblock %}
+{% block pageDesc %}
+    Manage your subjects of lessons
+{% endblock %}
+
 {% block content %}
+    <h2 class="page-header">Your subjects <a href="/groups/create" class="btn btn-info btn-xs">Add new subject</a></h2>
     {% if groups|length > 0 %}
         <table>
             {% for group in groups %}
@@ -12,7 +20,10 @@
                 </tr>
             {% endfor %}
         </table>
+    {% else %}
+        <div class="alert alert-warning alert-dismissible">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+            You have not any subject. <a href="/groups/create">Add new subject</a> and start learning new things.
+        </div>
     {% endif %}
-
-    <a href="/groups/create">Add new group</a>
 {% endblock %}

@@ -3,6 +3,7 @@ namespace Fiche\Application;
 
 use Fiche\Application\Exceptions\ActionNotExists;
 use Fiche\Application\Exceptions\ControllerNotExists;
+use Fiche\Application\Controllers\Controller;;
 
 class ControllerFactory
 {
@@ -21,7 +22,7 @@ class ControllerFactory
         throw new ControllerNotExists();
     }
 
-    public static function callMethod($controllerInstance, \string $method, $params = null)
+    public static function callMethod(Controller $controllerInstance, \string $method, $params = null)
     {
         if(method_exists($controllerInstance, $method)) {
             return $controllerInstance->{$method}($params);
