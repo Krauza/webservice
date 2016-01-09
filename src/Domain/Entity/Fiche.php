@@ -74,11 +74,11 @@ class Fiche extends Entity
     public function setWord(\string $word)
     {
         $word = trim($word);
-        if(empty($word)) {
+        if (empty($word)) {
             throw new FieldIsRequired('word');
         }
 
-        if(strlen($word) > self::MAX_WORD_LENGTH) {
+        if (strlen($word) > self::MAX_WORD_LENGTH) {
             throw new ValueIsTooLong('word');
         }
 
@@ -88,11 +88,11 @@ class Fiche extends Entity
     public function setExplainWord(\string $explain_word)
     {
         $explain_word = trim($explain_word);
-        if(empty($explain_word)) {
+        if (empty($explain_word)) {
             throw new FieldIsRequired('word');
         }
 
-        if(strlen($explain_word) > self::MAX_EXPLAIN_LENGTH) {
+        if (strlen($explain_word) > self::MAX_EXPLAIN_LENGTH) {
             throw new ValueIsTooLong('word');
         }
 

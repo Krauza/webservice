@@ -1,19 +1,20 @@
 <?php
 namespace Fiche\Application;
 
+use Fiche\Application\Controllers\Controller;
 use Fiche\Application\Exceptions\ActionNotExists;
 use Fiche\Application\Exceptions\ControllerNotExists;
 
 class ControllerFactory
 {
-    public static function getController($controller, $app, $request)
+    public static function getController($controller, $app, $request): Controller
     {
         $controllerName = self::prepareControllerName($controller);
 
-        if(file_exists(__DIR__."/Controllers/$controllerName.php")) {
+        if (file_exists(__DIR__."/Controllers/$controllerName.php")) {
             $controllerClass = "Fiche\\Application\\Controllers\\$controllerName";
 
-            if(class_exists($controllerClass)) {
+            if (class_exists($controllerClass)) {
                 return new $controllerClass($app, $request);
             }
         }
@@ -23,19 +24,21 @@ class ControllerFactory
 
     public static function callMethod($controllerInstance, \string $method, $params = null)
     {
-        if(method_exists($controllerInstance, $method)) {
+        $method = self::prepareMethodName($method);
+
+        if (method_exists($controllerInstance, $method)) {
             return $controllerInstance->{$method}($params);
         }
 
         throw new ActionNotExists();
     }
 
-    public static function prepareControllerName(string $controller)
+    public static function prepareControllerName(\string $controller)
     {
         return implode('', self::convertFromUnderLines($controller)) . 'Controller';
     }
 
-    public static function prepareMethodName(string $method)
+    public static function prepareMethodName(\string $method)
     {
         $method = self::convertFromUnderLines($method);
         $method[0] = strtolower($method[0]);
@@ -43,10 +46,10 @@ class ControllerFactory
         return implode('', $method);
     }
 
-    public static function convertFromUnderLines(string $string)
+    public static function convertFromUnderLines(\string $string)
     {
         return array_map(function($el) {
             return ucfirst($el);
-        }, explode('_', $string));
+        }, explode('-', $string));
     }
 }

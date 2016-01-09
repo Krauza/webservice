@@ -25,7 +25,7 @@ class User extends Entity
         $this->setPassword($password);
     }
 
-    public function getId(): \int
+    public function getId()
     {
         return $this->id;
     }
@@ -57,11 +57,11 @@ class User extends Entity
 
     public function setEmail(\string $email)
     {
-        if(strlen($email) > self::EMAIL_MAX_LENGTH) {
+        if (strlen($email) > self::EMAIL_MAX_LENGTH) {
             throw new ValueIsTooLong('email');
         }
 
-        if(!preg_match(self::EMAIL_PATTERN, $email)) {
+        if (!preg_match(self::EMAIL_PATTERN, $email)) {
             throw new ValueIsNotEmail('email');
         }
 
@@ -73,13 +73,28 @@ class User extends Entity
         $this->password = $password;
     }
 
+    public function getGroups()
+    {
+
+    }
+
     public static function getFieldsNames(): array
     {
-        // TODO: Implement getFieldsNames() method.
+        return [
+            'id' => 'int',
+            'name' => 'string',
+            'email' => 'string',
+            'password' => 'string'
+        ];
     }
 
     public function getValues(): array
     {
-        // TODO: Implement getValues() method.
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+            'password' => $this->getPassword()
+        ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
+use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
+
 /**
  * Class FetchData
  * @package Fiche\Application\Infrastructure\Pdo\Mysql
@@ -18,25 +20,26 @@ class FetchData
 	{
 		$className = $reflection->getName();
 		$columns = BasicFunctions::getColumns($className::getFieldsNames());
-		$table = strtolower($reflection->getShortName());
+		$table = "fiche_" . strtolower($reflection->getShortName());
 
 		return "SELECT $columns FROM `$table`";
 	}
 
 	/**
-	 * Fetch one record by id
+	 * Fetch one record by field name
 	 *
 	 * @param \Pdo $pdo
-	 * @param \ReflectionClass $reflection
-	 * @param $id
+	 * @param \ReflectionClass $reflectionClass
+	 * @param string $field
+	 * @param string $value
 	 * @return mixed|null
 	 */
-	public static function getById(\Pdo $pdo, \ReflectionClass $reflection, $id)
+	public static function getByField(\Pdo $pdo, \ReflectionClass $reflectionClass, \string $field, \string $value)
 	{
-		$query = self::baseQuery($reflection) . " WHERE id=$id";
+		$query = self::baseQuery($reflectionClass) . " WHERE $field='$value'";
 		$stmt = $pdo->prepare($query);
 
-		if(!($stmt->execute())) {
+		if (!($stmt->execute())) {
 			return null;
 		}
 
@@ -48,15 +51,30 @@ class FetchData
 	 *
 	 * @param \PDO $pdo
 	 * @param \ReflectionClass $reflection
+	 * @param array $options
 	 * @return array
 	 */
-	public static function fetchAll(\PDO $pdo, \ReflectionClass $reflection)
+	public static function fetchAll(\PDO $pdo, \ReflectionClass $reflection, array $options = []): array
 	{
-		$stmt = $pdo->prepare(self::baseQuery($reflection));
-		if(!($stmt->execute())) {
+		$stmt = $pdo->prepare(self::baseQuery($reflection) . self::prepareQueryFromOptions($options));
+		if (!($stmt->execute())) {
 			return [];
 		}
 
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
+
+	private static function prepareQueryFromOptions(array $options = [])
+	{
+		$query = '';
+
+		if (isset($options['where'])) {
+			$key = array_keys($options['where'])[0];
+			$value = array_values($options['where'])[0];
+
+			$query .= " WHERE $key=$value";
+		}
+
+		return $query;
 	}
 }

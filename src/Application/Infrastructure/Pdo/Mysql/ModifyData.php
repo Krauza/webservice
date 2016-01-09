@@ -3,6 +3,7 @@
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
 use Fiche\Domain\Service\Entity;
+use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
 
 class ModifyData
 {
@@ -13,7 +14,7 @@ class ModifyData
 		$placeholders = BasicFunctions::setPlaceholders($entity->getValues());
 
 		$stmt = $pdo->prepare("INSERT INTO `$table` ($fields) VALUES ($placeholders)");
-		if($stmt->execute(array_values($entity->getValues()))) {
+		if ($stmt->execute(array_values($entity->getValues()))) {
 			return $pdo->lastInsertId();
 		}
 
@@ -27,7 +28,7 @@ class ModifyData
 		$id = $entity->getId();
 
 		$stmt = $pdo->prepare("UPDATE `$table` SET $placeholders WHERE id=$id");
-		if($stmt->execute(array_values($entity->getValues()))) {
+		if ($stmt->execute(array_values($entity->getValues()))) {
 			return true;
 		}
 
@@ -40,7 +41,7 @@ class ModifyData
 		$id = $entity->getId();
 
 		$stmt = $pdo->prepare("DELETE FROM `$table` WHERE id=$id");
-		if($stmt->execute()) {
+		if ($stmt->execute()) {
 			return true;
 		}
 

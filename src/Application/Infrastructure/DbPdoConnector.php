@@ -3,6 +3,7 @@
 namespace Fiche\Application\Infrastructure;
 
 use Fiche\Application\Exceptions\RecordNotExists;
+use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
 use Fiche\Domain\Service\AggregateInterface;
 use Fiche\Domain\Service\Entity;
 use Fiche\Domain\Service\StorageInterface;
@@ -45,15 +46,30 @@ class DbPdoConnector implements StorageInterface
 	 * @return object
 	 * @throws RecordNotExists
 	 */
-	public function getById(\string $className, \int $id)
+	public function getById(\string $className, $id)
+	{
+		return $this->getByField($className, 'id', $id);
+	}
+
+	/**
+	 * Get record by field
+	 *
+	 * @param string $className
+	 * @param string $field
+	 * @param string $value
+	 * @return object
+	 * @throws RecordNotExists
+	 */
+	public function getByField(\string $className, \string $field, \string $value)
 	{
 		$reflection = new \ReflectionClass($className);
 		$operation = "$this->operations\\FetchData";
-		$result = $operation::getById($this->pdo, $reflection, $id);
-		if(empty($result)) {
+		$result = $operation::getByField($this->pdo, $reflection, $field, $value);
+		if (empty($result)) {
 			throw new RecordNotExists;
 		}
 
+		$result = $this->convertRawIdsToObjects($className, $result);
 		return $reflection->newInstanceArgs(array_values($result));
 	}
 
@@ -65,11 +81,13 @@ class DbPdoConnector implements StorageInterface
 	 */
 	public function fetchAll(AggregateInterface $aggregator, array $options = [])
 	{
-		$reflectionEntityClass = new \ReflectionClass($aggregator->getEntityClass());
+		$entityClass = $aggregator->getEntityClass();
+		$reflectionEntityClass = new \ReflectionClass($entityClass);
 		$operation = "$this->operations\\FetchData";
-		$stmt = $operation::fetchAll($this->pdo, $reflectionEntityClass);
+		$stmt = $operation::fetchAll($this->pdo, $reflectionEntityClass, $options);
 
 		foreach($stmt as $row) {
+			$row = $this->convertRawIdsToObjects($entityClass, $row);
 			$aggregator->append($reflectionEntityClass->newInstanceArgs(array_values($row)));
 		}
 	}
@@ -106,5 +124,20 @@ class DbPdoConnector implements StorageInterface
 	{
 		$operation = "$this->operations\\ModifyData";
 		return $operation::delete($this->pdo, $entity);
+	}
+
+	private function convertRawIdsToObjects($entityClass, $row)
+	{
+		foreach($entityClass::getFieldsNames() as $key => $value) {
+			if (!BasicFunctions::isBasicType($value)) {
+				$entity = new \ReflectionClass($value);
+
+				if ($entity->isSubclassOf(Entity::class)) {
+					$row[$key] = $this->getById($value, $row[$key]);
+				}
+			}
+		}
+
+		return $row;
 	}
 }
