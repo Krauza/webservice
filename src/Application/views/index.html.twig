@@ -42,13 +42,10 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/base">Home</a></li>
-                        {% if user_logged is defined and user_logged %}
-                        <li><a href="/groups">Groups</a></li>
-                        <li><a href="/auth/logout">Logout</a></li>
-                        {% else %}
-                        <li><a href="/auth/login">Login</a></li>
-                        <li><a href="/user/register">Register</a></li>
-                        {% endif %}
+                        <li><a href="/base">Groups</a></li>
+                        <li><a href="/base">Login</a></li>
+                        <li><a href="/base">Logout</a></li>
+                        <li><a href="/base">Register</a></li>
                     </ul>
                 </div>
             </div>

@@ -4,6 +4,7 @@ namespace Fiche\Application;
 use Fiche\Application\Controllers\Controller;
 use Fiche\Application\Exceptions\ActionNotExists;
 use Fiche\Application\Exceptions\ControllerNotExists;
+use Fiche\Application\Controllers\Controller;;
 
 class ControllerFactory
 {
