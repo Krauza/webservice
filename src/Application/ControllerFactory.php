@@ -22,7 +22,7 @@ class ControllerFactory
         throw new ControllerNotExists();
     }
 
-    public static function callMethod($controllerInstance, \string $method, $params = null)
+    public static function callMethod(Controller $controllerInstance, \string $method, $params = null)
     {
         $method = self::prepareMethodName($method);
 

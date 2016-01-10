@@ -34,7 +34,7 @@ class UserController extends Controller
                 null,
                 $this->request->get('name'),
                 $this->request->get('email'),
-                self::passwordHash($this->request->get('password'))
+                password_hash($this->request->get('password'), PASSWORD_DEFAULT)
             );
 
             $this->storage->insert($user);
@@ -68,10 +68,5 @@ class UserController extends Controller
                 'email' => $this->request->get('email')
             ]
         ];
-    }
-
-    public static function passwordHash($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
     }
 }

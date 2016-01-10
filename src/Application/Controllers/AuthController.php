@@ -33,7 +33,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if($user->getPassword() !== UserController::passwordHash($this->request->get('password'))) {
+        if(password_verify($this->request->get('password'), $user->getPassword())) {
             return $this->returnErrorMessages([
                 'field' => 'password',
                 'message' => 'Password is wrong'
