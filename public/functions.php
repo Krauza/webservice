@@ -6,7 +6,8 @@ use Fiche\Application\Exceptions\ActionNotExists;
 use Symfony\Component\HttpFoundation\Request;
 
 function getContentFromController(Silex\Application $app, Request $request, \string $controller = 'base', \string $action = 'index', $params = null) {
-	if (userIsNotSigned($app) && pageIsOnlyForSignedUsers($controller, $action)) {
+	$userIsNotSigned = userIsNotSigned($app);
+	if ($userIsNotSigned && pageIsOnlyForSignedUsers($controller, $action)) {
 		return $app->redirect('/auth/login');
 	}
 
@@ -15,7 +16,7 @@ function getContentFromController(Silex\Application $app, Request $request, \str
 		$response = ControllerFactory::callMethod($controllerInstance, $action, $params);
 
 		if (is_array($response)) {
-			$response['user_logged'] = $controllerInstance->isUserLogged();
+			$response['user_logged'] = !$userIsNotSigned;
 			if($response['user_logged']) {
 				$response['current_user'] = $controllerInstance->getCurrentUser();
 			}
@@ -32,7 +33,12 @@ function getContentFromController(Silex\Application $app, Request $request, \str
 		$content = 'Something went wrong... (' . $e->getMessage() . ')';
 	}
 
-	return $app['twig']->render('errors/error-404.html.twig', array('content' => $content));
+	return $app['twig']->render(
+		'errors/error-404.html.twig', array(
+			'content' => $content,
+			'user_logged' => !$userIsNotSigned
+		)
+	);
 }
 
 function userIsNotSigned($app)

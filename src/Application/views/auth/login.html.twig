@@ -1,5 +1,12 @@
 {% extends "index.html.twig" %}
 
+{% block pageName %}
+    Login
+{% endblock %}
+{% block pageDesc %}
+    Go to your account
+{% endblock %}
+
 {% block content %}
     <h2 class="page-header">Type your credentials</h2>
     <form method="post">
@@ -18,4 +25,6 @@
 
         <button class="btn btn-submit" type="submit">Login</button>
     </form>
+    <p>&nbsp;</p>
+    <p>If you have not account go to <a href="/user/register">registration page</a>.</p>
 {% endblock %}
