@@ -1,5 +1,12 @@
 {% extends "index.html.twig" %}
 
+{% block pageName %}
+    {{ group.getName() }}
+{% endblock %}
+{% block pageDesc %}
+    Edit your subject
+{% endblock %}
+
 {% block content %}
     <form method="post">
         <input type="hidden" id="_method" name="_method" value="PUT" />

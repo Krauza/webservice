@@ -75,7 +75,7 @@ class GroupsController extends Controller
     {
         try {
             if (empty($group)) {
-                $group = new Group(null, $this->request->get('name'));
+                $group = new Group(null, $this->getCurrentUser(), $this->request->get('name'));
                 $this->storage->insert($group);
             } else {
                 $group->setName($this->request->get('name'));

@@ -2,6 +2,7 @@
 
 namespace Fiche\Application\Controllers;
 
+use Fiche\Domain\Entity\UserFicheStatus;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 use Fiche\Domain\Entity\Fiche;
 use Fiche\Domain\Entity\Group;
@@ -49,6 +50,9 @@ class FichesController extends Controller
             if (empty($fiche)) {
                 $fiche = new Fiche(null, $group, $word, $explain);
                 $this->storage->insert($fiche);
+
+                $ficheStatus = new UserFicheStatus(null, $this->getCurrentUser(), $fiche);
+                $this->storage->insert($ficheStatus);
             } else {
                 $fiche->setWord($word);
                 $fiche->setExplainWord($explain);
