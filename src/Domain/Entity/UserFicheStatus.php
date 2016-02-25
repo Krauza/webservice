@@ -14,7 +14,7 @@ class UserFicheStatus extends Entity
     private $position;
     private $archived;
 
-    public function __construct(\int $id = null, User $user, Fiche $fiche, $level = 0, $position = null, $archived = false)
+    public function __construct($id = null, User $user, Fiche $fiche, $level = 0, $position = null, $archived = false)
     {
         $this->setId($id);
         $this->user = $user;
@@ -59,7 +59,7 @@ class UserFicheStatus extends Entity
         // TODO: Implement getValues() method.
     }
 
-    public function setId(\int $id = null)
+    public function setId( $id = null)
     {
         $this->id = $id;
     }

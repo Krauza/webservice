@@ -13,7 +13,7 @@ class User extends Entity
     private $email;
     private $password;
 
-    public function __construct(\int $id = null, \string $name, Email $email, \string $password)
+    public function __construct($id = null, \string $name, Email $email, \string $password)
     {
         $this->setId($id);
         $this->setName($name);
@@ -26,7 +26,7 @@ class User extends Entity
         return $this->id;
     }
 
-    public function setId(\int $id = null)
+    public function setId( $id = null)
     {
         $this->id = $id;
     }
@@ -71,7 +71,7 @@ class User extends Entity
         return [
             'id' => 'int',
             'name' => 'string',
-            'email' => 'string',
+            'email' => Email::class,
             'password' => 'string'
         ];
     }

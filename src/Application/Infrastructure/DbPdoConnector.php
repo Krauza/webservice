@@ -7,6 +7,7 @@ use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
 use Fiche\Domain\Policy\AggregateInterface;
 use Fiche\Domain\Entity\Entity;
 
+
 /**
  * Connects to database via PDO driver
  * Mostly it is universal class and it was prepared for easy replace db type
@@ -133,6 +134,8 @@ class DbPdoConnector implements StorageInterface
 
 				if ($entity->isSubclassOf(Entity::class)) {
 					$row[$key] = $this->getById($value, $row[$key]);
+				} else {
+					$row[$key] = $entity->newInstance($row[$key]);
 				}
 			}
 		}

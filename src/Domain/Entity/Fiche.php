@@ -16,7 +16,7 @@ class Fiche extends Entity
     private $attachment;
     private $group;
 
-    public function __construct(\int $id = null, Group $group, \string $word, \string $explain, Attachment $attachment = null)
+    public function __construct($id = null, Group $group, \string $word, \string $explain, Attachment $attachment = null)
     {
         $this->setId($id);
         $this->group = $group;
@@ -25,7 +25,7 @@ class Fiche extends Entity
         $this->attachment = $attachment;
     }
 
-    public function setId(\int $id = null)
+    public function setId( $id = null)
     {
         $this->id = $id;
     }

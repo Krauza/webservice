@@ -15,7 +15,7 @@ class Group extends Entity
 
     const NAME_MAX_LENGTH = 120;
 
-    public function __construct(\int $id = null, User $owner, \string $name, Fiches $fiches = null)
+    public function __construct($id = null, User $owner, \string $name, Fiches $fiches = null)
     {
         $this->setId($id);
         $this->setName($name);
@@ -42,7 +42,7 @@ class Group extends Entity
         ];
     }
 
-    public function setId(\int $id = null)
+    public function setId( $id = null)
     {
         $this->id = $id;
     }
