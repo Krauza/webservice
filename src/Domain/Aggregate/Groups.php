@@ -3,7 +3,7 @@
 namespace Fiche\Domain\Aggregate;
 
 use Fiche\Domain\Entity\Group;
-use Fiche\Domain\Service\AggregateInterface;
+use Fiche\Domain\Policy\AggregateInterface;
 
 class Groups extends \ArrayObject implements AggregateInterface
 {

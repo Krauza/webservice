@@ -3,7 +3,7 @@
 namespace Fiche\Application\Controllers;
 
 use Fiche\Application\Exceptions\RecordNotExists;
-use Fiche\Domain\Service\StorageInterface;
+use Fiche\Application\Infrastructure\StorageInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Fiche\Domain\Entity\User;

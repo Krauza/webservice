@@ -1,6 +1,6 @@
 <?php
 
-namespace Fiche\Domain\Service;
+namespace Fiche\Domain\Policy;
 
 interface AggregateInterface
 {

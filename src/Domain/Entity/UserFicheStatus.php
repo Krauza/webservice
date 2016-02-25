@@ -2,8 +2,6 @@
 
 namespace Fiche\Domain\Entity;
 
-use Fiche\Domain\Service\Entity;
-
 class UserFicheStatus extends Entity
 {
     const MAX_FICHE_LEVEL = 5;

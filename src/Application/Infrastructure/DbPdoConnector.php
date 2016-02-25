@@ -4,9 +4,8 @@ namespace Fiche\Application\Infrastructure;
 
 use Fiche\Application\Exceptions\RecordNotExists;
 use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
-use Fiche\Domain\Service\AggregateInterface;
-use Fiche\Domain\Service\Entity;
-use Fiche\Domain\Service\StorageInterface;
+use Fiche\Domain\Policy\AggregateInterface;
+use Fiche\Domain\Entity\Entity;
 
 /**
  * Connects to database via PDO driver

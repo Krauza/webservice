@@ -1,6 +1,9 @@
 <?php
 
-namespace Fiche\Domain\Service;
+namespace Fiche\Application\Infrastructure;
+
+use Fiche\Domain\Policy\AggregateInterface;
+use Fiche\Domain\Entity\Entity;
 
 interface StorageInterface
 {

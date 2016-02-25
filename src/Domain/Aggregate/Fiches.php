@@ -2,7 +2,7 @@
 
 namespace Fiche\Domain\Aggregate;
 
-use Fiche\Domain\Service\AggregateInterface;
+use Fiche\Domain\Policy\AggregateInterface;
 
 class Fiches extends \ArrayObject implements AggregateInterface
 {

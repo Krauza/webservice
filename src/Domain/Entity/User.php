@@ -2,7 +2,6 @@
 
 namespace Fiche\Domain\Entity;
 
-use Fiche\Domain\Service\Entity;
 use Fiche\Domain\Service\Exceptions\ValueIsNotEmail;
 use Fiche\Domain\Service\Exceptions\ValueIsTooLong;
 

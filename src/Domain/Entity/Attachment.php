@@ -1,7 +1,5 @@
 <?php
 
-namespace Fiche\Domain\Entity;
-
 class Attachment
 {
     private $id;
