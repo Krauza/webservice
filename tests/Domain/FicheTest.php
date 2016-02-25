@@ -3,6 +3,7 @@
 use Fiche\Domain\Entity\Fiche;
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Entity\User;
+use Fiche\Domain\ValueObject\Email;
 
 /**
  * Class FicheTest
@@ -20,7 +21,7 @@ class FicheTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->user = new User(1, 'Username', 'test@test.test', 'password');
+        $this->user = new User(1, 'Username', new Email('test@test.test'), 'password');
         $this->group = new Group(1, $this->user, 'Group name');
 
         $this->ficheId = 1;

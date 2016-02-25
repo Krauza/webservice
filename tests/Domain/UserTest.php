@@ -1,6 +1,7 @@
 <?php
 
 use Fiche\Domain\Entity\User;
+use Fiche\Domain\ValueObject\Email;
 
 /**
  * Class UserTest
@@ -22,7 +23,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->email = 'test@test.test';
         $this->password = 'D3F$##$F3VWCA#CVFH^&^4&M9';
 
-        $this->user = new User($this->userId, $this->userName, $this->email, $this->password);
+        $this->user = new User($this->userId, $this->userName, new Email($this->email), $this->password);
     }
 
     /**
@@ -60,15 +61,24 @@ class UserTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function tooShortEmailShouldThrownError()
+    {
+        $this->setExpectedException('Fiche\Domain\Service\Exceptions\ValueIsTooShort');
+        $this->user->setEmail(new Email(''));
+    }
+
+    /**
+     * @test
+     */
     public function tooLongEmailShouldThrownError()
     {
         $str = '';
-        for($i = 0; $i <= User::EMAIL_MAX_LENGTH; $i++) {
+        for($i = 0; $i <= Email::EMAIL_MAX_LENGTH; $i++) {
             $str .= 'a';
         }
 
         $this->setExpectedException('Fiche\Domain\Service\Exceptions\ValueIsTooLong');
-        $this->user->setEmail($str . '@test.test');
+        $this->user->setEmail(new Email($str . '@test.test'));
     }
 
     /**
@@ -77,7 +87,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function wrongEmailShouldThrownError()
     {
         $this->setExpectedException('Fiche\Domain\Service\Exceptions\ValueIsNotEmail');
-        $this->user->setEmail('wrong@email');
-        $this->user->setEmail('wrong');
+        $this->user->setEmail(new Email('wrong@email'));
+        $this->user->setEmail(new Email('wrong'));
     }
 }

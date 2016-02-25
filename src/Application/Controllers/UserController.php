@@ -3,6 +3,7 @@
 namespace Fiche\Application\Controllers;
 
 use Fiche\Domain\Entity\User;
+use Fiche\Domain\ValueObject\Email;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 
 class UserController extends Controller
@@ -33,7 +34,7 @@ class UserController extends Controller
             $user = new User(
                 null,
                 $this->request->get('name'),
-                $this->request->get('email'),
+                new Email($this->request->get('email')),
                 password_hash($this->request->get('password'), PASSWORD_DEFAULT)
             );
 
