@@ -2,23 +2,30 @@
 
 namespace Fiche\Domain\Entity;
 
+use Fiche\Domain\Policy\UniqueIdInterface;
+use Fiche\Domain\Repository\UserGroupsRepository;
+use Fiche\Domain\Service\UserGroupsCollection;
 use Fiche\Domain\ValueObject\Email;
+use Fiche\Domain\ValueObject\UserName;
 
 class User extends Entity
 {
-    const NAME_MAX_LENGTH = 120;
-
     private $id;
     private $name;
     private $email;
     private $password;
+    private $userGroups;
+    private $userGroupsRepository;
 
-    public function __construct($id = null, \string $name, Email $email, \string $password)
+    public function __construct(UniqueIdInterface $id, UserName $name, Email $email, \string $password, UserGroupsRepository $userGroupsRepository)
     {
-        $this->setId($id);
-        $this->setName($name);
-        $this->setEmail($email);
-        $this->setPassword($password);
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+
+        $this->userGroups = null;
+        $this->userGroupsRepository = $userGroupsRepository;
     }
 
     public function getId()
@@ -26,12 +33,7 @@ class User extends Entity
         return $this->id;
     }
 
-    public function setId( $id = null)
-    {
-        $this->id = $id;
-    }
-
-    public function getName(): \string
+    public function getName()
     {
         return $this->name;
     }
@@ -41,12 +43,12 @@ class User extends Entity
         return $this->email;
     }
 
-    public function getPassword(): \string
+    public function getPassword()
     {
         return $this->password;
     }
 
-    public function setName(\string $name)
+    public function setName(UserName $name)
     {
         $this->name = $name;
     }
@@ -61,28 +63,15 @@ class User extends Entity
         $this->password = $password;
     }
 
-    public function getGroups()
+    public function getUserGroups()
     {
+        if($this->userGroups === null) {
+            $userGroups = new UserGroupsCollection();
+            $this->userGroupsRepository->getForUser($this, $userGroups);
 
-    }
+            $this->userGroups = $userGroups;
+        }
 
-    public static function getFieldsNames(): array
-    {
-        return [
-            'id' => 'int',
-            'name' => 'string',
-            'email' => Email::class,
-            'password' => 'string'
-        ];
-    }
-
-    public function getValues(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'email' => $this->getEmail(),
-            'password' => $this->getPassword()
-        ];
+        return $this->userGroups;
     }
 }

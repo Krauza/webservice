@@ -2,9 +2,9 @@
 
 namespace Fiche\Domain\Entity;
 
-use Fiche\Domain\Aggregate\Fiches;
-use Fiche\Domain\Service\Exceptions\FieldIsRequired;
-use Fiche\Domain\Service\Exceptions\ValueIsTooLong;
+use Fiche\Domain\Policy\UniqueIdInterface;
+use Fiche\Domain\Service\FichesCollection;
+use Fiche\Domain\ValueObject\GroupName;
 
 class Group extends Entity
 {
@@ -13,63 +13,22 @@ class Group extends Entity
     private $name;
     private $fiches;
 
-    const NAME_MAX_LENGTH = 120;
-
-    public function __construct($id = null, User $owner, \string $name, Fiches $fiches = null)
+    public function __construct(UniqueIdInterface $id = null, User $owner, GroupName $name, FichesCollection $fiches = null)
     {
-        $this->setId($id);
-        $this->setName($name);
+        $this->id = $id;
+        $this->name = $name;
         $this->owner = $owner;
         $this->fiches = $fiches;
     }
 
-    public static function getFieldsNames(): array
-    {
-        return [
-            'id' => 'int',
-            'owner_id' => User::class,
-            'name' => 'string',
-            'fiches' => Fiches::class
-        ];
-    }
-
-    public function getValues(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'owner_id' => $this->getOwnerId(),
-            'name' => $this->getName()
-        ];
-    }
-
-    public function setId( $id = null)
-    {
-        $this->id = $id;
-    }
-
-    public function setName(\string $name)
-    {
-        $name = trim($name);
-
-        if (empty($name)) {
-            throw new FieldIsRequired('name');
-        }
-
-        if (strlen($name) > self::NAME_MAX_LENGTH) {
-            throw new ValueIsTooLong('name');
-        }
-
-        $this->name = $name;
-    }
-
-    public function setFiches(Fiches $fiches)
+    public function setFiches(FichesCollection $fiches)
     {
         $this->fiches = $fiches;
     }
 
     public function addFiche(Fiche $fiche)
     {
-        if ($this->fiches instanceof Fiches) {
+        if ($this->fiches instanceof FichesCollection) {
             $this->fiches->append($fiche);
         } else {
             throw new \Exception;
@@ -86,7 +45,7 @@ class Group extends Entity
         return $this->id;
     }
 
-    public function getFiches(): Fiches
+    public function getFiches(): FichesCollection
     {
         return $this->fiches;
     }
