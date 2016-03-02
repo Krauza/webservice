@@ -10,7 +10,7 @@ use Fiche\Domain\ValueObject\UserName;
 
 class UserFactory
 {
-	public static function create(UniqueIdInterface $id = null, $name, $email, $password, UserGroupsRepository $userGroupsRepository): User
+	public static function create(UniqueIdInterface $id = null, string $name, string $email, string $password, UserGroupsRepository $userGroupsRepository): User
 	{
 		$name = new UserName($name);
 		$email = new Email($email);

@@ -3,36 +3,41 @@
 namespace Fiche\Domain\Entity;
 
 use Fiche\Domain\Policy\UniqueIdInterface;
+use Fiche\Domain\Repository\FichesRepository;
 use Fiche\Domain\Service\FichesCollection;
 use Fiche\Domain\ValueObject\GroupName;
 
 class Group extends Entity
 {
-    private $id;
+    protected $id;
     private $owner;
     private $name;
     private $fiches;
 
-    public function __construct(UniqueIdInterface $id = null, User $owner, GroupName $name, FichesCollection $fiches = null)
+    private $ficheRepository;
+
+    public function __construct(UniqueIdInterface $id, User $owner, GroupName $name, FichesRepository $ficheRepository)
     {
         $this->id = $id;
         $this->name = $name;
         $this->owner = $owner;
-        $this->fiches = $fiches;
-    }
 
-    public function setFiches(FichesCollection $fiches)
-    {
-        $this->fiches = $fiches;
+        $this->ficheRepository = $ficheRepository;
     }
 
     public function addFiche(Fiche $fiche)
     {
-        if ($this->fiches instanceof FichesCollection) {
-            $this->fiches->append($fiche);
-        } else {
-            throw new \Exception;
+        if (!($this->fiches instanceof FichesCollection))
+        {
+            $this->fiches = new FichesCollection();
         }
+
+        $this->fiches->append($fiche);
+    }
+
+    public function setName(GroupName $name)
+    {
+        $this->name = $name;
     }
 
     public function getName(): \string
@@ -55,8 +60,8 @@ class Group extends Entity
         return $this->owner;
     }
 
-    public function getOwnerId()
+    public function isOwner(User $user)
     {
-        return $this->owner->getId();
+        return (string) $user->getId() === (string) $this->getOwner()->getId();
     }
 }

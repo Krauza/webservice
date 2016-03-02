@@ -2,18 +2,16 @@
 
 namespace Fiche\Application\Controllers;
 
-use Fiche\Domain\Entity\UserFicheStatus;
+use Fiche\Application\Infrastructure\Pdo\Repository\Fiches as FicheRepository;
+use Fiche\Application\Infrastructure\Pdo\Repository\Group as GroupRepository;
+use Fiche\Application\Infrastructure\UniqueId;
+use Fiche\Domain\Factory\FicheFactory;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 use Fiche\Domain\Entity\Fiche;
 use Fiche\Domain\Entity\Group;
 
 class FichesController extends Controller
 {
-    public function index()
-    {
-        return [];
-    }
-
     public function create()
     {
         if ($this->request->isMethod('POST')) {
@@ -23,40 +21,19 @@ class FichesController extends Controller
         return $this->app->redirect('/groups');
     }
 
-    public function edit($id)
-    {
-        $group = $this->storage->getById(Fiche::class, $this->convertIdToInt($id));
-        $result = [
-            'group' => $group
-        ];
-
-        if ($this->request->isMethod('PUT')) {
-            $result = $this->save($group);
-        }
-
-        return $result;
-    }
-
     private function save(Fiche $fiche = null)
     {
+        $ficheRepository = new FicheRepository($this->storage);
+        $groupRepository = new GroupRepository($this->storage);
+
         $word = $this->request->get('word');
         $explain = $this->request->get('explain');
-        $group = $this->storage->getById(
-            Group::class,
-            intval($this->request->get('group'))
-        );
+        $group = $groupRepository->getById($this->request->get('group'));
 
         try {
             if (empty($fiche)) {
-                $fiche = new Fiche(null, $group, $word, $explain);
-                $this->storage->insert($fiche);
-
-                $ficheStatus = new UserFicheStatus(null, $this->getCurrentUser(), $fiche);
-                $this->storage->insert($ficheStatus);
-            } else {
-                $fiche->setWord($word);
-                $fiche->setExplainWord($explain);
-                $this->storage->update($fiche);
+                $fiche = FicheFactory::create(new UniqueId(), $group, $word, $explain);
+                $ficheRepository->insert($fiche);
             }
         } catch(DataNotValid $e) {
             return [
@@ -71,6 +48,6 @@ class FichesController extends Controller
             ];
         }
 
-        return [];
+        return $this->app->redirect('/groups/show/' . $group->getId());
     }
 }

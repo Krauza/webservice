@@ -10,11 +10,10 @@ use Fiche\Domain\ValueObject\FicheWord;
 
 class FicheFactory
 {
-	public static function create(UniqueIdInterface $id, Group $group, $word, $explain, $attachment): Fiche
+	public static function create(UniqueIdInterface $id, Group $group, $word, $explain, $attachment = null): Fiche
 	{
 		$word = new FicheWord($word);
 		$explain = new FicheExplain($explain);
-		$attachment = null;
 
 		return new Fiche($id, $group, $word, $explain, $attachment);
 	}

@@ -2,6 +2,7 @@
 
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
+use Fiche\Application\Infrastructure\DbPdoConnector;
 use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
 
 /**
@@ -13,14 +14,15 @@ class FetchData
 	/**
 	 * Prepare basic SELECT query with all columns and table name
 	 *
-	 * @param \ReflectionClass $reflection
+	 * @param $columns
+	 * @param $tableName
+	 *
 	 * @return string
 	 */
-	private static function baseQuery(\ReflectionClass $reflection): \string
+	private static function baseQuery(array $columns, $tableName): \string
 	{
-		$className = $reflection->getName();
-		$columns = BasicFunctions::getColumns($className::getFieldsNames());
-		$table = "fiche_" . strtolower($reflection->getShortName());
+		$columns = implode(', ', $columns);
+		$table = DbPdoConnector::getTableNameWithPrefix($tableName);
 
 		return "SELECT $columns FROM `$table`";
 	}
@@ -29,14 +31,43 @@ class FetchData
 	 * Fetch one record by field name
 	 *
 	 * @param \Pdo $pdo
-	 * @param \ReflectionClass $reflectionClass
-	 * @param string $field
-	 * @param string $value
+	 * @param array $columns
+	 * @param $tableName
+	 * @param $field
+	 * @param $value
 	 * @return mixed|null
 	 */
-	public static function getByField(\Pdo $pdo, \ReflectionClass $reflectionClass, \string $field, \string $value)
+	public static function getByField(\Pdo $pdo, array $columns, string $tableName, string $field, string $value)
 	{
-		$query = self::baseQuery($reflectionClass) . " WHERE $field='$value'";
+		$query = self::baseQuery($columns, $tableName) . " WHERE $field='$value'";
+		$stmt = $pdo->prepare($query);
+
+		if (!($stmt->execute())) {
+			return null;
+		}
+
+		return $stmt->fetch(\PDO::FETCH_ASSOC);
+	}
+
+	public static function getRow(\Pdo $pdo, array $columns, string $tableName, array $conditions)
+	{
+		$query = self::baseQuery($columns, $tableName);
+
+		$i = 0;
+		foreach($conditions as $key => $value) {
+			if($i === 0) {
+				$query .= " WHERE ";
+			} else {
+				$query .= " AND ";
+			}
+
+			$query .= "$key='$value'";
+
+			$i++;
+		}
+
+		$query .= ' LIMIT 1';
+
 		$stmt = $pdo->prepare($query);
 
 		if (!($stmt->execute())) {
@@ -50,13 +81,16 @@ class FetchData
 	 * Fetch all records
 	 *
 	 * @param \PDO $pdo
-	 * @param \ReflectionClass $reflection
-	 * @param array $options
+	 * @param $columns
+	 * @param $tableName
+	 *
 	 * @return array
 	 */
-	public static function fetchAll(\PDO $pdo, \ReflectionClass $reflection, array $options = []): array
+	public static function fetchAll(\PDO $pdo, array $columns, string $tableName): array
 	{
-		$stmt = $pdo->prepare(self::baseQuery($reflection) . self::prepareQueryFromOptions($options));
+		$query = self::baseQuery($columns, $tableName);
+
+		$stmt = $pdo->prepare($query);
 		if (!($stmt->execute())) {
 			return [];
 		}
@@ -64,17 +98,28 @@ class FetchData
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	private static function prepareQueryFromOptions(array $options = [])
+
+	public static function innerJoin(\PDO $pdo, array $columns, string $tableName, string $joinTable, array $onCondition = null, array $whereCondition = null)
 	{
-		$query = '';
+		$joinTable = $table = DbPdoConnector::getTableNameWithPrefix($joinTable);
 
-		if (isset($options['where'])) {
-			$key = array_keys($options['where'])[0];
-			$value = array_values($options['where'])[0];
+		$query = self::baseQuery($columns, $tableName);
+		$query .= " AS t1 INNER JOIN `$joinTable` AS t2";
 
-			$query .= " WHERE $key=$value";
+		if($onCondition !== null) {
+			$query .= " ON t1.$onCondition[0]=t2.$onCondition[1]";
 		}
 
-		return $query;
+		if($whereCondition !== null) {
+			$query .= " WHERE t1.$whereCondition[0]=$whereCondition[1]";
+		}
+
+		$stmt = $pdo->prepare($query);
+
+		if (!($stmt->execute())) {
+			return [];
+		}
+
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 }

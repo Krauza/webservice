@@ -35,7 +35,7 @@ class UserGroup
     {
         if($this->userFichesCollection === null) {
             $userFichesCollection = new UserFichesCollection();
-            $this->userFichesRepository->getForUserGroup($this, $userFichesCollection);
+            $this->userFichesRepository->fetchAllForUserGroup($this, $userFichesCollection);
 
             $this->userFichesCollection = $userFichesCollection;
         }

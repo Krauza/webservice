@@ -7,5 +7,5 @@ use Fiche\Domain\Service\UserGroupsCollection;
 
 interface UserGroupsRepository
 {
-	public function getForUser(User $user, UserGroupsCollection $userGroupsCollection);
+	public function fetchAllForUser(User $user, UserGroupsCollection $userGroupsCollection);
 }

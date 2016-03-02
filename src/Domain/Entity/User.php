@@ -10,7 +10,6 @@ use Fiche\Domain\ValueObject\UserName;
 
 class User extends Entity
 {
-    private $id;
     private $name;
     private $email;
     private $password;
@@ -67,7 +66,7 @@ class User extends Entity
     {
         if($this->userGroups === null) {
             $userGroups = new UserGroupsCollection();
-            $this->userGroupsRepository->getForUser($this, $userGroups);
+            $this->userGroupsRepository->fetchAllForUser($this, $userGroups);
 
             $this->userGroups = $userGroups;
         }

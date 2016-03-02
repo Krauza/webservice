@@ -2,9 +2,14 @@
 
 namespace Fiche\Application\Controllers;
 
-use Fiche\Domain\Aggregate\Groups;
+use Fiche\Application\Exceptions\IncorrectPrivileges;
+use Fiche\Application\Infrastructure\Pdo\Repository\Fiches;
+use Fiche\Application\Infrastructure\Pdo\Repository\UserGroups;
+use Fiche\Application\Infrastructure\UniqueId;
+use Fiche\Application\Infrastructure\Pdo\Repository\Group as GroupRepository;
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
+use Fiche\Domain\ValueObject\GroupName;
 
 /**
  * Class GroupsController
@@ -14,20 +19,22 @@ class GroupsController extends Controller
 {
     public function index()
     {
-        $groups = new Groups();
-        $this->storage->fetchAll($groups, [
-            'where' => [
-                'owner_id' => $this->getCurrentUser()->getId()
-            ]
-        ]);
+        $userGroups = $this->currentUser->getUserGroups();
 
-        return ['groups' => $groups];
+        return ['userGroups' => $userGroups];
     }
 
     public function show($id)
     {
-        $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
-        return ['group' => $group];
+        $userGroupsRepository = new UserGroups($this->storage);
+        $groupRepository = new GroupRepository($this->storage);
+
+        $userGroup = $userGroupsRepository->getByGroupForUser(
+            $groupRepository->getById($id),
+            $this->currentUser
+        );
+
+        return ['userGroup' => $userGroup];
     }
 
     public function create()
@@ -43,7 +50,13 @@ class GroupsController extends Controller
 
     public function edit($id)
     {
-        $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
+        $groupRepository = new GroupRepository($this->storage);
+        $group = $groupRepository->getById($id);
+
+        if(!$group->isOwner($this->currentUser)) {
+            throw new IncorrectPrivileges;
+        }
+
         $result = [
             'group' => $group
         ];
@@ -55,16 +68,6 @@ class GroupsController extends Controller
         return $result;
     }
 
-    public function delete($id)
-    {
-        if ($this->request->isMethod('DELETE')) {
-            $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
-            $this->storage->delete($group);
-        }
-
-        return $this->app->redirect('/groups');
-    }
-
     public function fiches($id)
     {
         $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
@@ -73,13 +76,16 @@ class GroupsController extends Controller
 
     private function save(Group $group = null)
     {
+        $groupRepository = new GroupRepository($this->storage);
+
         try {
             if (empty($group)) {
-                $group = new Group(null, $this->getCurrentUser(), $this->request->get('name'));
-                $this->storage->insert($group);
+                $groupName = new GroupName($this->request->get('name'));
+                $group = new Group(new UniqueId(), $this->getCurrentUser(), $groupName, new Fiches($this->storage));
+                $groupRepository->insert($group);
             } else {
-                $group->setName($this->request->get('name'));
-                $this->storage->update($group);
+                $group->setName(new GroupName($this->request->get('name')));
+                $groupRepository->update($group);
             }
         } catch(DataNotValid $e) {
             return [
