@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+require_once('SetupUser.php');
+
 use Fiche\Domain\Entity\User;
 use Fiche\Domain\ValueObject\Email;
 
@@ -10,20 +13,11 @@ use Fiche\Domain\ValueObject\Email;
  */
 class UserTest extends PHPUnit_Framework_TestCase
 {
-    private $userId;
-    private $userName;
-    private $email;
-    private $password;
-    private $user;
+    use SetupUser;
 
     protected function setUp()
     {
-        $this->userId = 1;
-        $this->userName = 'User';
-        $this->email = 'test@test.test';
-        $this->password = 'D3F$##$F3VWCA#CVFH^&^4&M9';
-
-        $this->user = new User($this->userId, $this->userName, new Email($this->email), $this->password);
+        $this->setupUser();
     }
 
     /**

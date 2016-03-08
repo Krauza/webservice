@@ -16,7 +16,7 @@ class User extends Entity
     private $userGroups;
     private $userGroupsRepository;
 
-    public function __construct(UniqueIdInterface $id, UserName $name, Email $email, \string $password, UserGroupsRepository $userGroupsRepository)
+    public function __construct(UniqueIdInterface $id, UserName $name, Email $email, string $password, UserGroupsRepository $userGroupsRepository)
     {
         $this->id = $id;
         $this->name = $name;

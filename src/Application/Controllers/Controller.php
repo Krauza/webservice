@@ -62,7 +62,7 @@ abstract class Controller
 		return $this->currentUser;
 	}
 
-	public function isUserLogged(): \bool
+	public function isUserLogged(): bool
 	{
 		if(empty($this->currentUser)) {
 			return false;

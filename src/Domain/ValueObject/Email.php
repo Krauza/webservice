@@ -14,7 +14,7 @@ class Email
 
 	private $email;
 
-	public function __construct(\string $email)
+	public function __construct(string $email)
 	{
 		if(empty($email) || strlen($email) < self::EMAIL_MIN_LENGTH) {
 			throw new ValueIsTooShort('email');
@@ -33,6 +33,6 @@ class Email
 
 	public function __toString()
 	{
-		return $this->email;
+		return (string) $this->email;
 	}
 }

@@ -17,9 +17,9 @@ class FetchData
 	 * @param $columns
 	 * @param $tableName
 	 *
-	 * @return string
+	 * @return tring
 	 */
-	private static function baseQuery(array $columns, $tableName): \string
+	private static function baseQuery(array $columns, $tableName): string
 	{
 		$columns = implode(', ', $columns);
 		$table = DbPdoConnector::getTableNameWithPrefix($tableName);
