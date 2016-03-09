@@ -5,6 +5,7 @@ require_once('SetupGroup.php');
 
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Entity\User;
+use Fiche\Domain\ValueObject\GroupName;
 
 /**
  * Class GroupTest
@@ -37,28 +38,28 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->groupName, $this->group->getName());
     }
 
-//    /**
-//     * @test
-//     */
-//    public function emptyNameShouldThrownError()
-//    {
-//        $this->setExpectedException('Fiche\Domain\Service\Exceptions\FieldIsRequired');
-//        $this->group->setName('');
-//    }
+    /**
+     * @test
+     */
+    public function emptyNameShouldThrownError()
+    {
+        $this->setExpectedException('Fiche\Domain\Service\Exceptions\FieldIsRequired');
+        new GroupName('');
+    }
 
-//    /**
-//     * @test
-//     */
-//    public function tooLongNameShouldThrownError()
-//    {
-//        $str = '';
-//        for($i = 0; $i <= GroupName::NAME_MAX_LENGTH; $i++) {
-//            $str .= 'a';
-//        }
-//
-//        $this->setExpectedException('Fiche\Domain\Service\Exceptions\ValueIsTooLong');
-//        $this->group->setName($str);
-//    }
+    /**
+     * @test
+     */
+    public function tooLongNameShouldThrownError()
+    {
+        $str = '';
+        for($i = 0; $i <= GroupName::NAME_MAX_LENGTH; $i++) {
+            $str .= 'a';
+        }
+
+        $this->setExpectedException('Fiche\Domain\Service\Exceptions\ValueIsTooLong');
+        new GroupName($str);
+    }
 
     /**
      * @test
