@@ -8,7 +8,6 @@ use Fiche\Application\Infrastructure\UniqueId;
 use Fiche\Domain\Factory\FicheFactory;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 use Fiche\Domain\Entity\Fiche;
-use Fiche\Domain\Entity\Group;
 
 class FichesController extends Controller
 {
