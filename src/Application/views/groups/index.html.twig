@@ -9,7 +9,7 @@
 
 {% block content %}
     <h2 class="page-header">Your subjects <a href="/groups/create" class="btn btn-info btn-xs">Add new subject</a></h2>
-    {% if groups|length > 0 %}
+    {% if userGroups|length > 0 %}
         <table class="table">
             <thead>
                 <tr>
@@ -21,13 +21,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for group in groups %}
+                {% for userGroup in userGroups %}
+                    {% set group = userGroup.getGroup() %}
                     <tr>
                         <td><a href="/groups/show/{{ group.getId() }}">{{ group.getName() }}</a></td>
                         <td></td>
                         <td></td>
-                        <td><a href="/groups/edit/{{ group.getId() }}"><i class="fa fa-edit"></i></a></td>
-                        <td><a class="delete" href="/groups/delete/{{ group.getId() }}"><i class="fa fa-remove"></i></a></td>
+                        <td>
+                            {% if group.isOwner(current_user) %}
+                            <a href="/groups/edit/{{ group.getId() }}"><i class="fa fa-edit"></i></a>
+                            {% endif %}
+                        </td>
+                        <td></td>
                     </tr>
                 {% endfor %}
             </tbody>

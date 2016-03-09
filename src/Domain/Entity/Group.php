@@ -2,81 +2,45 @@
 
 namespace Fiche\Domain\Entity;
 
-use Fiche\Domain\Aggregate\Fiches;
-use Fiche\Domain\Service\Exceptions\FieldIsRequired;
-use Fiche\Domain\Service\Exceptions\ValueIsTooLong;
+use Fiche\Domain\Policy\UniqueIdInterface;
+use Fiche\Domain\Repository\FichesRepository;
+use Fiche\Domain\Service\FichesCollection;
+use Fiche\Domain\ValueObject\GroupName;
 
 class Group extends Entity
 {
-    private $id;
+    protected $id;
     private $owner;
     private $name;
     private $fiches;
 
-    const NAME_MAX_LENGTH = 120;
+    private $ficheRepository;
 
-    public function __construct($id = null, User $owner, \string $name, Fiches $fiches = null)
-    {
-        $this->setId($id);
-        $this->setName($name);
-        $this->owner = $owner;
-        $this->fiches = $fiches;
-    }
-
-    public static function getFieldsNames(): array
-    {
-        return [
-            'id' => 'int',
-            'owner_id' => User::class,
-            'name' => 'string',
-            'fiches' => Fiches::class
-        ];
-    }
-
-    public function getValues(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'owner_id' => $this->getOwnerId(),
-            'name' => $this->getName()
-        ];
-    }
-
-    public function setId( $id = null)
+    public function __construct(UniqueIdInterface $id, User $owner, GroupName $name, FichesRepository $ficheRepository)
     {
         $this->id = $id;
-    }
-
-    public function setName(\string $name)
-    {
-        $name = trim($name);
-
-        if (empty($name)) {
-            throw new FieldIsRequired('name');
-        }
-
-        if (strlen($name) > self::NAME_MAX_LENGTH) {
-            throw new ValueIsTooLong('name');
-        }
-
         $this->name = $name;
-    }
+        $this->owner = $owner;
 
-    public function setFiches(Fiches $fiches)
-    {
-        $this->fiches = $fiches;
+        $this->ficheRepository = $ficheRepository;
     }
 
     public function addFiche(Fiche $fiche)
     {
-        if ($this->fiches instanceof Fiches) {
-            $this->fiches->append($fiche);
-        } else {
-            throw new \Exception;
+        if (!($this->fiches instanceof FichesCollection))
+        {
+            $this->fiches = new FichesCollection();
         }
+
+        $this->fiches->append($fiche);
     }
 
-    public function getName(): \string
+    public function setName(GroupName $name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName(): string
     {
         return $this->name;
     }
@@ -86,7 +50,7 @@ class Group extends Entity
         return $this->id;
     }
 
-    public function getFiches(): Fiches
+    public function getFiches(): FichesCollection
     {
         return $this->fiches;
     }
@@ -96,8 +60,8 @@ class Group extends Entity
         return $this->owner;
     }
 
-    public function getOwnerId()
+    public function isOwner(User $user)
     {
-        return $this->owner->getId();
+        return (string) $user->getId() === (string) $this->getOwner()->getId();
     }
 }

@@ -1,24 +1,27 @@
 <?php
 
-namespace Fiche\Domain\Entity;
+namespace Fiche\Domain\Aggregate;
 
-class UserFicheStatus extends Entity
+use Fiche\Domain\Entity\Fiche;
+use Fiche\Domain\Entity\User;
+
+class UserFicheStatus
 {
     const MAX_FICHE_LEVEL = 5;
     const FICHES_COUNT_AT_FIRST_LEVEL = 40;
 
-    private $id;
     private $user;
     private $fiche;
     private $level;
     private $position;
     private $archived;
+    private $userGroup;
 
-    public function __construct($id = null, User $user, Fiche $fiche, $level = 0, $position = null, $archived = false)
+    public function __construct(User $user, Fiche $fiche, UserGroup $userGroup, $level = 0, $position = null, $archived = false)
     {
-        $this->setId($id);
         $this->user = $user;
         $this->fiche = $fiche;
+        $this->userGroup = $userGroup;
         $this->level = $level;
         $this->position = $position;
         $this->archived = $archived;
@@ -49,23 +52,8 @@ class UserFicheStatus extends Entity
         return $this->archived;
     }
 
-    public static function getFieldsNames(): array
+    public function getUserGroup()
     {
-        // TODO: Implement getFieldsNames() method.
-    }
-
-    public function getValues(): array
-    {
-        // TODO: Implement getValues() method.
-    }
-
-    public function setId( $id = null)
-    {
-        $this->id = $id;
-    }
-
-    public function getId()
-    {
-        return $this->id;
+        return $this->userGroup;
     }
 }

@@ -1,4 +1,5 @@
 {% extends "index.html.twig" %}
+{% set group = userGroup.getGroup() %}
 
 {% block pageName %}
     {{ group.getName() }}
@@ -29,8 +30,15 @@
 
     <button class="btn btn-learning">Start lesson now</button>
 
-    <h2 class="page-header">Add new flash card</h2>
-    <div class="create-new-flashcard">
-        {% include "fiches/_form.html.twig" %}
-    </div>
+    {% if group.isOwner(current_user) %}
+        <h2 class="page-header">Owner options</h2>
+        <h3>Add new flashcard</h3>
+        <div class="create-new-flashcard">
+            {% include "fiches/_form.html.twig" %}
+        </div>
+
+        <hr>
+
+        <button class="btn btn-info btn-lg">Manage flashcards from this group</button>
+    {% endif %}
 {% endblock %}

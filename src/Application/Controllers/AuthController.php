@@ -2,7 +2,7 @@
 
 namespace Fiche\Application\Controllers;
 
-use Fiche\Domain\Entity\User;
+use Fiche\Application\Infrastructure\Pdo\Repository\User as UserRepository;
 use Fiche\Application\Exceptions\RecordNotExists;
 
 class AuthController extends Controller
@@ -25,7 +25,8 @@ class AuthController extends Controller
         $user = null;
 
         try {
-            $user = $this->storage->getByField(User::class, 'email', $this->request->get('email'));
+            $userRepository = new UserRepository($this->storage);
+            $user = $userRepository->getByEmail($this->request->get('email'));
         } catch(RecordNotExists $e) {
             return $this->returnErrorMessages([
                 'field' => 'email',

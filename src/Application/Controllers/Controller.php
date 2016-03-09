@@ -3,10 +3,10 @@
 namespace Fiche\Application\Controllers;
 
 use Fiche\Application\Exceptions\RecordNotExists;
-use Fiche\Application\Infrastructure\StorageInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Fiche\Domain\Entity\User;
+use Fiche\Application\Infrastructure\Pdo\Repository\User as UserRepository;
 use Fiche\Application\Exceptions\InvalidParameter;
 
 /**
@@ -14,7 +14,6 @@ use Fiche\Application\Exceptions\InvalidParameter;
  * @package Fiche\Application\Controllers
  *
  * @property Application $app;
- * @property StorageInterface $storage;
  * @property User $currentUser;
  */
 abstract class Controller
@@ -37,9 +36,11 @@ abstract class Controller
 
 		if ($this->isCorrectId($userId)) {
 			try {
-				$result = $this->storage->getById(User::class, $userId);
+				$userRepository = new UserRepository($this->storage);
+				$result = $userRepository->getById($userId);
 			} catch(RecordNotExists $e) {
 				$result = null;
+				$this->logoutCurrentUser();
 			}
 		}
 
@@ -61,7 +62,7 @@ abstract class Controller
 		return $this->currentUser;
 	}
 
-	public function isUserLogged(): \bool
+	public function isUserLogged(): bool
 	{
 		if(empty($this->currentUser)) {
 			return false;
