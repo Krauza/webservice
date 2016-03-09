@@ -68,12 +68,6 @@ class GroupsController extends Controller
         return $result;
     }
 
-    public function fiches($id)
-    {
-        $group = $this->storage->getById(Group::class, $this->convertIdToInt($id));
-        return ['group' => $group];
-    }
-
     private function save(Group $group = null)
     {
         $groupRepository = new GroupRepository($this->storage);
@@ -83,6 +77,9 @@ class GroupsController extends Controller
                 $groupName = new GroupName($this->request->get('name'));
                 $group = new Group(new UniqueId(), $this->getCurrentUser(), $groupName, new Fiches($this->storage));
                 $groupRepository->insert($group);
+
+                $userGroupsRepository = new UserGroups($this->storage);
+                $userGroupsRepository->insert($group, $this->currentUser);
             } else {
                 $group->setName(new GroupName($this->request->get('name')));
                 $groupRepository->update($group);

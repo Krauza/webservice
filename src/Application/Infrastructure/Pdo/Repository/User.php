@@ -45,4 +45,17 @@ class User implements PdoRepository, UserRepository
 
 		return UserFactory::create($id, $result['name'], $result['email'], $result['password'], $userGroups);
 	}
+
+	public function insert(UserEntity $user)
+	{
+		return $this->storage->query(function($pdo, $operations) use ($user) {
+			$dbClass = $operations . '\\ModifyData';
+			return $dbClass::insert($pdo, 'group', [
+				'user_id' => $user->getId(),
+				'name' => $user->getName(),
+				'email' => $user->getEmail(),
+				'password' => $user->getPassword()
+			]);
+		});
+	}
 }

@@ -11,6 +11,7 @@ use Fiche\Domain\Repository\UserGroupsRepository;
 use Fiche\Domain\Entity\User as UserEntity;
 use Fiche\Domain\Service\UserGroupsCollection;
 use Fiche\Domain\ValueObject\GroupName;
+use Guzzle\Http\Exception\RequestException;
 
 class UserGroups implements PdoRepository, UserGroupsRepository
 {
@@ -18,6 +19,23 @@ class UserGroups implements PdoRepository, UserGroupsRepository
 
 	public function __construct(DbPdoConnector $storage) {
 		$this->storage = $storage;
+	}
+
+	public function insert(Group $group, UserEntity $user): UserGroup
+	{
+		$result = $this->storage->query(function($pdo, $operations) use ($group, $user) {
+			$dbClass = $operations . '\\ModifyData';
+			return $dbClass::insert($pdo, 'group', [
+				'user_id' => $user->getId(),
+				'group_id' => $group->getId()
+			]);
+		});
+
+		if(!$result) {
+			throw new RequestException;
+		}
+
+		return new UserGroup($user, $group, new UserFiches($this->storage));
 	}
 
 	public function getByGroupForUser(Group $group, UserEntity $user): UserGroup

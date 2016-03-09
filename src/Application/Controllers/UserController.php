@@ -2,8 +2,10 @@
 
 namespace Fiche\Application\Controllers;
 
-use Fiche\Domain\Entity\User;
-use Fiche\Domain\ValueObject\Email;
+use Fiche\Application\Infrastructure\Pdo\Repository\UserGroups;
+use Fiche\Application\Infrastructure\UniqueId;
+use Fiche\Application\Infrastructure\Pdo\Repository\User as UserRepository;
+use Fiche\Domain\Factory\UserFactory;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 
 class UserController extends Controller
@@ -31,15 +33,16 @@ class UserController extends Controller
     private function doRegister()
     {
         try {
-            $user = new User(
-                null,
+            $userRepository = new UserRepository($this->storage);
+            $user = UserFactory::create(
+                new UniqueId(),
                 $this->request->get('name'),
-                new Email($this->request->get('email')),
-                password_hash($this->request->get('password'), PASSWORD_DEFAULT)
+                $this->request->get('email'),
+                $this->request->get('password'),
+                new UserGroups($this->storage)
             );
 
-            $this->storage->insert($user);
-            $this->setCurrentUser($user);
+            $userRepository->insert($user);
         } catch(DataNotValid $e) {
             return $this->returnErrorMessages( [
                 'field' => $e->getFieldName(),
