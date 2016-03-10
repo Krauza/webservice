@@ -7,5 +7,6 @@ use Fiche\Domain\Service\UserFichesCollection;
 
 interface UserFichesRepository
 {
-	public function fetchAllForUserGroup(UserGroup $userGroupsCollection, UserFichesCollection $userFichesCollection);
+	public function fetchAllActiveForUserGroup(UserGroup $userGroups, UserFichesCollection $userFichesCollection);
+	public function createConnections(UserGroup $userGroups, UserFichesCollection $userFichesCollection);
 }

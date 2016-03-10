@@ -7,7 +7,6 @@ use Fiche\Domain\Aggregate\UserGroup;
 use Fiche\Domain\Repository\UserFichesRepository;
 use Fiche\Domain\Service\UserFichesCollection;
 
-
 class UserFiches implements PdoRepository, UserFichesRepository
 {
 	private $storage;
@@ -16,7 +15,13 @@ class UserFiches implements PdoRepository, UserFichesRepository
 		$this->storage = $storage;
 	}
 
-	public function fetchAllForUserGroup(UserGroup $userGroupsCollection, UserFichesCollection $userFichesCollection) {
-		// TODO: Implement fetchAllForUserGroup() method.
+	public function fetchAllActiveForUserGroup(UserGroup $userGroupsCollection, UserFichesCollection $userFichesCollection) {
+		$result = $this->storage->query(function($pdo, $operations) {
+
+		});
+	}
+
+	public function createConnections(UserGroup $userGroups, UserFichesCollection $userFichesCollection) {
+		// TODO: Implement createConnections() method.
 	}
 }

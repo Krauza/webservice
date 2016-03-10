@@ -4,6 +4,7 @@ namespace Fiche\Application\Controllers;
 
 use Fiche\Application\Infrastructure\Pdo\Repository\Fiches as FicheRepository;
 use Fiche\Application\Infrastructure\Pdo\Repository\Group as GroupRepository;
+use Fiche\Application\Infrastructure\Pdo\Repository\UserGroups;
 use Fiche\Application\Infrastructure\UniqueId;
 use Fiche\Domain\Factory\FicheFactory;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
@@ -18,6 +19,17 @@ class FichesController extends Controller
         }
 
         return $this->app->redirect('/groups');
+    }
+
+    public function lesson($groupId)
+    {
+        $groupRepository = new GroupRepository($this->storage);
+        $userGroupRepository = new UserGroups($this->storage);
+
+        $group = $groupRepository->getById($groupId);
+        $userGroup = $userGroupRepository->getByGroupForUser($group, $this->currentUser);
+
+        return [];
     }
 
     private function save(Fiche $fiche = null)

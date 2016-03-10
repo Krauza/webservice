@@ -35,11 +35,22 @@ class UserGroup
     {
         if($this->userFichesCollection === null) {
             $userFichesCollection = new UserFichesCollection();
-            $this->userFichesRepository->fetchAllForUserGroup($this, $userFichesCollection);
+            $this->userFichesRepository->createConnections($this, $userFichesCollection);
 
             $this->userFichesCollection = $userFichesCollection;
         }
 
         return $this->userFichesCollection;
+    }
+
+    public function getNextFiche(): UserFicheStatus
+    {
+        $userFichesCollection = $this->getUserFichesCollection();
+
+        for($level = UserFicheStatus::MAX_FICHE_LEVEL; $level > 0; $level--) {
+            if($userFichesCollection->getFichesCountAtLevel($level) >= UserFicheStatus::maxFichesAtLevel($level) * UserFicheStatus::MAX_FICHES_PERCENTAGE_AT_LEVEL) {
+
+            }
+        }
     }
 }
