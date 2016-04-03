@@ -22,6 +22,13 @@ class UserFiches implements PdoRepository, UserFichesRepository
 	}
 
 	public function createConnections(UserGroup $userGroups, UserFichesCollection $userFichesCollection) {
-		// TODO: Implement createConnections() method.
+		$result = $this->storage->query(function($pdo, $operations) {
+
+		});
+	}
+
+	public function getNewFichesToFirstGroup(UserGroup $userGroup)
+	{
+		// TODO: Implement getNewFichesToFirstGroup() method.
 	}
 }

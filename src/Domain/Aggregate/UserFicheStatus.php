@@ -84,6 +84,8 @@ class UserFicheStatus
                 break;
         }
 
+        $result *= UserFicheStatus::MAX_FICHES_PERCENTAGE_AT_LEVEL;
+
         return $result;
     }
 }

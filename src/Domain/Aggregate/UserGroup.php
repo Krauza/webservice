@@ -35,7 +35,7 @@ class UserGroup
     {
         if($this->userFichesCollection === null) {
             $userFichesCollection = new UserFichesCollection();
-            $this->userFichesRepository->createConnections($this, $userFichesCollection);
+            $this->userFichesRepository->fetchAllActiveForUserGroup($this, $userFichesCollection);
 
             $this->userFichesCollection = $userFichesCollection;
         }
@@ -46,11 +46,34 @@ class UserGroup
     public function getNextFiche(): UserFicheStatus
     {
         $userFichesCollection = $this->getUserFichesCollection();
+        $fiche = null;
+        $fichesCountAtLevel = [];
 
-        for($level = UserFicheStatus::MAX_FICHE_LEVEL; $level > 0; $level--) {
-            if($userFichesCollection->getFichesCountAtLevel($level) >= UserFicheStatus::maxFichesAtLevel($level) * UserFicheStatus::MAX_FICHES_PERCENTAGE_AT_LEVEL) {
+        if($userFichesCollection->count() > 0) {
+            for ($level = UserFicheStatus::MAX_FICHE_LEVEL; $level > 0; $level--) {
+                $fichesCountAtLevel[$level] = $userFichesCollection->getFichesCountAtLevel($level);
 
+                if ($fichesCountAtLevel[$level] >= UserFicheStatus::maxFichesAtLevel($level)) {
+                    $fiche = $userFichesCollection->getFirstFromLevel($level);
+                }
             }
         }
+
+        if($fiche === null) $fiche = $this->addNewFichesFromBacklogAndGetFirst($userFichesCollection);
+        if($fiche === null) $fiche = $this->getFicheFromMostFilledLevel($userFichesCollection, $fichesCountAtLevel);
+
+        return ['fiche_status' => $fiche];
+    }
+
+    private function addNewFichesFromBacklogAndGetFirst(UserFichesCollection $userFichesCollection)
+    {
+        $this->userFichesRepository->createConnections($this, $userFichesCollection);
+        return $userFichesCollection->getFirstFromLevel(1);
+    }
+
+    private function getFicheFromMostFilledLevel(UserFichesCollection $userFichesCollection, array $fichesCountAtLevel)
+    {
+        $level = array_search(max($fichesCountAtLevel), $fichesCountAtLevel);
+        return $level > 1 ? $userFichesCollection->getFirstFromLevel($level) : null;
     }
 }
