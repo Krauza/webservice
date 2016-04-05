@@ -16,7 +16,7 @@ CREATE TABLE `fiche_fiche` (
 
 CREATE TABLE `fiche_group` (
   `id` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `owner_id` int(11) NOT NULL,
+  `owner_id` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `name` varchar(120) COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 

@@ -17,7 +17,7 @@ class FetchData
 	 * @param $columns
 	 * @param $tableName
 	 *
-	 * @return tring
+	 * @return string
 	 */
 	private static function baseQuery(array $columns, $tableName): string
 	{
@@ -111,7 +111,7 @@ class FetchData
 		}
 
 		if($whereCondition !== null) {
-			$query .= " WHERE t1.$whereCondition[0]=$whereCondition[1]";
+			$query .= " WHERE t1.$whereCondition[0]='$whereCondition[1]'";
 		}
 
 		$stmt = $pdo->prepare($query);

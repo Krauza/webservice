@@ -50,8 +50,8 @@ class User implements PdoRepository, UserRepository
 	{
 		return $this->storage->query(function($pdo, $operations) use ($user) {
 			$dbClass = $operations . '\\ModifyData';
-			return $dbClass::insert($pdo, 'group', [
-				'user_id' => $user->getId(),
+			return $dbClass::insert($pdo, 'user', [
+				'id' => $user->getId(),
 				'name' => $user->getName(),
 				'email' => $user->getEmail(),
 				'password' => $user->getPassword()
