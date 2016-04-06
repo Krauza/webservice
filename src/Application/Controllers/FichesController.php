@@ -29,7 +29,10 @@ class FichesController extends Controller
         $group = $groupRepository->getById($groupId);
         $userGroup = $userGroupRepository->getByGroupForUser($group, $this->currentUser);
 
-        return [];
+        return [
+            'group' => $group,
+            'fiche' => $userGroup->getNextFiche()
+        ];
     }
 
     private function save(Fiche $fiche = null)
