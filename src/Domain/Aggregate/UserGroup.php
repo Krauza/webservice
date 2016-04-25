@@ -6,6 +6,7 @@ use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Entity\User;
 use Fiche\Domain\Repository\UserFichesRepository;
 use Fiche\Domain\Service\UserFichesCollection;
+use Fiche\Domain\Service\UserFichesAtLevelFilter;
 
 class UserGroup
 {
@@ -43,37 +44,50 @@ class UserGroup
         return $this->userFichesCollection;
     }
 
-    public function getNextFiche(): UserFicheStatus
+    public function getNextFiche()
     {
-        $userFichesCollection = $this->getUserFichesCollection();
         $fiche = null;
-        $fichesCountAtLevel = [];
+        $userFichesCollection = $this->getUserFichesCollection();
+        $fichesAtLevelIterators = [];
 
         if($userFichesCollection->count() > 0) {
             for ($level = UserFicheStatus::MAX_FICHE_LEVEL; $level > 0; $level--) {
-                $fichesCountAtLevel[$level] = $userFichesCollection->getFichesCountAtLevel($level);
+                $iterator = new UserFichesAtLevelFilter($userFichesCollection, $level);
+                $fichesAtLevelIterators[$level] = $iterator;
 
-                if ($fichesCountAtLevel[$level] >= UserFicheStatus::maxFichesAtLevel($level)) {
-                    $fiche = $userFichesCollection->getFirstFromLevel($level);
+                if (iterator_count($iterator) >= UserFicheStatus::maxFichesAtLevel($level)) {
+                    $iterator->rewind();
+                    $fiche = $iterator->current();
+                    break;
                 }
             }
         }
 
         if($fiche === null) $fiche = $this->addNewFichesFromBacklogAndGetFirst($userFichesCollection);
-        if($fiche === null) $fiche = $this->getFicheFromMostFilledLevel($userFichesCollection, $fichesCountAtLevel);
+        if($fiche === null) $fiche = $this->getFicheFromMostFilledLevel($fichesAtLevelIterators);
 
-        return ['fiche_status' => $fiche];
+        return $fiche;
     }
 
     private function addNewFichesFromBacklogAndGetFirst(UserFichesCollection $userFichesCollection)
     {
         $this->userFichesRepository->createConnections($this, $userFichesCollection);
-        return $userFichesCollection->getFirstFromLevel(1);
+        $iterator = new UserFichesAtLevelFilter($userFichesCollection, 1);
+
+        return $iterator->current();
     }
 
-    private function getFicheFromMostFilledLevel(UserFichesCollection $userFichesCollection, array $fichesCountAtLevel)
+    private function getFicheFromMostFilledLevel(array $fichesAtLevelIterators)
     {
+        $fichesCountAtLevel = array_map(function(\Iterator $iterator) {
+            return iterator_count($iterator);
+        }, $fichesAtLevelIterators);
+
+        if(empty($fichesCountAtLevel)) {
+            return null;
+        }
+
         $level = array_search(max($fichesCountAtLevel), $fichesCountAtLevel);
-        return $level > 1 ? $userFichesCollection->getFirstFromLevel($level) : null;
+        return $level > 1 ? $fichesAtLevelIterators[$level]->current() : null;
     }
 }

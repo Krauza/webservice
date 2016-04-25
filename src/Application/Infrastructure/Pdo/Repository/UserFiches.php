@@ -21,10 +21,14 @@ class UserFiches implements PdoRepository, UserFichesRepository
 		});
 	}
 
-	public function createConnections(UserGroup $userGroups, UserFichesCollection $userFichesCollection) {
-		$result = $this->storage->query(function($pdo, $operations) {
+	public function createConnections(UserGroup $userGroup, UserFichesCollection $userFichesCollection) {
+		$result = $this->storage->query(function($pdo, $operations) use ($userGroup) {
+			$dbClass = $operations . '\\ModifyData';
 
+			return $dbClass::createConnections($pdo, $userGroup->getUser()->getId(), $userGroup->getGroup()->getId());
 		});
+
+		var_dump($result);
 	}
 
 	public function getNewFichesToFirstGroup(UserGroup $userGroup)
