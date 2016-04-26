@@ -101,7 +101,7 @@ class FetchData
 	 *
 	 * @return array
 	 */
-	public static function fetchAll(\PDO $pdo, array $columns, string $tableName, array $where, array $whereIn, int $limit): array
+	public static function fetchAll(\PDO $pdo, array $columns, string $tableName, array $where = null, array $whereIn = null, int $limit = null): array
 	{
 		$query = self::baseQuery($columns, $tableName);
 		$query .= $conditions = self::addConditionsToQuery($where);

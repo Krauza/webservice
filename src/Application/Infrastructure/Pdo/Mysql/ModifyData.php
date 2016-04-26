@@ -66,7 +66,7 @@ class ModifyData
 
 		$data = [];
 		foreach($fichesIds as $ficheId) {
-			$dateTime = date("Y-m-d H:i:s");
+			$dateTime = date("Y-m-d H:i:s") . substr((string)microtime(), 1, 8);
 			$id = $ficheId['id'];
 			$data[] = "('$user_id', '$id', 1, '$dateTime', 0)";
 		}

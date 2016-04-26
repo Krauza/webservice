@@ -17,7 +17,9 @@ class UserFiches implements PdoRepository, UserFichesRepository
 
 	public function fetchAllActiveForUserGroup(UserGroup $userGroupsCollection, UserFichesCollection $userFichesCollection) {
 		$result = $this->storage->query(function($pdo, $operations) {
+			$dbClass = $operations . '\\FetchData';
 
+			$dbClass::fetchAll($pdo, ['*'], 'user_fiche');
 		});
 	}
 
@@ -28,7 +30,9 @@ class UserFiches implements PdoRepository, UserFichesRepository
 			return $dbClass::createConnections($pdo, $userGroup->getUser()->getId(), $userGroup->getGroup()->getId());
 		});
 
-		var_dump($result);
+		if($result) {
+			$this->fetchAllActiveForUserGroup($userGroup, $userFichesCollection);
+		}
 	}
 
 	public function getNewFichesToFirstGroup(UserGroup $userGroup)
