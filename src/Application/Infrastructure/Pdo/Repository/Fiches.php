@@ -15,6 +15,17 @@ class Fiches implements PdoRepository, FichesRepository
 		$this->storage = $storage;
 	}
 
+	public function getMultipleByIds(array $ids)
+	{
+		return $this->storage->query(function($pdo, $operations) use ($ids) {
+			$dbClass = $operations . '\\FetchData';
+
+			return $dbClass::fetchAll($pdo, ['*'], 'fiche', null, [
+				'id' => $ids
+			]);
+		});
+	}
+
 	public function getForGroup(GroupEntity $group)
 	{
 		// TODO: Implement getForGroup() method.

@@ -47,6 +47,7 @@ class UserGroup
     public function getNextFiche()
     {
         $fiche = null;
+        $ficheStatus = null;
         $userFichesCollection = $this->getUserFichesCollection();
         $fichesAtLevelIterators = [];
 
@@ -57,14 +58,18 @@ class UserGroup
 
                 if (iterator_count($iterator) >= UserFicheStatus::maxFichesAtLevel($level)) {
                     $iterator->rewind();
-                    $fiche = $iterator->current();
+                    $ficheStatus = $iterator->current();
                     break;
                 }
             }
         }
 
-        if($fiche === null) $fiche = $this->addNewFichesFromBacklogAndGetFirst($userFichesCollection);
-        if($fiche === null) $fiche = $this->getFicheFromMostFilledLevel($fichesAtLevelIterators);
+        if($ficheStatus === null) $ficheStatus = $this->addNewFichesFromBacklogAndGetFirst($userFichesCollection);
+        if($ficheStatus === null) $ficheStatus = $this->getFicheFromMostFilledLevel($fichesAtLevelIterators);
+
+        if($ficheStatus) {
+            $fiche = $ficheStatus->getFiche();
+        }
 
         return $fiche;
     }
@@ -73,6 +78,7 @@ class UserGroup
     {
         $this->userFichesRepository->createConnections($this, $userFichesCollection);
         $iterator = new UserFichesAtLevelFilter($userFichesCollection, 1);
+        $iterator->rewind();
 
         return $iterator->current();
     }

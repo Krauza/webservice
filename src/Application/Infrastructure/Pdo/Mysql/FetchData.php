@@ -26,9 +26,13 @@ class FetchData
 		return "SELECT $columns FROM `$table`";
 	}
 
-	private static function addConditionsToQuery($conditions) {
+	private static function addConditionsToQuery(array $conditions = null) {
 		$query = '';
 		$i = 0;
+
+		if(empty($conditions)) {
+			return $query;
+		}
 
 		foreach($conditions as $key => $value) {
 			if($i === 0) {
@@ -59,7 +63,6 @@ class FetchData
 		if (!($stmt->execute())) {
 			return [];
 		}
-
 
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
@@ -110,9 +113,11 @@ class FetchData
 			reset($whereIn);
 
 			$key = key($whereIn);
-			$in = implode(', ', current($whereIn));
-			$comm = empty($conditions) ? "WHERE" : "AND";
+			$in = implode(', ', array_map(function($el) {
+				return "'$el'";
+			}, current($whereIn)));
 
+			$comm = empty($conditions) ? "WHERE" : "AND";
 			$query .= " $comm $key IN ($in)";
 		}
 

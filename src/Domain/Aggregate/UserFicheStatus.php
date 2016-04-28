@@ -15,16 +15,14 @@ class UserFicheStatus
     const FICHES_COUNT_AT_FOURTH_LEVEL = 350;
     const FICHES_COUNT_AT_FIFTH_LEVEL = 500;
 
-    private $user;
     private $fiche;
     private $level;
     private $position;
     private $archived;
     private $userGroup;
 
-    public function __construct(User $user, Fiche $fiche, UserGroup $userGroup, $level = 0, $position = null, $archived = false)
+    public function __construct(Fiche $fiche, UserGroup $userGroup, int $level = 1, \DateTime $position, $archived = false)
     {
-        $this->user = $user;
         $this->fiche = $fiche;
         $this->userGroup = $userGroup;
         $this->level = $level;
@@ -35,11 +33,6 @@ class UserFicheStatus
     public function getPosition()
     {
         return $this->position;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
     }
 
     public function getFiche()

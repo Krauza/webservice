@@ -61,17 +61,17 @@ class ModifyData
 		$table = DbPdoConnector::getTableNameWithPrefix('user_fiche');
 		$tableFiche = DbPdoConnector::getTableNameWithPrefix('fiche');
 
-		$query = "SELECT id FROM `$tableFiche` WHERE group_id='$group_id' AND id NOT IN (SELECT fiche_id FROM `$table` WHERE user_id='$user_id') LIMIT " . UserFicheStatus::FICHES_COUNT_AT_FIRST_LEVEL;
+		$query = "SELECT id FROM `$tableFiche` WHERE group_id='$group_id' AND id NOT IN (SELECT fiche_id FROM `$table` WHERE user_id='$user_id' AND group_id='$group_id') LIMIT " . UserFicheStatus::FICHES_COUNT_AT_FIRST_LEVEL;
 		$fichesIds = FetchData::executeFetchAllStatement($pdo->prepare($query));
 
 		$data = [];
 		foreach($fichesIds as $ficheId) {
 			$dateTime = date("Y-m-d H:i:s") . substr((string)microtime(), 1, 8);
 			$id = $ficheId['id'];
-			$data[] = "('$user_id', '$id', 1, '$dateTime', 0)";
+			$data[] = "('$user_id', '$id', '$group_id', 1, '$dateTime', 0)";
 		}
 
-		$query = "INSERT INTO `$table` (user_id, fiche_id, level, last_modified, archived) VALUES " . implode(', ', $data);
+		$query = "INSERT INTO `$table` (user_id, fiche_id, group_id, level, last_modified, archived) VALUES " . implode(', ', $data);
 		return self::execute($pdo->prepare($query));
 	}
 }
