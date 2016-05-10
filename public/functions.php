@@ -5,7 +5,7 @@ use Fiche\Application\Exceptions\ControllerNotExists;
 use Fiche\Application\Exceptions\ActionNotExists;
 use Symfony\Component\HttpFoundation\Request;
 
-function getContentFromController(Silex\Application $app, Request $request, \string $controller = 'base', \string $action = 'index', $params = null) {
+function getContentFromController(Silex\Application $app, Request $request, string $controller = 'base', string $action = 'index', $params = null) {
 	$userIsNotSigned = userIsNotSigned($app);
 	if ($userIsNotSigned && pageIsOnlyForSignedUsers($controller, $action)) {
 		return $app->redirect('/auth/login');
@@ -46,7 +46,7 @@ function userIsNotSigned($app)
 	return empty($app['session']->get('current_user_id'));
 }
 
-function pageIsOnlyForSignedUsers(\string $controller, \string $method)
+function pageIsOnlyForSignedUsers(string $controller, string $method)
 {
 	if ($controller === 'auth' || $controller === 'base') {
 		return false;

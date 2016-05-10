@@ -3,7 +3,6 @@
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
 use Fiche\Application\Infrastructure\DbPdoConnector;
-use Fiche\Application\Infrastructure\Pdo\BasicFunctions;
 
 /**
  * Class FetchData
@@ -17,7 +16,7 @@ class FetchData
 	 * @param $columns
 	 * @param $tableName
 	 *
-	 * @return tring
+	 * @return string
 	 */
 	private static function baseQuery(array $columns, $tableName): string
 	{
@@ -25,6 +24,26 @@ class FetchData
 		$table = DbPdoConnector::getTableNameWithPrefix($tableName);
 
 		return "SELECT $columns FROM `$table`";
+	}
+
+
+
+	public static function executeFetchStatement(\PDOStatement $stmt)
+	{
+		if (!($stmt->execute())) {
+			return null;
+		}
+
+		return $stmt->fetch(\PDO::FETCH_ASSOC);
+	}
+
+	public static function executeFetchAllStatement(\PDOStatement $stmt)
+	{
+		if (!($stmt->execute())) {
+			return [];
+		}
+
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -40,62 +59,52 @@ class FetchData
 	public static function getByField(\Pdo $pdo, array $columns, string $tableName, string $field, string $value)
 	{
 		$query = self::baseQuery($columns, $tableName) . " WHERE $field='$value'";
-		$stmt = $pdo->prepare($query);
-
-		if (!($stmt->execute())) {
-			return null;
-		}
-
-		return $stmt->fetch(\PDO::FETCH_ASSOC);
+		return self::executeFetchStatement($pdo->prepare($query));
 	}
 
 	public static function getRow(\Pdo $pdo, array $columns, string $tableName, array $conditions)
 	{
 		$query = self::baseQuery($columns, $tableName);
-
-		$i = 0;
-		foreach($conditions as $key => $value) {
-			if($i === 0) {
-				$query .= " WHERE ";
-			} else {
-				$query .= " AND ";
-			}
-
-			$query .= "$key='$value'";
-
-			$i++;
-		}
-
+		$query .= DefaultFunctions::addConditionsToQuery($conditions);
 		$query .= ' LIMIT 1';
 
-		$stmt = $pdo->prepare($query);
-
-		if (!($stmt->execute())) {
-			return null;
-		}
-
-		return $stmt->fetch(\PDO::FETCH_ASSOC);
+		return self::executeFetchStatement($pdo->prepare($query));
 	}
 
 	/**
 	 * Fetch all records
 	 *
 	 * @param \PDO $pdo
-	 * @param $columns
+	 * @param array $columns
 	 * @param $tableName
+	 * @param array $where
+	 * @param array $whereIn
+	 * @param $limit
 	 *
 	 * @return array
 	 */
-	public static function fetchAll(\PDO $pdo, array $columns, string $tableName): array
+	public static function fetchAll(\PDO $pdo, array $columns, string $tableName, array $where = null, array $whereIn = null, int $limit = null): array
 	{
 		$query = self::baseQuery($columns, $tableName);
+		$query .= $conditions = DefaultFunctions::addConditionsToQuery($where);
 
-		$stmt = $pdo->prepare($query);
-		if (!($stmt->execute())) {
-			return [];
+		if(!empty($whereIn)) {
+			reset($whereIn);
+
+			$key = key($whereIn);
+			$in = implode(', ', array_map(function($el) {
+				return "'$el'";
+			}, current($whereIn)));
+
+			$comm = empty($conditions) ? "WHERE" : "AND";
+			$query .= " $comm $key IN ($in)";
 		}
 
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		if($limit) {
+			$query .= " LIMIT $limit";
+		}
+
+		return self::executeFetchAllStatement($pdo->prepare($query));
 	}
 
 
@@ -111,15 +120,9 @@ class FetchData
 		}
 
 		if($whereCondition !== null) {
-			$query .= " WHERE t1.$whereCondition[0]=$whereCondition[1]";
+			$query .= " WHERE t1.$whereCondition[0]='$whereCondition[1]'";
 		}
 
-		$stmt = $pdo->prepare($query);
-
-		if (!($stmt->execute())) {
-			return [];
-		}
-
-		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return self::executeFetchAllStatement($pdo->prepare($query));
 	}
 }

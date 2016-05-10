@@ -25,7 +25,7 @@ class UserGroups implements PdoRepository, UserGroupsRepository
 	{
 		$result = $this->storage->query(function($pdo, $operations) use ($group, $user) {
 			$dbClass = $operations . '\\ModifyData';
-			return $dbClass::insert($pdo, 'group', [
+			return $dbClass::insert($pdo, 'user_group', [
 				'user_id' => $user->getId(),
 				'group_id' => $group->getId()
 			]);

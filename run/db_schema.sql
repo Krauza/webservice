@@ -16,7 +16,7 @@ CREATE TABLE `fiche_fiche` (
 
 CREATE TABLE `fiche_group` (
   `id` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `owner_id` int(11) NOT NULL,
+  `owner_id` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `name` varchar(120) COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
@@ -28,10 +28,11 @@ CREATE TABLE `fiche_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 CREATE TABLE `fiche_user_fiche` (
+  `id` int(11) NOT NULL,
   `user_id` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `fiche_id` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `level` int(1) NOT NULL,
-  `position` int(8) NOT NULL,
+  `last_modified` datetime(6) NOT NULL,
   `archived` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
@@ -51,6 +52,12 @@ ADD UNIQUE KEY `id` (`id`);
 ALTER TABLE `fiche_user`
 ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `fiche_user_fiche`
+ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `fiche_user_fiche`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

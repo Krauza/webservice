@@ -3,6 +3,7 @@
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
 use Fiche\Application\Infrastructure\DbPdoConnector;
+use Fiche\Domain\Service\FicheLevelValue;
 
 class ModifyData
 {
@@ -11,6 +12,15 @@ class ModifyData
 		return implode(', ', array_map(function() {
 			return '?';
 		}, $fields));
+	}
+
+	public static function execute(\PDOStatement $stmt)
+	{
+		if ($stmt->execute()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static function insert(\PDO $pdo, string $tableName, array $data)
@@ -29,7 +39,7 @@ class ModifyData
 		return null;
 	}
 
-	public static function update(\PDO $pdo, string $tableName, array $data, string $id)
+	public static function update(\PDO $pdo, string $tableName, array $data, array $conditions)
 	{
 		$table = DbPdoConnector::getTableNameWithPrefix($tableName);
 		$fields = array_map(function($field, $value) {
@@ -37,23 +47,34 @@ class ModifyData
 		}, array_keys($data), array_values($data));
 		$fields = implode(', ', $fields);
 
-		$stmt = $pdo->prepare("UPDATE `$table` SET $fields WHERE id=$id");
-		if ($stmt->execute()) {
-			return true;
-		}
+		$query = "UPDATE `$table` SET $fields";
+		$query .= DefaultFunctions::addConditionsToQuery($conditions);
 
-		return false;
+		return self::execute($pdo->prepare($query));
 	}
 
 	public static function delete(\PDO $pdo, string $tableName, string $id)
 	{
 		$table = DbPdoConnector::getTableNameWithPrefix($tableName);
+		return self::execute($pdo->prepare("DELETE FROM `$table` WHERE id=$id"));
+	}
 
-		$stmt = $pdo->prepare("DELETE FROM `$table` WHERE id=$id");
-		if ($stmt->execute()) {
-			return true;
+	public static function createConnections(\PDO $pdo, $user_id, $group_id)
+	{
+		$table = DbPdoConnector::getTableNameWithPrefix('user_fiche');
+		$tableFiche = DbPdoConnector::getTableNameWithPrefix('fiche');
+
+		$query = "SELECT id FROM `$tableFiche` WHERE group_id='$group_id' AND id NOT IN (SELECT fiche_id FROM `$table` WHERE user_id='$user_id' AND group_id='$group_id') LIMIT " . FicheLevelValue::FICHES_COUNT_AT_FIRST_LEVEL;
+		$fichesIds = FetchData::executeFetchAllStatement($pdo->prepare($query));
+
+		$data = [];
+		foreach($fichesIds as $ficheId) {
+			$dateTime = date("Y-m-d H:i:s") . substr((string)microtime(), 1, 8);
+			$id = $ficheId['id'];
+			$data[] = "('$user_id', '$id', '$group_id', 1, '$dateTime', 0)";
 		}
 
-		return false;
+		$query = "INSERT INTO `$table` (user_id, fiche_id, group_id, level, last_modified, archived) VALUES " . implode(', ', $data);
+		return self::execute($pdo->prepare($query));
 	}
 }

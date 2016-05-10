@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+    {% if false %}
     <h2 class="page-header">Lessons progress</h2>
     <div class="row">
         {% for i in 0..4 %}
@@ -27,8 +28,12 @@
             <div>40 / 1021</div>
         </div>
     </div>
+    {% endif %}
 
-    <button class="btn btn-learning">Start lesson now</button>
+    <h2 class="page-header">Lesson</h2>
+    <a href="/fiches/lesson/{{ group.getId() }}">
+        <button class="btn btn-learning">Start lesson now</button>
+    </a>
 
     {% if group.isOwner(current_user) %}
         <h2 class="page-header">Owner options</h2>
@@ -36,9 +41,5 @@
         <div class="create-new-flashcard">
             {% include "fiches/_form.html.twig" %}
         </div>
-
-        <hr>
-
-        <button class="btn btn-info btn-lg">Manage flashcards from this group</button>
     {% endif %}
 {% endblock %}

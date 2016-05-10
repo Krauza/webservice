@@ -3,23 +3,18 @@
 namespace Fiche\Domain\Aggregate;
 
 use Fiche\Domain\Entity\Fiche;
-use Fiche\Domain\Entity\User;
+use Fiche\Domain\Service\FicheLevelValue;
 
 class UserFicheStatus
 {
-    const MAX_FICHE_LEVEL = 5;
-    const FICHES_COUNT_AT_FIRST_LEVEL = 40;
-
-    private $user;
     private $fiche;
     private $level;
     private $position;
     private $archived;
     private $userGroup;
 
-    public function __construct(User $user, Fiche $fiche, UserGroup $userGroup, $level = 0, $position = null, $archived = false)
+    public function __construct(Fiche $fiche, UserGroup $userGroup, int $level = 1, \DateTime $position, $archived = false)
     {
-        $this->user = $user;
         $this->fiche = $fiche;
         $this->userGroup = $userGroup;
         $this->level = $level;
@@ -30,11 +25,6 @@ class UserFicheStatus
     public function getPosition()
     {
         return $this->position;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
     }
 
     public function getFiche()
@@ -55,5 +45,20 @@ class UserFicheStatus
     public function getUserGroup()
     {
         return $this->userGroup;
+    }
+
+    public function updateStatus($userKnown)
+    {
+        if(filter_var($userKnown, FILTER_VALIDATE_BOOLEAN)) {
+            if($this->level >= FicheLevelValue::MAX_FICHE_LEVEL) {
+                $this->archived = true;
+            } else {
+                $this->level++;
+            }
+        } else {
+            $this->level = 1;
+        }
+
+        $this->position = new \DateTime(date("Y-m-d H:i:s") . substr((string)microtime(), 1, 8));
     }
 }
