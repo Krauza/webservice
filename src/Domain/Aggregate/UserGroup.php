@@ -5,6 +5,7 @@ namespace Fiche\Domain\Aggregate;
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Entity\User;
 use Fiche\Domain\Repository\UserFichesRepository;
+use Fiche\Domain\Service\FicheLevelValue;
 use Fiche\Domain\Service\UserFichesCollection;
 use Fiche\Domain\Service\UserFichesAtLevelFilter;
 
@@ -52,11 +53,11 @@ class UserGroup
         $fichesAtLevelIterators = [];
 
         if($userFichesCollection->count() > 0) {
-            for ($level = UserFicheStatus::MAX_FICHE_LEVEL; $level > 0; $level--) {
+            for ($level = FicheLevelValue::MAX_FICHE_LEVEL; $level > 0; $level--) {
                 $iterator = new UserFichesAtLevelFilter($userFichesCollection, $level);
                 $fichesAtLevelIterators[$level] = $iterator;
 
-                if (iterator_count($iterator) >= UserFicheStatus::maxFichesAtLevel($level)) {
+                if (iterator_count($iterator) >= FicheLevelValue::maxFichesAtLevel($level)) {
                     $iterator->rewind();
                     $ficheStatus = $iterator->current();
                     break;
@@ -94,6 +95,7 @@ class UserGroup
         }
 
         $level = array_search(max($fichesCountAtLevel), $fichesCountAtLevel);
+        $fichesAtLevelIterators[$level]->rewind();
         return $level > 1 ? $fichesAtLevelIterators[$level]->current() : null;
     }
 }

@@ -26,28 +26,7 @@ class FetchData
 		return "SELECT $columns FROM `$table`";
 	}
 
-	private static function addConditionsToQuery(array $conditions = null) {
-		$query = '';
-		$i = 0;
 
-		if(empty($conditions)) {
-			return $query;
-		}
-
-		foreach($conditions as $key => $value) {
-			if($i === 0) {
-				$query .= " WHERE ";
-			} else {
-				$query .= " AND ";
-			}
-
-			$query .= "$key='$value'";
-
-			$i++;
-		}
-
-		return $query;
-	}
 
 	public static function executeFetchStatement(\PDOStatement $stmt)
 	{
@@ -86,7 +65,7 @@ class FetchData
 	public static function getRow(\Pdo $pdo, array $columns, string $tableName, array $conditions)
 	{
 		$query = self::baseQuery($columns, $tableName);
-		$query .= self::addConditionsToQuery($conditions);
+		$query .= DefaultFunctions::addConditionsToQuery($conditions);
 		$query .= ' LIMIT 1';
 
 		return self::executeFetchStatement($pdo->prepare($query));
@@ -107,7 +86,7 @@ class FetchData
 	public static function fetchAll(\PDO $pdo, array $columns, string $tableName, array $where = null, array $whereIn = null, int $limit = null): array
 	{
 		$query = self::baseQuery($columns, $tableName);
-		$query .= $conditions = self::addConditionsToQuery($where);
+		$query .= $conditions = DefaultFunctions::addConditionsToQuery($where);
 
 		if(!empty($whereIn)) {
 			reset($whereIn);

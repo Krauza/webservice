@@ -3,7 +3,7 @@
 namespace Fiche\Application\Infrastructure\Pdo\Mysql;
 
 use Fiche\Application\Infrastructure\DbPdoConnector;
-use Fiche\Domain\Aggregate\UserFicheStatus;
+use Fiche\Domain\Service\FicheLevelValue;
 
 class ModifyData
 {
@@ -39,7 +39,7 @@ class ModifyData
 		return null;
 	}
 
-	public static function update(\PDO $pdo, string $tableName, array $data, string $id)
+	public static function update(\PDO $pdo, string $tableName, array $data, array $conditions)
 	{
 		$table = DbPdoConnector::getTableNameWithPrefix($tableName);
 		$fields = array_map(function($field, $value) {
@@ -47,7 +47,10 @@ class ModifyData
 		}, array_keys($data), array_values($data));
 		$fields = implode(', ', $fields);
 
-		return self::execute($pdo->prepare("UPDATE `$table` SET $fields WHERE id=$id"));
+		$query = "UPDATE `$table` SET $fields";
+		$query .= DefaultFunctions::addConditionsToQuery($conditions);
+
+		return self::execute($pdo->prepare($query));
 	}
 
 	public static function delete(\PDO $pdo, string $tableName, string $id)
@@ -61,7 +64,7 @@ class ModifyData
 		$table = DbPdoConnector::getTableNameWithPrefix('user_fiche');
 		$tableFiche = DbPdoConnector::getTableNameWithPrefix('fiche');
 
-		$query = "SELECT id FROM `$tableFiche` WHERE group_id='$group_id' AND id NOT IN (SELECT fiche_id FROM `$table` WHERE user_id='$user_id' AND group_id='$group_id') LIMIT " . UserFicheStatus::FICHES_COUNT_AT_FIRST_LEVEL;
+		$query = "SELECT id FROM `$tableFiche` WHERE group_id='$group_id' AND id NOT IN (SELECT fiche_id FROM `$table` WHERE user_id='$user_id' AND group_id='$group_id') LIMIT " . FicheLevelValue::FICHES_COUNT_AT_FIRST_LEVEL;
 		$fichesIds = FetchData::executeFetchAllStatement($pdo->prepare($query));
 
 		$data = [];

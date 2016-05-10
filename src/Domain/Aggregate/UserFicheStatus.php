@@ -3,18 +3,10 @@
 namespace Fiche\Domain\Aggregate;
 
 use Fiche\Domain\Entity\Fiche;
-use Fiche\Domain\Entity\User;
+use Fiche\Domain\Service\FicheLevelValue;
 
 class UserFicheStatus
 {
-    const MAX_FICHE_LEVEL = 5;
-    const MAX_FICHES_PERCENTAGE_AT_LEVEL = 0.8;
-    const FICHES_COUNT_AT_FIRST_LEVEL = 40;
-    const FICHES_COUNT_AT_SECOND_LEVEL = 100;
-    const FICHES_COUNT_AT_THIRD_LEVEL = 200;
-    const FICHES_COUNT_AT_FOURTH_LEVEL = 350;
-    const FICHES_COUNT_AT_FIFTH_LEVEL = 500;
-
     private $fiche;
     private $level;
     private $position;
@@ -55,30 +47,18 @@ class UserFicheStatus
         return $this->userGroup;
     }
 
-    public static function maxFichesAtLevel(int $level)
+    public function updateStatus($userKnown)
     {
-        $result = 0;
-
-        switch($level) {
-            case 1:
-                $result = self::FICHES_COUNT_AT_FIRST_LEVEL;
-                break;
-            case 2:
-                $result = self::FICHES_COUNT_AT_SECOND_LEVEL;
-                break;
-            case 3:
-                $result = self::FICHES_COUNT_AT_THIRD_LEVEL;
-                break;
-            case 4:
-                $result = self::FICHES_COUNT_AT_FOURTH_LEVEL;
-                break;
-            case 5:
-                $result = self::FICHES_COUNT_AT_FIFTH_LEVEL;
-                break;
+        if(filter_var($userKnown, FILTER_VALIDATE_BOOLEAN)) {
+            if($this->level >= FicheLevelValue::MAX_FICHE_LEVEL) {
+                $this->archived = true;
+            } else {
+                $this->level++;
+            }
+        } else {
+            $this->level = 1;
         }
 
-        $result *= UserFicheStatus::MAX_FICHES_PERCENTAGE_AT_LEVEL;
-
-        return $result;
+        $this->position = new \DateTime(date("Y-m-d H:i:s") . substr((string)microtime(), 1, 8));
     }
 }

@@ -2,8 +2,11 @@
 
 namespace Fiche\Application\Controllers;
 
+use Fiche\Application\Exceptions\InvalidParameter;
 use Fiche\Application\Infrastructure\Pdo\Repository\Fiches as FicheRepository;
+use Fiche\Application\Infrastructure\Pdo\Repository\Fiches;
 use Fiche\Application\Infrastructure\Pdo\Repository\Group as GroupRepository;
+use Fiche\Application\Infrastructure\Pdo\Repository\UserFiches;
 use Fiche\Application\Infrastructure\Pdo\Repository\UserGroups;
 use Fiche\Application\Infrastructure\UniqueId;
 use Fiche\Domain\Factory\FicheFactory;
@@ -33,6 +36,23 @@ class FichesController extends Controller
             'group' => $group,
             'fiche' => $userGroup->getNextFiche()
         ];
+    }
+
+    public function answer()
+    {
+        if($this->request->isMethod('POST')) {
+            $fichesRepository = new Fiches($this->storage);
+            $userFichesRepository = new UserFiches($this->storage);
+
+            $fiche = $fichesRepository->getById($this->request->get('fiche_id'));
+            $userFiche = $userFichesRepository->fetchByFicheForUser($this->currentUser, $fiche);
+            $userFiche->updateStatus($this->request->get('user_known'));
+            $userFichesRepository->update($userFiche);
+
+            return $this->app->redirect('/fiches/lesson/' . $userFiche->getUserGroup()->getGroup()->getId());
+        }
+
+        throw new InvalidParameter;
     }
 
     private function save(Fiche $fiche = null)
