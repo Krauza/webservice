@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once('SetupGroup.php');
+require_once('traits/SetupGroup.php');
 
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\Entity\User;
@@ -40,15 +40,17 @@ class GroupTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException Fiche\Domain\Service\Exceptions\FieldIsRequired
      */
     public function emptyNameShouldThrownError()
     {
-        $this->setExpectedException('Fiche\Domain\Service\Exceptions\FieldIsRequired');
-        new GroupName('');
+        $groupName = new GroupName('');
+        $this->setName($groupName);
     }
 
     /**
      * @test
+     * @expectedException Fiche\Domain\Service\Exceptions\ValueIsTooLong
      */
     public function tooLongNameShouldThrownError()
     {
@@ -57,8 +59,8 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $str .= 'a';
         }
 
-        $this->setExpectedException('Fiche\Domain\Service\Exceptions\ValueIsTooLong');
-        new GroupName($str);
+        $groupName = new GroupName($str);
+        $this->setName($groupName);
     }
 
     /**

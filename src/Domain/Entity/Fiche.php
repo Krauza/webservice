@@ -46,9 +46,4 @@ class Fiche extends Entity
     {
         return $this->group;
     }
-
-    public function getGroupId(): int
-    {
-        return $this->getGroup()->getId();
-    }
 }
