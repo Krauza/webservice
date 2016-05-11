@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once('traits/SetupUser.php');
+require_once(__DIR__ . '/../../traits/SetupUser.php');
 
 use Fiche\Domain\Entity\User;
 use Fiche\Domain\ValueObject\Email;
@@ -53,7 +53,7 @@ class UserTest extends PHPUnit_Framework_TestCase
      */
     public function userShouldHasEmail()
     {
-        $this->assertEquals((string)$this->email, $this->user->getEmail());
+        $this->assertEquals($this->email, $this->user->getEmail());
     }
 
     /**
@@ -92,60 +92,5 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function getUserGroupsShouldBePossible()
     {
         $this->assertInstanceOf('Fiche\Domain\Service\UserGroupsCollection', $this->user->getUserGroups());
-    }
-
-    /**
-     * @test
-     * @expectedException Fiche\Domain\Service\Exceptions\ValueIsTooShort
-     */
-    public function tooShortEmailShouldThrownError()
-    {
-        $this->user->setEmail(new Email(''));
-    }
-
-    /**
-     * @test
-     * @expectedException Fiche\Domain\Service\Exceptions\ValueIsTooLong
-     */
-    public function tooLongEmailShouldThrownError()
-    {
-        $str = '';
-        for($i = 0; $i <= Email::EMAIL_MAX_LENGTH; $i++) {
-            $str .= 'a';
-        }
-
-        $this->user->setEmail(new Email($str . '@test.test'));
-    }
-
-    /**
-     * @test
-     * @expectedException Fiche\Domain\Service\Exceptions\ValueIsNotEmail
-     */
-    public function wrongEmailShouldThrownError()
-    {
-        $this->user->setEmail(new Email('wrong@email'));
-    }
-
-    /**
-     * @test
-     * @expectedException Fiche\Domain\Service\Exceptions\FieldIsRequired
-     */
-    public function emptyUserNameShouldThrownError()
-    {
-        $this->user->setName(new UserName(''));
-    }
-
-    /**
-     * @test
-     * @expectedException Fiche\Domain\Service\Exceptions\ValueIsTooLong
-     */
-    public function tooLongUserNameShouldThrownError()
-    {
-        $str = '';
-        for($i = 0; $i <= UserName::NAME_MAX_LENGTH; $i++) {
-            $str .= 'a';
-        }
-
-        $this->user->setName(new UserName($str));
     }
 }

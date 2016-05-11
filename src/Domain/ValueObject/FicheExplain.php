@@ -25,7 +25,8 @@ class FicheExplain
 		$this->explain_word = $explain_word;
 	}
 
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->explain_word;
 	}
 }

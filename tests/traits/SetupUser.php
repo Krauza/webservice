@@ -15,10 +15,10 @@ trait SetupUser
 
 	private function setupUser()
 	{
-		$mockUniqeId = $this->getMock(Fiche\Domain\Policy\UniqueIdInterface::class);
+		$mockUniqueId = $this->getMock(Fiche\Domain\Policy\UniqueIdInterface::class);
 		$mockUserGroupsRepository = $this->getMock(Fiche\Domain\Repository\UserGroupsRepository::class);
 
-		$this->userId = new $mockUniqeId();
+		$this->userId = new $mockUniqueId();
 		$this->userName = new UserName('name');
 		$this->email = new Email('test@test.test');
 		$this->password = 'D3F$##$F3VWCA#CVFH^&^4&M9';

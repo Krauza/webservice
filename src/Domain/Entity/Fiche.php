@@ -5,6 +5,7 @@ namespace Fiche\Domain\Entity;
 use Fiche\Domain\Policy\UniqueIdInterface;
 use Fiche\Domain\ValueObject\FicheExplain;
 use Fiche\Domain\ValueObject\FicheWord;
+use Fiche\Domain\ValueObject\Attachment;
 
 class Fiche extends Entity
 {

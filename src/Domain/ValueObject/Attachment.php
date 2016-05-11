@@ -1,6 +1,6 @@
 <?php
 
-namespace Fiche\Domain\Entity;
+namespace Fiche\Domain\ValueObject;
 
 class Attachment
 {
@@ -21,5 +21,10 @@ class Attachment
     public function getPath()
     {
         return $this->path;
+    }
+
+    public function __toString()
+    {
+        return $this->getPath() . $this->getFilename();
     }
 }

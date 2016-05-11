@@ -2,6 +2,7 @@
 
 namespace Fiche\Domain\ValueObject;
 
+use Fiche\Domain\Service\Exceptions\FieldIsRequired;
 use Fiche\Domain\Service\Exceptions\ValueIsNotEmail;
 use Fiche\Domain\Service\Exceptions\ValueIsTooLong;
 use Fiche\Domain\Service\Exceptions\ValueIsTooShort;
@@ -14,9 +15,13 @@ class Email
 
 	private $email;
 
-	public function __construct(string $email)
+	public function __construct($email)
 	{
-		if(empty($email) || strlen($email) < self::EMAIL_MIN_LENGTH) {
+		if(empty($email)) {
+			throw new FieldIsRequired('email');
+		}
+
+		if(strlen($email) < self::EMAIL_MIN_LENGTH) {
 			throw new ValueIsTooShort('email');
 		}
 
@@ -33,6 +38,6 @@ class Email
 
 	public function __toString()
 	{
-		return (string) $this->email;
+		return $this->email;
 	}
 }

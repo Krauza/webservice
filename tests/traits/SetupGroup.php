@@ -4,7 +4,7 @@ require_once('SetupUser.php');
 
 use Fiche\Domain\Entity\Group;
 use Fiche\Domain\ValueObject\GroupName;
-use Fiche\Application\Infrastructure\UniqueId;
+use Fiche\Domain\Policy\UniqueIdInterface;
 
 trait SetupGroup
 {
@@ -17,7 +17,9 @@ trait SetupGroup
 
 	private function setupGroup()
 	{
-		$this->groupId = new UniqueId();
+		$mockUniqueId = $this->getMock(UniqueIdInterface::class);
+
+		$this->groupId = new $mockUniqueId();
 		$this->groupName = new GroupName('group');
 		$fichesRepository = $this->getMock(Fiche\Domain\Repository\FichesRepository::class);
 		$this->fichesRepository = new $fichesRepository();
