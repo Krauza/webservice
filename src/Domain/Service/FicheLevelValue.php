@@ -32,6 +32,8 @@ class FicheLevelValue
             case 5:
                 $result = self::FICHES_COUNT_AT_FIFTH_LEVEL;
                 break;
+            default:
+                return $result;
         }
 
         $result *= self::MAX_FICHES_PERCENTAGE_AT_LEVEL;
