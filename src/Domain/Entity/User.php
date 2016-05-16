@@ -62,7 +62,7 @@ class User extends Entity
         $this->password = $password;
     }
 
-    public function getUserGroups()
+    public function getUserGroups(): UserGroupsCollection
     {
         if($this->userGroups === null) {
             $userGroups = new UserGroupsCollection();

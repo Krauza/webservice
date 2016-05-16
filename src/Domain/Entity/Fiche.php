@@ -5,6 +5,7 @@ namespace Fiche\Domain\Entity;
 use Fiche\Domain\Policy\UniqueIdInterface;
 use Fiche\Domain\ValueObject\FicheExplain;
 use Fiche\Domain\ValueObject\FicheWord;
+use Fiche\Domain\ValueObject\Attachment;
 
 class Fiche extends Entity
 {
@@ -45,10 +46,5 @@ class Fiche extends Entity
     public function getGroup(): Group
     {
         return $this->group;
-    }
-
-    public function getGroupId(): int
-    {
-        return $this->getGroup()->getId();
     }
 }

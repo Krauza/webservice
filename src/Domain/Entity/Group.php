@@ -21,14 +21,14 @@ class Group extends Entity
         $this->id = $id;
         $this->name = $name;
         $this->owner = $owner;
+        $this->fiches = null;
 
         $this->ficheRepository = $ficheRepository;
     }
 
     public function addFiche(Fiche $fiche)
     {
-        if (!($this->fiches instanceof FichesCollection))
-        {
+        if (!($this->fiches instanceof FichesCollection)) {
             $this->fiches = new FichesCollection();
         }
 
@@ -52,6 +52,13 @@ class Group extends Entity
 
     public function getFiches(): FichesCollection
     {
+        if($this->fiches === null) {
+            $fiches = new FichesCollection();
+            $this->ficheRepository->getForGroup($this, $fiches);
+
+            $this->fiches = $fiches;
+        }
+
         return $this->fiches;
     }
 

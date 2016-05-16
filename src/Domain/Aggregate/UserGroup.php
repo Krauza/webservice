@@ -14,6 +14,7 @@ class UserGroup
     private $user;
     private $group;
     private $userFichesCollection;
+    private $fichesAtLevelIterators;
 
     public function __construct(User $user, Group $group, UserFichesRepository $userFichesRepository)
     {
@@ -21,6 +22,7 @@ class UserGroup
         $this->group = $group;
         $this->userFichesCollection = null;
         $this->userFichesRepository = $userFichesRepository;
+        $this->fichesAtLevelIterators = [];
     }
 
     public function getUser(): User
@@ -47,55 +49,54 @@ class UserGroup
 
     public function getNextFiche()
     {
-        $fiche = null;
-        $ficheStatus = null;
-        $userFichesCollection = $this->getUserFichesCollection();
-        $fichesAtLevelIterators = [];
+        $this->getUserFichesCollection();
 
-        if($userFichesCollection->count() > 0) {
+        $ficheStatus = $this->getFicheFromOverflowingLevel();
+        if($ficheStatus === null) $ficheStatus = $this->addNewFichesFromBacklogAndGetFirst();
+        if($ficheStatus === null) $ficheStatus = $this->getFicheFromMostFilledLevel();
+
+        return $ficheStatus ? $ficheStatus->getFiche() : null;
+    }
+
+    private function getFicheFromOverflowingLevel()
+    {
+        if($this->userFichesCollection->count() > 0) {
             for ($level = FicheLevelValue::MAX_FICHE_LEVEL; $level > 0; $level--) {
-                $iterator = new UserFichesAtLevelFilter($userFichesCollection, $level);
-                $fichesAtLevelIterators[$level] = $iterator;
+                $iterator = new UserFichesAtLevelFilter($this->userFichesCollection, $level);
+                $this->fichesAtLevelIterators[$level] = $iterator;
 
                 if (iterator_count($iterator) >= FicheLevelValue::maxFichesAtLevel($level)) {
                     $iterator->rewind();
-                    $ficheStatus = $iterator->current();
+                    return $iterator->current();
                     break;
                 }
             }
         }
 
-        if($ficheStatus === null) $ficheStatus = $this->addNewFichesFromBacklogAndGetFirst($userFichesCollection);
-        if($ficheStatus === null) $ficheStatus = $this->getFicheFromMostFilledLevel($fichesAtLevelIterators);
-
-        if($ficheStatus) {
-            $fiche = $ficheStatus->getFiche();
-        }
-
-        return $fiche;
+        return null;
     }
 
-    private function addNewFichesFromBacklogAndGetFirst(UserFichesCollection $userFichesCollection)
+    private function addNewFichesFromBacklogAndGetFirst()
     {
-        $this->userFichesRepository->createConnections($this, $userFichesCollection);
-        $iterator = new UserFichesAtLevelFilter($userFichesCollection, 1);
+        $this->userFichesRepository->createConnections($this, $this->userFichesCollection);
+        $iterator = new UserFichesAtLevelFilter($this->userFichesCollection, 1);
         $iterator->rewind();
 
         return $iterator->current();
     }
 
-    private function getFicheFromMostFilledLevel(array $fichesAtLevelIterators)
+    private function getFicheFromMostFilledLevel()
     {
         $fichesCountAtLevel = array_map(function(\Iterator $iterator) {
             return iterator_count($iterator);
-        }, $fichesAtLevelIterators);
+        }, $this->fichesAtLevelIterators);
 
         if(empty($fichesCountAtLevel)) {
             return null;
         }
 
         $level = array_search(max($fichesCountAtLevel), $fichesCountAtLevel);
-        $fichesAtLevelIterators[$level]->rewind();
-        return $level > 1 ? $fichesAtLevelIterators[$level]->current() : null;
+        $this->fichesAtLevelIterators[$level]->rewind();
+        return $level > 1 ? $this->fichesAtLevelIterators[$level]->current() : null;
     }
 }

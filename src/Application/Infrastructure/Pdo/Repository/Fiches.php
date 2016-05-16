@@ -8,6 +8,7 @@ use Fiche\Domain\Entity\Fiche;
 use Fiche\Domain\Entity\Group as GroupEntity;
 use Fiche\Domain\Factory\FicheFactory;
 use Fiche\Domain\Repository\FichesRepository;
+use Fiche\Domain\Service\FichesCollection;
 
 class Fiches implements PdoRepository, FichesRepository
 {
@@ -45,7 +46,7 @@ class Fiches implements PdoRepository, FichesRepository
 		});
 	}
 
-	public function getForGroup(GroupEntity $group)
+	public function getForGroup(GroupEntity $group, FichesCollection $fichesCollection)
 	{
 		// TODO: Implement getForGroup() method.
 	}
