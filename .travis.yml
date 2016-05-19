@@ -16,3 +16,12 @@ script:
 
 after_script:
   - vendor/bin/test-reporter
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: 2+GUnlnZoMgZq/2xukkGx+B0gveFMJhbvUzVsv2cEyJo6Tba5V8zers3mRze0ig8/ztWvMQVwkjjM89OdHap57gXr3HJynJZ9nL0luopKP6+NSFWQzwLNhGoLtZLOBlH6LuRtuAEpl6EuKz9hvgvhEP1kiJWN9YlOih9AtoT3j86l3YL6AjVg0ZacvehbIP3dOcBnnFVd/FqY6NqtPBLVvuWgInl4BYt5VKUUPYEiVNfS5vChG0Hs4yqjouvUHiK5PMv4NWvvrnyRLapzGi2blo1taU2VL2CXnNMshpIqlbniXfaDppkhRPv21aXWqhMmcwpjOac7ex+QtbFsPG1MvPNL0g7BX6HCDc0sFzKq5msuwSCoiqKB/X6h6Kk9FtJIpXmaREIZHpxgUcxbecfBiNu1sLM6siXkttXs36M54o0GSikdi1TsOsNpEHcf4b1iCBzd4CoQh+H+wP2vWKA/Nqa/Kc3Yu1hiC8qmdtpTscrSfQzhiELa6m9vWjA1+mgZ0qEGXj0yWge5jpkFVakzWVznjD8uF0WVj2zkVhhB4gUPU7pn27ZaR3AXUvAto0O1zyStl5WCfQf/GJmqy9dlD3fBg5j37IYA5zjKVjlXipjZ9/nDVYebEtNDD7No81PKWpIVyl8s8o4aA0SHD+lYRAasqIMnVryX3qIn35QPas=
+  app: krauza
+  on:
+    repo: mejt/krauza
+  skip_cleanup: true
