@@ -9,7 +9,7 @@
 ### Name
 Krauza (it is polish word in Silesian dialect) means jar.
 
-### What is is?
+### What is it?
 It is simple project for manage flash cards (fiches). Metodology is based on [Leitner system](https://en.wikipedia.org/wiki/Leitner_system).
 
 Check this app at http://krauza.herokuapp.com
