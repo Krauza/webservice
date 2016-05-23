@@ -9,7 +9,7 @@ $mysql_user = $db_settings['db_user'];
 $mysql_password = $db_settings['db_pass'];
 
 $db = new PDO("mysql:host=$mysql_host;dbname=$mysql_database", $mysql_user, $mysql_password);
-$query = file_get_contents("db_schema.sql");
+$query = file_get_contents(__DIR__ . "/db_schema.sql");
 $stmt = $db->prepare($query);
 
 if ($stmt->execute()) {
