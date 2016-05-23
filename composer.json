@@ -1,11 +1,11 @@
 {
-	"name": "mejt/fiche",
+	"name": "mejt/krauza",
 	"license": "MIT",
 	"description": "Autodidactic learning",
 	"authors": [
 		{
 			"name": "Mateusz Książek",
-			"email": "mksiazek@future-processing.com"
+			"email": "ksiazek.mate@gmail.com"
 		}
 	],
 	"scripts": {

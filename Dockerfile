@@ -14,3 +14,5 @@ RUN /etc/init.d/apache2 restart
 # Install composer and load all dependencies
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
+
+RUN php run/install_mysql.php

@@ -27,3 +27,4 @@ deploy:
   on:
     branch: master
   skip_cleanup: true
+  run: "php run/install_mysql.php"
