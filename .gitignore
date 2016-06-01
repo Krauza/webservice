@@ -1,3 +1,5 @@
 vendor
 .idea
+.env
+
 public/assets/components

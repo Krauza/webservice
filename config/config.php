@@ -1,6 +1,7 @@
 <?php
 
 return $config = [
+    'environment' => empty(getenv('ENV')) ? 'dev' : getenv('ENV'),
     'database' => [
         'mysql' => [
             'db_user' => getenv('DB_ENV_MYSQL_USER'),

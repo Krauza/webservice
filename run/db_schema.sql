@@ -6,9 +6,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE DATABASE IF NOT EXISTS `fiche_dev` DEFAULT CHARACTER SET utf8 COLLATE utf8_polish_ci;
-USE `fiche_dev`;
-
 CREATE TABLE IF NOT EXISTS `fiche_fiche` (
   `id` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `group_id` varchar(255) COLLATE utf8_polish_ci NOT NULL,

@@ -1,18 +1,19 @@
 <?php
 
 declare(strict_types=1);
+require('ControllerTestCase.php');
 
-use Silex\WebTestCase;
-
-class AuthControllerTest extends WebTestCase
+class AuthControllerTest extends ControllerTestCase
 {
     /**
-     * Creates the application.
-     *
-     * @return \Symfony\Component\HttpKernel\HttpKernelInterface
+     * @test
      */
-    public function createApplication()
+    public function simpleTest()
     {
-        return require __DIR__.'/../../../public/app.php';
+        $client = $this->createClient();
+        $crawler = $client->request('GET', '/');
+
+        $this->assertTrue($client->getResponse()->isOk());
+        $this->assertCount(1, $crawler->filter('#header'));
     }
 }
