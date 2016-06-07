@@ -25,13 +25,12 @@ try {
     $stmt = $db->prepare($query);
 
     if ($stmt->execute()) {
-        $message = "Database created";
+        fwrite(STDOUT, 'Database created');
     } else {
-        $message = "Error during creating database schema";
+        fwrite(STDERR, 'Error during creating database schema');
     }
 } catch(Exception $exception) {
-    $message = $exception;
+    fwrite(STDERR, $exception);
 }
 
-echo "\n\n$message\n\n";
 $db = null;
