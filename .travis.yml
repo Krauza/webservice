@@ -3,6 +3,15 @@ language: php
 php:
   - 7
 
+services:
+  - mysql
+
+env:
+  - DB_ENV_MYSQL_USER=travis
+  - DB_ENV_MYSQL_PASSWORD=
+  - DB_ENV_MYSQL_DATABASE=fiche_test
+  - DB_PORT_3306_TCP_ADDR=127.0.0.1
+
 addons:
   code_climate:
     repo_token: ffd7bf832393d9f1476e852e093f46709ddea80b72984f2f306ed35b8b9cbbc5
