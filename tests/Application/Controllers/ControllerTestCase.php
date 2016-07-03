@@ -15,8 +15,12 @@ abstract class ControllerTestCase extends WebTestCase
     {
         parent::__construct($name, $data, $dataName);
 
-        $dotenv = new Dotenv(__DIR__ . '/../../../');
-        $dotenv->load();
+        $config = require(__DIR__ . '/../../../config/config.php');
+
+        if ($config['environment'] === 'dev') {
+            $dotenv = new Dotenv(__DIR__ . '/../../../');
+            $dotenv->load();
+        }
 
         $this->mysqlConnector = new MysqlConnector();
         $this->mysqlConnector->dropDatabase();
