@@ -2,6 +2,7 @@
 
 namespace Fiche\Application\Infrastructure\Pdo\Repository;
 
+use Fiche\Application\Exceptions\RecordNotExists;
 use Fiche\Application\Infrastructure\DbPdoConnector;
 use Fiche\Application\Infrastructure\UniqueId;
 use Fiche\Domain\Factory\UserFactory;
@@ -39,6 +40,10 @@ class User implements PdoRepository, UserRepository
 
 			return $dbClass::getByField($pdo, $columns, 'user', 'email', $email);
 		});
+
+		if (!$result) {
+			throw new RecordNotExists;
+		}
 
 		$id = new UniqueId($result['id']);
 		$userGroups = new UserGroups($this->storage);

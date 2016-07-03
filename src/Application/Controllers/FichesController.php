@@ -13,7 +13,7 @@ use Fiche\Domain\Factory\FicheFactory;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 use Fiche\Domain\Entity\Fiche;
 
-class FichesController extends Controller
+class FichesController extends BaseController
 {
     public function create()
     {

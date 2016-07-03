@@ -8,7 +8,7 @@ use Fiche\Application\Infrastructure\Pdo\Repository\User as UserRepository;
 use Fiche\Domain\Factory\UserFactory;
 use Fiche\Domain\Service\Exceptions\DataNotValid;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     public function register()
     {

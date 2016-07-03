@@ -53,7 +53,7 @@ class RoutingManager
         } catch(ActionNotExists $e) {
             $content = 'Action is not exists';
         } catch(\Exception $e) {
-            $content = 'Something went wrong... (' . $e->getMessage() . ')';
+            $content = 'Something went wrong... (' . $e->getMessage() . ' ' . $e->getFile() . ' (' . $e->getLine() . ')';
         }
 
         return $app['twig']->render(

@@ -15,7 +15,7 @@ use Fiche\Domain\ValueObject\GroupName;
  * Class GroupsController
  * @package Fiche\Application\Controllers
  */
-class GroupsController extends Controller
+class GroupsController extends BaseController
 {
     public function index()
     {

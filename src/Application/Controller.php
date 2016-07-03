@@ -1,8 +1,9 @@
 <?php
 
-namespace Fiche\Application\Controllers;
+namespace Fiche\Application;
 
 use Fiche\Application\Exceptions\RecordNotExists;
+use Fiche\Application\Infrastructure\UniqueId;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Fiche\Domain\Entity\User;
@@ -22,11 +23,13 @@ abstract class Controller
 	protected $storage;
 	protected $request;
 	protected $currentUser;
+	protected $session;
 
 	final public function __construct(Application $app, Request $request) {
 		$this->app = $app;
 		$this->storage = $app['storage'];
-		$this->setCurrentUserById($app['session']->get('current_user_id'));
+		$this->session = new SessionStorage($app['session']);
+		$this->setCurrentUserById($this->session->get('current_user_id'));
 		$this->request = $request;
 	}
 
@@ -49,7 +52,7 @@ abstract class Controller
 
 	protected function setCurrentUser(User $user = null)
 	{
-		$this->app['session']->set('current_user_id', $user->getId());
+		$this->session->set('current_user_id', $user->getId());
 		$this->currentUser = $user;
 	}
 
@@ -73,13 +76,13 @@ abstract class Controller
 
 	protected function logoutCurrentUser()
 	{
-		$this->app['session']->set('current_user_id', null);
+		$this->session->set('current_user_id', null);
 		$this->currentUser = null;
 	}
 
 	protected function isCorrectId($id)
 	{
-		if(intval($id) <= 0) {
+		if(empty($id)) {
 			return false;
 		}
 

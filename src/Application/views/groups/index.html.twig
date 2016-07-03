@@ -10,7 +10,7 @@
 {% block content %}
     <h2 class="page-header">Your subjects <a href="/groups/create" class="btn btn-info btn-xs">Add new subject</a></h2>
     {% if userGroups|length > 0 %}
-        <table class="table">
+        <table id="subjects" class="table">
             <thead>
                 <tr>
                     <th>Subject name</th>

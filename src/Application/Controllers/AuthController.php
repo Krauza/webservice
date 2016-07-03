@@ -5,12 +5,12 @@ namespace Fiche\Application\Controllers;
 use Fiche\Application\Infrastructure\Pdo\Repository\User as UserRepository;
 use Fiche\Application\Exceptions\RecordNotExists;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     public function login()
     {
         if(!empty($this->currentUser)) {
-            $this->app->redirect('/base');
+            return $this->app->redirect('/groups/index');
         }
 
         if ($this->request->isMethod('POST')) {
@@ -30,7 +30,7 @@ class AuthController extends Controller
         } catch(RecordNotExists $e) {
             return $this->returnErrorMessages([
                 'field' => 'email',
-                'message' => $e->getMessage()
+                'message' => 'Email address is not exists'
             ]);
         }
 
