@@ -15,10 +15,7 @@
 		"psr-4": {"Fiche\\": "src/"}
 	},
 	"require": {
-		"php": ">=7",
-		"twig/twig": "1.0",
-	  	"silex/silex": "1.3",
-		"vlucas/phpdotenv": "2.2"
+		"php": ">=7"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "5.2",

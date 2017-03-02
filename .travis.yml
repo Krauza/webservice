@@ -1,14 +1,8 @@
 language: php
 
 php:
-  - 7
-
-services:
-  - mysql
-
-env:
-  - DB_ENV_MYSQL_USER=travis DB_ENV_MYSQL_PASSWORD= DB_ENV_MYSQL_DATABASE=fiche_test DB_PORT_3306_TCP_ADDR=127.0.0.1 ENV=test
-
+  - '7.0'
+  - '7.1'
 addons:
   code_climate:
     repo_token: ffd7bf832393d9f1476e852e093f46709ddea80b72984f2f306ed35b8b9cbbc5
@@ -16,22 +10,9 @@ addons:
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction
-  - npm install -g bower
-  - bower install
-  - php run/install_mysql.php
 
 script:
   - composer test
 
 after_script:
   - vendor/bin/test-reporter
-
-deploy:
-  provider: heroku
-  api_key:
-    secure: exWO3Y4B8Wy9Mau7qKUTBY3m1tT5K1wxHTgPM44F7J5NfBhI++1nrZsicG+0BeLKn7iDqlb4iA3g1RfNW73gNk/sF1mhJfw/QR4/GA6bG75YYX/MpGXMEjNmjLZpviwPA589XmE0h7GSvobXZl6It96JGt4XzDdCu9HnKDEdmqkAdATAvfu22vWzrpGiPiFvReafF9FysdrRrItKlYIZDHiiYIV1DEtb7ZwGZK9g0qdFZ46QyO7xUSHJXgDFUG0kfS91EVpQlIEUcwZiSVJlcUOXiZQNev32mt0ULCS7krpPENyUWRe7auS+bVSuVDq43sc5xKkHqedbaM7/o82SQTMWeOMKaKR1WHefZQXH5JOi48n1yWTsgcle2/vnH/Jgq8JpF94QTBuXEIyVZ8+Hw0rCa0WbgtDDNMXDYZyBo+4uvFJ+EhgRYOk1jUc8mTXguZTrCCc8gHpSaXq7tesO8lrE2IqN9nRnK6Ihn0563jQQWWLlGuBU+8TILK9AMDhpwJdpkG9Oiu+Te8UJQJO8agA33LrYc9PzSn8mUZWTViC5mpdqq/ngYF5nFCMOVvU6JTWeglRvovZOvwoalPnNDxt91BOWZ0Wpk0wuuBhU5jo4/Qa7CGcb/TMqb/ktlcXTX5FGmQsw3gJJ2BoiSqKXe7IwsU8hHIZ8ADn5/YYDsLA=
-  app: krauza
-  on:
-    branch: master
-  skip_cleanup: true
-  run: "php run/install_mysql.php"
