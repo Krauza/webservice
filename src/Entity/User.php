@@ -3,6 +3,7 @@
 namespace Krauza\Entity;
 
 use Krauza\ValueObject\UserName;
+use Krauza\ValueObject\UserEmail;
 use Krauza\Policy\PasswordPolicy;
 
 class User
@@ -11,7 +12,7 @@ class User
     private $password;
     private $email;
 
-    public function __construct(UserName $userName, PasswordPolicy $password, string $email)
+    public function __construct(UserName $userName, PasswordPolicy $password, UserEmail $email)
     {
         $this->name = $userName;
         $this->password = $password;

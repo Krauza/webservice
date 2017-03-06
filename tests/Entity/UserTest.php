@@ -9,12 +9,23 @@ class UserTest extends PHPUnit_Framework_TestCase
      */
     public function userShouldHasCorrectFields()
     {
-        $userName = $this->getMockBuilder(Krauza\ValueObject\UserName::class)->disableOriginalConstructor()->getMock();
-        $userPass = $this->getMock(Krauza\Policy\PasswordPolicy::class);
-        $userMail = 'test@test.test';
+        $userName = 'name';
+        $userNameStub = $this->createStub(Krauza\ValueObject\UserName::class, $userName);
 
-        $user = new User($userName, $userPass, $userMail);
+        $userEmail = 'test@test.test';
+        $userMailStub = $this->createStub(Krauza\ValueObject\UserEmail::class, $userEmail);
+
+        $userPassStub = $this->getMock(Krauza\Policy\PasswordPolicy::class);
+
+        $user = new User($userNameStub, $userPassStub, $userMailStub);
         $this->assertEquals($userName, $user->getName());
-        $this->assertEquals($userMail, $user->getEmail());
+        $this->assertEquals($userEmail, $user->getEmail());
+    }
+
+    function createStub($className, $returnValue)
+    {
+        $userMailStub = $this->getMockBuilder($className)->disableOriginalConstructor()->getMock();
+        $userMailStub->method('__toString')->willReturn($returnValue);
+        return $userMailStub;
     }
 }
