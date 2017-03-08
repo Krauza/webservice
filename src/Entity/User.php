@@ -12,10 +12,18 @@ class User
     private $password;
     private $email;
 
-    public function __construct(UserName $userName, PasswordPolicy $password, UserEmail $email)
+    public function __construct(UserName $userName)
     {
         $this->name = $userName;
+    }
+
+    public function setPassword(PasswordPolicy $password)
+    {
         $this->password = $password;
+    }
+
+    public function setEmail(UserEmail $email)
+    {
         $this->email = $email;
     }
 

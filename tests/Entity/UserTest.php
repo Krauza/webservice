@@ -4,22 +4,35 @@ use Krauza\Entity\User;
 
 class UserTest extends PHPUnit_Framework_TestCase
 {
+    private $userName;
+    private $userNameStub;
+    private $user;
+
+    public function setUp()
+    {
+        $this->userName = 'name';
+        $this->userNameStub = $this->createStub(Krauza\ValueObject\UserName::class, $this->userName);
+        $this->user = new User($this->userNameStub);
+    }
+
     /**
      * @test
      */
-    public function userShouldHasCorrectFields()
+    public function userShouldBeCreatableWithUserName()
     {
-        $userName = 'name';
-        $userNameStub = $this->createStub(Krauza\ValueObject\UserName::class, $userName);
+        $this->assertEquals($this->userName, $this->user->getName());
+    }
 
+    /**
+     * @test
+     */
+    public function userShouldHavePossibilityToSetEmail()
+    {
         $userEmail = 'test@test.test';
         $userMailStub = $this->createStub(Krauza\ValueObject\UserEmail::class, $userEmail);
 
-        $userPassStub = $this->getMock(Krauza\Policy\PasswordPolicy::class);
-
-        $user = new User($userNameStub, $userPassStub, $userMailStub);
-        $this->assertEquals($userName, $user->getName());
-        $this->assertEquals($userEmail, $user->getEmail());
+        $this->user->setEmail($userMailStub);
+        $this->assertEquals($userEmail, $this->user->getEmail());
     }
 
     function createStub($className, $returnValue)
