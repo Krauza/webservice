@@ -13,6 +13,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->userName = 'name';
         $this->userNameStub = $this->createStub(Krauza\ValueObject\UserName::class, $this->userName);
         $this->user = new User($this->userNameStub);
+        $this->user->setPassword($this->getMock(Krauza\Policy\PasswordPolicy::class));
     }
 
     /**
