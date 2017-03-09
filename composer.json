@@ -15,7 +15,7 @@
 		"psr-4": {"Krauza\\": "src/"}
 	},
 	"require": {
-		"php": "7.1"
+		"php": ">=7.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "5.2",
