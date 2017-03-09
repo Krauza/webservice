@@ -10,7 +10,7 @@ class CardTest extends PHPUnit_Framework_TestCase
     public function ficheShouldBeCreatable()
     {
         $card = new Card('first', 'second');
-        $this->assertEquals('string', $card->getObverse());
-        $this->assertEquals('string', $card->getReverse());
+        $this->assertEquals('first', $card->getObverse());
+        $this->assertEquals('second', $card->getReverse());
     }
 }
