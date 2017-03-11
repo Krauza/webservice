@@ -15,3 +15,6 @@ script:
 
 after_script:
   - vendor/bin/test-reporter
+
+notifications:
+  email: false
