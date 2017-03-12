@@ -4,7 +4,6 @@ namespace Krauza\Entity;
 
 use Krauza\ValueObject\UserName;
 use Krauza\ValueObject\UserEmail;
-use Krauza\Policy\PasswordPolicy;
 
 class User
 {
@@ -17,7 +16,7 @@ class User
         $this->name = $userName;
     }
 
-    public function setPassword(PasswordPolicy $password)
+    public function setPassword(string $password)
     {
         $this->password = $password;
     }
