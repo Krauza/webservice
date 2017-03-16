@@ -3,6 +3,7 @@
 namespace Krauza\Entity;
 
 use Krauza\Repository\BoxRepository;
+use Krauza\ValueObject\CardWord;
 
 class Box
 {
@@ -17,6 +18,6 @@ class Box
 
     public function getNextCard(): Card
     {
-        return new Card('a', 'b');
+        return new Card(new CardWord('aaa'), new CardWord('bbb'));
     }
 }

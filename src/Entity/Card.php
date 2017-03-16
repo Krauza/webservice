@@ -2,12 +2,14 @@
 
 namespace Krauza\Entity;
 
+use Krauza\ValueObject\CardWord;
+
 class Card
 {
     private $obverse;
     private $reverse;
 
-    public function __construct(string $obverse, string $reverse)
+    public function __construct(CardWord $obverse, CardWord $reverse)
     {
         $this->obverse = $obverse;
         $this->reverse = $reverse;
