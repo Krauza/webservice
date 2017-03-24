@@ -2,20 +2,23 @@
 
 namespace Krauza\Service;
 
-use Krauza\Repository\BoxRepository;
-use Krauza\Entity\Box;
+use Krauza\Factory\CardFactory;
+use Krauza\Repository\CardRepository;
 
 class AddNewCardService
 {
-    private $boxRepository;
+    private $cardRepository;
 
-    public function __construct(BoxRepository $boxRepository)
+    public function __construct(CardRepository $cardRepository)
     {
-        $this->boxRepository = $boxRepository;
+        $this->cardRepository = $cardRepository;
     }
 
-    public function addNewCardToBox(Box $box, array $card)
+    public function addNewCard(array $data)
     {
+        $card = CardFactory::createCard($data);
+        $this->cardRepository->add($card);
 
+        return $card;
     }
 }

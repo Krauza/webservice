@@ -1,16 +1,15 @@
 <?php
 
 use Krauza\Service\AddNewCardService;
-use Krauza\Repository\BoxRepository;
 use Krauza\Repository\CardRepository;
-use Krauza\Entity\Box;
+use Krauza\Entity\Card;
 
 class AddNewCardServiceTest extends PHPUnit_Framework_TestCase
 {
-//    /**
-//     * @test
-//     */
-    public function shouldAddNewCardToInbox()
+    /**
+     * @test
+     */
+    public function shouldAddNewCard()
     {
         $data = [
             'obverse' => 'first',
@@ -20,10 +19,9 @@ class AddNewCardServiceTest extends PHPUnit_Framework_TestCase
         $cardRepositoryMock = $this->getMock(CardRepository::class);
         $cardRepositoryMock->expects($this->once())->method('add');
 
-        $boxRepositoryMock = $this->getMock(BoxRepository::class);
-        $boxRepositoryMock->expects($this->once())->method('addCardToInbox');
+        $boxService = new AddNewCardService($cardRepositoryMock);
+        $card = $boxService->addNewCard($data);
 
-        $boxService = new AddNewCardService($boxRepositoryMock);
-        $boxService->addNewCardToBox(new Box, $data);
+        $this->assertInstanceOf(Card::class, $card);
     }
 }
