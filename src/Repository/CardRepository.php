@@ -2,11 +2,10 @@
 
 namespace Krauza\Repository;
 
-use Krauza\Entity\Box;
 use Krauza\Entity\Card;
 
-interface BoxRepository
+interface CardRepository
 {
     public function __construct($engine);
-    public function addCardToInbox(Box $box, Card $card);
+    public function add(Card $card);
 }
