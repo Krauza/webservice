@@ -5,7 +5,7 @@ namespace Krauza\Entity;
 use Krauza\ValueObject\UserName;
 use Krauza\ValueObject\UserEmail;
 
-class User
+class User extends BaseEntity
 {
     private $name;
     private $password;

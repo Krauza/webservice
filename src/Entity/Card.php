@@ -4,7 +4,7 @@ namespace Krauza\Entity;
 
 use Krauza\ValueObject\CardWord;
 
-class Card
+class Card extends BaseEntity
 {
     private $obverse;
     private $reverse;
