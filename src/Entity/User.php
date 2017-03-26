@@ -4,9 +4,11 @@ namespace Krauza\Entity;
 
 use Krauza\ValueObject\UserName;
 use Krauza\ValueObject\UserEmail;
+use Krauza\Policy\IdPolicy;
 
-class User extends BaseEntity
+class User
 {
+    private $id;
     private $name;
     private $password;
     private $email;
@@ -14,6 +16,16 @@ class User extends BaseEntity
     public function __construct(UserName $userName)
     {
         $this->name = $userName;
+    }
+
+    public function setId(IdPolicy $id)
+    {
+        $this->id = $id;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function setPassword(string $password)

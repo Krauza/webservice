@@ -3,9 +3,11 @@
 namespace Krauza\Entity;
 
 use Krauza\ValueObject\CardWord;
+use Krauza\Policy\IdPolicy;
 
-class Card extends BaseEntity
+class Card
 {
+    private $id;
     private $obverse;
     private $reverse;
 
@@ -13,6 +15,16 @@ class Card extends BaseEntity
     {
         $this->obverse = $obverse;
         $this->reverse = $reverse;
+    }
+
+    public function setId(IdPolicy $id)
+    {
+        $this->id = $id;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getReverse(): string
