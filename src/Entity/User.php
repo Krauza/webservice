@@ -6,7 +6,7 @@ use Krauza\ValueObject\UserName;
 use Krauza\ValueObject\UserEmail;
 use Krauza\Policy\IdPolicy;
 
-class User
+class User implements Entity
 {
     private $id;
     private $name;

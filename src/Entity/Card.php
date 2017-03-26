@@ -5,7 +5,7 @@ namespace Krauza\Entity;
 use Krauza\ValueObject\CardWord;
 use Krauza\Policy\IdPolicy;
 
-class Card
+class Card implements Entity
 {
     private $id;
     private $obverse;
