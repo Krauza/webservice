@@ -2,8 +2,9 @@
 
 namespace Krauza\Policy;
 
+use Krauza\ValueObject\EntityId;
+
 interface IdPolicy
 {
-    public function __construct(string $id);
-    public function __toString(): string;
+    public function generate(): EntityId;
 }

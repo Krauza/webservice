@@ -1,7 +1,7 @@
 <?php
 
 use Krauza\Entity\User;
-use Krauza\Policy\IdPolicy;
+use Krauza\ValueObject\EntityId;
 
 class UserTest extends PHPUnit_Framework_TestCase
 {
@@ -22,10 +22,7 @@ class UserTest extends PHPUnit_Framework_TestCase
      */
     public function userShouldBeCreatableWithUserName()
     {
-        $idMock = $this->getMock(IdPolicy::class);
-        $idMock->method('__toString')->willReturn('1');
-
-        $this->user->setId($idMock);
+        $this->user->setId(new EntityId('1'));
         $this->assertEquals($this->userName, $this->user->getName());
         $this->assertEquals('1', $this->user->getId());
     }

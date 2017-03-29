@@ -3,7 +3,7 @@
 namespace Krauza\Entity;
 
 use Krauza\ValueObject\CardWord;
-use Krauza\Policy\IdPolicy;
+use Krauza\ValueObject\EntityId;
 
 class Card implements Entity
 {
@@ -17,7 +17,7 @@ class Card implements Entity
         $this->reverse = $reverse;
     }
 
-    public function setId(IdPolicy $id)
+    public function setId(EntityId $id)
     {
         $this->id = $id;
     }

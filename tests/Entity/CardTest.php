@@ -2,7 +2,7 @@
 
 use Krauza\Entity\Card;
 use Krauza\ValueObject\CardWord;
-use Krauza\Policy\IdPolicy;
+use Krauza\ValueObject\EntityId;
 
 class CardTest extends PHPUnit_Framework_TestCase
 {
@@ -11,11 +11,8 @@ class CardTest extends PHPUnit_Framework_TestCase
      */
     public function ficheShouldBeCreatable()
     {
-        $idMock = $this->getMock(IdPolicy::class);
-        $idMock->method('__toString')->willReturn('1');
-
         $card = new Card(new CardWord('first'), new CardWord('second'));
-        $card->setId($idMock);
+        $card->setId(new EntityId('1'));
 
         $this->assertEquals('first', $card->getObverse());
         $this->assertEquals('second', $card->getReverse());

@@ -2,9 +2,9 @@
 
 namespace Krauza\Entity;
 
+use Krauza\ValueObject\EntityId;
 use Krauza\ValueObject\UserName;
 use Krauza\ValueObject\UserEmail;
-use Krauza\Policy\IdPolicy;
 
 class User implements Entity
 {
@@ -18,7 +18,7 @@ class User implements Entity
         $this->name = $userName;
     }
 
-    public function setId(IdPolicy $id)
+    public function setId(EntityId $id)
     {
         $this->id = $id;
     }
