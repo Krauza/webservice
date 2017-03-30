@@ -31,7 +31,9 @@ class AddNewCardServiceTest extends PHPUnit_Framework_TestCase
 
         $boxService = new AddNewCardService($cardRepositoryMock, $boxRepositoryMock, $idMock);
         $card = $boxService->addNewCard($data);
-        $boxService->addCardToBox($card, new Box());
+
+        $boxMock =$this->getMockBuilder(Box::class)->disableOriginalConstructor()->getMock();
+        $boxService->addCardToBox($card, $boxMock);
 
         $this->assertInstanceOf(Card::class, $card);
     }
