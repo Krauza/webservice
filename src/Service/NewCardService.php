@@ -9,7 +9,7 @@ use Krauza\Policy\IdPolicy;
 use Krauza\Repository\BoxRepository;
 use Krauza\Repository\CardRepository;
 
-class AddNewCardService
+class NewCardService
 {
     private $cardRepository;
     private $boxRepository;

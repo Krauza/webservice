@@ -1,6 +1,6 @@
 <?php
 
-use Krauza\Service\AddNewBoxService;
+use Krauza\Service\NewBoxService;
 use Krauza\Repository\BoxRepository;
 use Krauza\Policy\IdPolicy;
 use Krauza\ValueObject\EntityId;
@@ -25,7 +25,7 @@ class AddNewBoxServiceTest extends PHPUnit_Framework_TestCase
 
         $userMock =$this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();
 
-        $boxService = new AddNewBoxService($boxRepositoryMock, $idMock);
+        $boxService = new NewBoxService($boxRepositoryMock, $idMock);
         $boxService->addNewBox($data, $userMock);
     }
 }

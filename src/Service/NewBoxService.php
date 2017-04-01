@@ -7,7 +7,7 @@ use Krauza\Factory\BoxFactory;
 use Krauza\Policy\IdPolicy;
 use Krauza\Repository\BoxRepository;
 
-class AddNewBoxService
+class NewBoxService
 {
     private $boxRepository;
     private $idPolicy;
