@@ -1,13 +1,13 @@
 <?php
 
-namespace Krauza\Service;
+namespace Krauza\UseCase;
 
 use Krauza\Entity\User;
 use Krauza\Factory\BoxFactory;
 use Krauza\Policy\IdPolicy;
 use Krauza\Repository\BoxRepository;
 
-class CreateBoxService
+class CreateBox
 {
     private $boxRepository;
     private $idPolicy;

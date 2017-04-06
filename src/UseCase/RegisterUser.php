@@ -1,13 +1,13 @@
 <?php
 
-namespace Krauza\Service;
+namespace Krauza\UseCase;
 
 use Krauza\Factory\UserFactory;
 use Krauza\Policy\IdPolicy;
 use Krauza\Policy\PasswordPolicy;
 use Krauza\Repository\UserRepository;
 
-class RegistrationService
+class RegisterUser
 {
     private $userRepository;
     private $passwordPolicy;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Krauza\Service;
+namespace Krauza\UseCase;
 
 use Krauza\Entity\Box;
 use Krauza\Entity\Card;
@@ -9,7 +9,7 @@ use Krauza\Policy\IdPolicy;
 use Krauza\Repository\BoxRepository;
 use Krauza\Repository\CardRepository;
 
-class CreateCardService
+class CreateCard
 {
     private $cardRepository;
     private $boxRepository;

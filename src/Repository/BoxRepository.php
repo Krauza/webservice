@@ -11,4 +11,5 @@ interface BoxRepository
     public function __construct($engine);
     public function add(Box $box, User $user);
     public function addCardToInbox(Box $box, Card $card);
+    public function getCardFromBoxAtSection(Box $box, int $section);
 }
