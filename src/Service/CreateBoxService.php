@@ -7,7 +7,7 @@ use Krauza\Factory\BoxFactory;
 use Krauza\Policy\IdPolicy;
 use Krauza\Repository\BoxRepository;
 
-class NewBoxService
+class CreateBoxService
 {
     private $boxRepository;
     private $idPolicy;
@@ -18,7 +18,7 @@ class NewBoxService
         $this->idPolicy = $idPolicy;
     }
 
-    public function addNewBox(array $data, User $user)
+    public function add(array $data, User $user)
     {
         $card = BoxFactory::createBox($data, $this->idPolicy);
         $this->boxRepository->add($card, $user);

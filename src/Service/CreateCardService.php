@@ -9,7 +9,7 @@ use Krauza\Policy\IdPolicy;
 use Krauza\Repository\BoxRepository;
 use Krauza\Repository\CardRepository;
 
-class NewCardService
+class CreateCardService
 {
     private $cardRepository;
     private $boxRepository;
@@ -22,7 +22,7 @@ class NewCardService
         $this->idPolicy = $idPolicy;
     }
 
-    public function addNewCard(array $data)
+    public function add(array $data)
     {
         $card = CardFactory::createCard($data, $this->idPolicy);
         $this->cardRepository->add($card);
@@ -30,7 +30,7 @@ class NewCardService
         return $card;
     }
 
-    public function addCardToBox(Card $card, Box $box)
+    public function addToBox(Card $card, Box $box)
     {
         $this->boxRepository->addCardToInbox($box, $card);
     }
