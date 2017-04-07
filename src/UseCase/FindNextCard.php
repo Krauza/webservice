@@ -20,7 +20,12 @@ class FindNextCard
 
     public function find(Box $box): Card
     {
-        $this->boxRepository->getCardFromBoxAtSection($box, 1);
+        $currentSection = $box->getCurrentSection();
+        if ($this->boxRepository->getNumberOfCardsInSection($currentSection + 1) >= 100) {
+            $currentSection++;
+        }
+
+        $this->boxRepository->getCardIdFromBoxAtSection($box, $currentSection);
         return $this->cardRepository->get('');
     }
 }
