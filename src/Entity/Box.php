@@ -43,6 +43,11 @@ class Box implements Entity
         return (string) $this->name;
     }
 
+    public function incrementCurrentSection()
+    {
+        $this->section++;
+    }
+
     public function getCurrentSection(): int
     {
         return $this->section;
