@@ -26,13 +26,12 @@ class FindNextCard
     {
         $this->adjustCurrentSection($box);
         $this->adjustFirstSection($box);
+        return $this->getCard($box);
+    }
 
-        $cardId = $this->getCard($box);
-        if ($cardId === null) {
-            return null;
-        }
-
-        return $this->cardRepository->get($cardId);
+    public static function getSectionLimit(int $section): int
+    {
+        return self::SECTION_THRESHOLDS[$section];
     }
 
     private function adjustCurrentSection(Box $box): void
@@ -45,6 +44,25 @@ class FindNextCard
             $box->rewindToFirstSection();
             $this->boxRepository->updateBoxSection($box);
         }
+    }
+
+    private function getCard(Box $box)
+    {
+        $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
+
+        if ($cardId) {
+            return $this->cardRepository->get($cardId);
+        }
+
+        $newSection = $this->boxRepository->getNotEmptySection();
+        if ($newSection === null) {
+            return null;
+        }
+
+        $box->setCurrentSection($newSection);
+        $this->boxRepository->updateBoxSection($box);
+        $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
+        return $this->cardRepository->get($cardId);
     }
 
     private function shouldSkipToNextSection(int $currentSection): bool
@@ -69,11 +87,6 @@ class FindNextCard
         return $numberOfCardsInNextSection >= self::getSectionLimit($nextSection);
     }
 
-    static function getSectionLimit(int $section): int
-    {
-        return self::SECTION_THRESHOLDS[$section];
-    }
-
     private function shouldRewindToFirstSection(int $currentSection): bool
     {
         return $this->boxRepository->getNumberOfCardsInSection($currentSection) < self::getSectionLimit($currentSection) - self::REWIND_LIMIT;
@@ -82,7 +95,6 @@ class FindNextCard
     private function adjustFirstSection(Box $box): void
     {
         $currentSection = $box->getCurrentSection();
-
         if ($this->shouldFillFirstSection($currentSection)) {
             $this->boxRepository->moveCardsFromInboxToFirstSection(self::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
         }
@@ -91,23 +103,5 @@ class FindNextCard
     private function shouldFillFirstSection(int $currentSection): bool
     {
         return $currentSection === 0 && $this->shouldRewindToFirstSection($currentSection);
-    }
-
-    private function getCard(Box $box)
-    {
-        $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
-
-        if ($cardId === null) {
-            $newSection = $this->boxRepository->getNotEmptySection();
-            if ($newSection === null) {
-                return null;
-            }
-
-            $box->setCurrentSection($newSection);
-            $this->boxRepository->updateBoxSection($box);
-            $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
-        }
-
-        return $cardId;
     }
 }
