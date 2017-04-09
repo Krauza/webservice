@@ -53,6 +53,11 @@ class Box implements Entity
         $this->section = 0;
     }
 
+    public function setCurrentSection(int $section)
+    {
+        $this->section = $section;
+    }
+
     public function getCurrentSection(): int
     {
         return $this->section;

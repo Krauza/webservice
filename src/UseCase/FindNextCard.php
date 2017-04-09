@@ -11,6 +11,7 @@ class FindNextCard
 {
     const SECTION_THRESHOLDS = [50, 100, 200, 320, 500];
     const REWIND_LIMIT = 40;
+    const MAX_COUNT_OF_NEW_CARDS_FROM_INBOX = 20;
 
     private $boxRepository;
     private $cardRepository;
@@ -21,11 +22,17 @@ class FindNextCard
         $this->cardRepository = $cardRepository;
     }
 
-    public function find(Box $box): Card
+    public function find(Box $box): ?Card
     {
         $this->adjustCurrentSection($box);
-        $this->boxRepository->getFirstCardFromBoxAtSection($box);
-        return $this->cardRepository->get('');
+        $this->adjustFirstSection($box);
+
+        $cardId = $this->getCard($box);
+        if ($cardId === null) {
+            return null;
+        }
+
+        return $this->cardRepository->get($cardId);
     }
 
     private function adjustCurrentSection(Box $box): void
@@ -70,5 +77,37 @@ class FindNextCard
     private function shouldRewindToFirstSection(int $currentSection): bool
     {
         return $this->boxRepository->getNumberOfCardsInSection($currentSection) < self::getSectionLimit($currentSection) - self::REWIND_LIMIT;
+    }
+
+    private function adjustFirstSection(Box $box): void
+    {
+        $currentSection = $box->getCurrentSection();
+
+        if ($this->shouldFillFirstSection($currentSection)) {
+            $this->boxRepository->moveCardsFromInboxToFirstSection(self::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
+        }
+    }
+
+    private function shouldFillFirstSection(int $currentSection): bool
+    {
+        return $currentSection === 0 && $this->shouldRewindToFirstSection($currentSection);
+    }
+
+    private function getCard(Box $box)
+    {
+        $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
+
+        if ($cardId === null) {
+            $newSection = $this->boxRepository->getNotEmptySection();
+            if ($newSection === null) {
+                return null;
+            }
+
+            $box->setCurrentSection($newSection);
+            $this->boxRepository->updateBoxSection($box);
+            $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
+        }
+
+        return $cardId;
     }
 }

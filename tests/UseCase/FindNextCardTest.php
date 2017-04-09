@@ -3,10 +3,9 @@
 use Krauza\UseCase\FindNextCard;
 use Krauza\Repository\BoxRepository;
 use Krauza\Repository\CardRepository;
-use Krauza\Entity\Card;
 use Krauza\Entity\Box;
 
-class FindNextFicheTest extends PHPUnit_Framework_TestCase
+class FindNextCardTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var PHPUnit_Framework_MockObject_MockObject
@@ -30,14 +29,22 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
         $this->boxMock = $this->getMockBuilder(Box::class)->disableOriginalConstructor()->getMock();
     }
 
+    public function mockGetCard()
+    {
+        $this->boxRepositoryMock->expects($this->once())
+            ->method('getFirstCardFromBoxAtSection')
+            ->with($this->boxMock)
+            ->willReturn('1');
+    }
+
     /**
      * @test
      */
     public function shouldGetNextCardFromCurrentSection()
     {
         $section = 1;
+        $this->mockGetCard();
         $this->boxMock->method('getCurrentSection')->willReturn($section);
-        $this->boxRepositoryMock->expects($this->once())->method('getFirstCardFromBoxAtSection')->with($this->boxMock);
         $this->boxRepositoryMock->expects($this->exactly(2))->method('getNumberOfCardsInSection')->with($this->logicalOr(
             $this->equalTo($section + 1),
             $this->equalTo($section)
@@ -56,10 +63,8 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
     public function shouldGetNextCardFromNextSectionWhenLimitWasExceeded()
     {
         $section = 1;
+        $this->mockGetCard();
         $this->boxMock->method('getCurrentSection')->willReturn(1);
-        $this->boxRepositoryMock->expects($this->once())
-            ->method('getFirstCardFromBoxAtSection')->with($this->equalTo($this->boxMock));
-
         $this->boxRepositoryMock->expects($this->once())
             ->method('getNumberOfCardsInSection')->with($section + 1)
             ->willReturnOnConsecutiveCalls(FindNextCard::getSectionLimit($section + 1));
@@ -78,10 +83,8 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
     public function shouldNotSkipToNextSectionWhenCurrentSectionIsLastAndGetCard()
     {
         $section = 4;
+        $this->mockGetCard();
         $this->boxMock->method('getCurrentSection')->willReturn($section);
-        $this->boxRepositoryMock->expects($this->once())
-            ->method('getFirstCardFromBoxAtSection')->with($this->equalTo($this->boxMock));
-
         $this->boxRepositoryMock->expects($this->once())
             ->method('getNumberOfCardsInSection')->with($section)
             ->willReturnOnConsecutiveCalls(FindNextCard::getSectionLimit($section));
@@ -99,13 +102,11 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
      */
     public function shouldSkipToLastSectionAndGetCard()
     {
+        $this->mockGetCard();
         $this->boxMock->method('getCurrentSection')->willReturn(3);
         $this->boxRepositoryMock->expects($this->once())
-            ->method('getFirstCardFromBoxAtSection')->with($this->equalTo($this->boxMock));
-
-        $this->boxRepositoryMock->expects($this->once())
             ->method('getNumberOfCardsInSection')->with(4)
-            ->willReturnOnConsecutiveCalls(FindNextCard::getSectionLimit(4));
+            ->willReturn(FindNextCard::getSectionLimit(4));
 
         $this->boxMock->expects($this->once())->method('incrementCurrentSection');
         $this->boxRepositoryMock->expects($this->once())
@@ -120,10 +121,8 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
      */
     public function shouldRewindToFirstSectionWhenCountOfCardsInSectionIsNormal()
     {
+        $this->mockGetCard();
         $this->boxMock->method('getCurrentSection')->willReturn(2);
-        $this->boxRepositoryMock->expects($this->once())
-            ->method('getFirstCardFromBoxAtSection')->with($this->equalTo($this->boxMock));
-
         $this->boxRepositoryMock->expects($this->exactly(2))
             ->method('getNumberOfCardsInSection')->with($this->logicalOr(
                 $this->equalTo(3),
@@ -135,6 +134,78 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
         $this->boxRepositoryMock->expects($this->once())
             ->method('updateBoxSection')->with($this->equalTo($this->boxMock));
 
+        $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
+        $findNextCard->find($this->boxMock);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMoveMoreCardsFromInboxWhenFirstSectionIsEmpty()
+    {
+        $this->mockGetCard();
+        $this->boxMock->method('getCurrentSection')->willReturn(0);
+        $this->boxRepositoryMock->expects($this->any())
+            ->method('getNumberOfCardsInSection')->with($this->logicalOr(
+                $this->equalTo(1),
+                $this->equalTo(0)
+            ))
+            ->willReturn(4);
+
+        $this->boxRepositoryMock->expects($this->once())
+            ->method('moveCardsFromInboxToFirstSection')->with(FindNextCard::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
+
+        $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
+        $findNextCard->find($this->boxMock);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullWhenBoxHasNoCards()
+    {
+        $this->boxRepositoryMock->expects($this->once())
+            ->method('getFirstCardFromBoxAtSection')
+            ->with($this->boxMock)
+            ->willReturn(null);
+
+        $this->boxMock->method('getCurrentSection')->willReturn(0);
+        $this->boxRepositoryMock->expects($this->any())
+            ->method('getNumberOfCardsInSection')->with($this->logicalOr(
+                $this->equalTo(1),
+                $this->equalTo(0)
+            ))
+            ->willReturn(4);
+
+        $this->boxRepositoryMock->expects($this->once())->method('getNotEmptySection')->willReturn(null);
+
+        $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
+        $this->assertNull($findNextCard->find($this->boxMock));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSkipToNotEmptySectionWhenCurrentSectionIsEmpty()
+    {
+        $this->boxRepositoryMock->expects($this->any())
+            ->method('getFirstCardFromBoxAtSection')
+            ->with($this->boxMock)
+            ->willReturnOnConsecutiveCalls(null, '1');
+
+        $this->boxMock->method('getCurrentSection')->willReturn(0);
+        $this->boxRepositoryMock->expects($this->any())
+            ->method('getNumberOfCardsInSection')->with($this->logicalOr(
+                $this->equalTo(1),
+                $this->equalTo(0)
+            ))
+            ->willReturn(0);
+
+        $this->boxMock->expects($this->once())->method('setCurrentSection')->with(3);
+        $this->boxRepositoryMock->expects($this->exactly(2))
+            ->method('updateBoxSection')->with($this->equalTo($this->boxMock));
+
+        $this->boxRepositoryMock->expects($this->once())->method('getNotEmptySection')->willReturn(3);
         $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
         $findNextCard->find($this->boxMock);
     }
