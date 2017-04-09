@@ -36,7 +36,7 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
     public function shouldGetNextCardFromFirstSection()
     {
         $this->boxMock->method('getCurrentSection')->willReturn(1);
-        $this->boxRepositoryMock->expects($this->once())->method('getCardIdFromBoxAtSection')->with($this->boxMock, 1);
+        $this->boxRepositoryMock->expects($this->once())->method('getCardIdFromBoxAtSection')->with($this->boxMock);
         $this->boxRepositoryMock->expects($this->once())->method('getNumberOfCardsInSection')->with(2)->willReturn(10);
         $this->boxMock->expects($this->never())->method('incrementCurrentSection');
 
@@ -49,30 +49,28 @@ class FindNextFicheTest extends PHPUnit_Framework_TestCase
      */
     public function shouldGetNextCardFromSecondSectionWhenLimitWasExceeded()
     {
-        $this->boxMock->method('getCurrentSection')->willReturnOnConsecutiveCalls(1, 2, 2, 3, 4);
+        $this->boxMock->method('getCurrentSection')->willReturnOnConsecutiveCalls(0, 1, 2, 2, 3, 4);
 
-        $this->boxRepositoryMock->expects($this->exactly(5))
-            ->method('getCardIdFromBoxAtSection')->with($this->logicalOr(
-                $this->equalTo($this->boxMock, 2),
-                $this->equalTo($this->boxMock, 2),
-                $this->equalTo($this->boxMock, 3),
-                $this->equalTo($this->boxMock, 4),
-                $this->equalTo($this->boxMock, 5)
-            ));
+        $this->boxRepositoryMock->expects($this->exactly(6))
+            ->method('getCardIdFromBoxAtSection')->with($this->equalTo($this->boxMock));
 
         $this->boxRepositoryMock->expects($this->exactly(5))
             ->method('getNumberOfCardsInSection')->with($this->logicalOr(
+                $this->equalTo(1),
                 $this->equalTo(2),
                 $this->equalTo(2),
                 $this->equalTo(3),
                 $this->equalTo(4),
                 $this->equalTo(5)
             ))
-            ->willReturnOnConsecutiveCalls(100, 150, 200, 300, 400);
+            ->willReturnOnConsecutiveCalls(60, 100, 150, 210, 350, 501);
 
         $this->boxMock->expects($this->exactly(4))->method('incrementCurrentSection');
+        $this->boxRepositoryMock->expects($this->exactly(4))
+            ->method('updateBoxSection')->with($this->equalTo($this->boxMock));
 
         $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
+        $findNextCard->find($this->boxMock);
         $findNextCard->find($this->boxMock);
         $findNextCard->find($this->boxMock);
         $findNextCard->find($this->boxMock);

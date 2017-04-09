@@ -9,7 +9,8 @@ use Krauza\Repository\CardRepository;
 
 class FindNextCard
 {
-    const LIMIT_THRESHOLDS = [50, 100, 200, 300, 400, 500];
+    const SECTION_THRESHOLDS = [50, 100, 200, 320, 500];
+    const REWIND_LIMIT = 40;
 
     private $boxRepository;
     private $cardRepository;
@@ -22,14 +23,34 @@ class FindNextCard
 
     public function find(Box $box): Card
     {
-        $currentSection = $box->getCurrentSection();
-        $numberOfCardsInNextSection = $this->boxRepository->getNumberOfCardsInSection($currentSection + 1);
-        if ($numberOfCardsInNextSection >= self::LIMIT_THRESHOLDS[$currentSection] && $numberOfCardsInNextSection < self::LIMIT_THRESHOLDS[$currentSection + 1]) {
+        if ($this->shouldSkipToNextSection($box)) {
             $box->incrementCurrentSection();
-            $currentSection++;
+            $this->boxRepository->updateBoxSection($box);
         }
 
-        $this->boxRepository->getCardIdFromBoxAtSection($box, $currentSection);
+        $this->boxRepository->getCardIdFromBoxAtSection($box);
         return $this->cardRepository->get('');
+    }
+
+    private function shouldSkipToNextSection(Box $box): bool
+    {
+        $currentSection = $box->getCurrentSection();
+        return $this->isNotLastSection($currentSection) && $this->isLimitExceededInNextSection($currentSection);
+    }
+
+    private function isNotLastSection($section): bool
+    {
+        return $section < count(self::SECTION_THRESHOLDS) - 1;
+    }
+
+    private function isLimitExceededInNextSection($section): bool
+    {
+        $numberOfCardsInNextSection = $this->boxRepository->getNumberOfCardsInSection($section + 1);
+        return $numberOfCardsInNextSection >= self::getSectionLimit($section) && $numberOfCardsInNextSection < self::getSectionLimit($section + 1);
+    }
+
+    static function getSectionLimit(int $section): int
+    {
+        return self::SECTION_THRESHOLDS[$section];
     }
 }
