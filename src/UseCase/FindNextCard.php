@@ -27,7 +27,6 @@ class FindNextCard
         if ($numberOfCardsInNextSection >= self::LIMIT_THRESHOLDS[$currentSection] && $numberOfCardsInNextSection < self::LIMIT_THRESHOLDS[$currentSection + 1]) {
             $box->incrementCurrentSection();
             $currentSection++;
-            echo 'aaa';
         }
 
         $this->boxRepository->getCardIdFromBoxAtSection($box, $currentSection);
