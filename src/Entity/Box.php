@@ -7,12 +7,25 @@ use Krauza\ValueObject\EntityId;
 
 class Box implements Entity
 {
+    /**
+     * @var EntityId
+     */
     private $id;
+
+    /**
+     * @var BoxName
+     */
     private $name;
 
-    public function __construct(BoxName $boxName)
+    /**
+     * @var int
+     */
+    private $section;
+
+    public function __construct(BoxName $boxName, int $section = 0)
     {
         $this->name = $boxName;
+        $this->section = $section;
     }
 
     public function setId(EntityId $id)
@@ -22,11 +35,31 @@ class Box implements Entity
 
     public function getId(): string
     {
-        return $this->id;
+        return (string) $this->id;
     }
 
     public function getName(): string
     {
-        return $this->name;
+        return (string) $this->name;
+    }
+
+    public function incrementCurrentSection()
+    {
+        $this->section++;
+    }
+
+    public function rewindToFirstSection()
+    {
+        $this->section = 0;
+    }
+
+    public function setCurrentSection(int $section)
+    {
+        $this->section = $section;
+    }
+
+    public function getCurrentSection(): int
+    {
+        return $this->section;
     }
 }
