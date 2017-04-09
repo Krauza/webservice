@@ -22,7 +22,7 @@ class Box implements Entity
      */
     private $section;
 
-    public function __construct(BoxName $boxName, int $section = 1)
+    public function __construct(BoxName $boxName, int $section = 0)
     {
         $this->name = $boxName;
         $this->section = $section;
@@ -46,6 +46,11 @@ class Box implements Entity
     public function incrementCurrentSection()
     {
         $this->section++;
+    }
+
+    public function rewindToFirstSection()
+    {
+        $this->section = 0;
     }
 
     public function getCurrentSection(): int
