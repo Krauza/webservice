@@ -10,6 +10,7 @@ use Krauza\Repository\CardRepository;
 class FindNextCard
 {
     const SECTION_THRESHOLDS = [50, 100, 200, 320, 500];
+    const LAST_SECTION = 4;
     const REWIND_LIMIT = 40;
     const MAX_COUNT_OF_NEW_CARDS_FROM_INBOX = 20;
 
@@ -72,7 +73,7 @@ class FindNextCard
 
     private function isNotLastSection($section): bool
     {
-        return $section < count(self::SECTION_THRESHOLDS) - 1;
+        return $section < self::LAST_SECTION;
     }
 
     private function isLimitExceededInNextSection($currentSection): bool
