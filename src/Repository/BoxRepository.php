@@ -16,4 +16,7 @@ interface BoxRepository
     public function getNumberOfCardsInSection(int $section);
     public function moveCardsFromInboxToFirstSection(int $numberOfCards);
     public function getNotEmptySection();
+    public function getBoxSectionByCard(Box $box, Card $card): int;
+    public function moveCardBetweenBoxSections(int $fromSection, int $toSection, Box $box, Card $card);
+    public function setCardAsArchived(Box $box, Card $card);
 }
