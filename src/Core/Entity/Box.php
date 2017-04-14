@@ -68,4 +68,9 @@ class Box implements Entity
     {
         return $this->section;
     }
+
+    public static function getSectionLimit(int $section): int
+    {
+        return self::SECTION_THRESHOLDS[$section];
+    }
 }

@@ -9,7 +9,14 @@ use Krauza\Core\Repository\CardRepository;
 
 class FindNextCard
 {
+    /**
+     * @var BoxRepository
+     */
     private $boxRepository;
+
+    /**
+     * @var CardRepository
+     */
     private $cardRepository;
 
     public function __construct(BoxRepository $boxRepository, CardRepository $cardRepository)
@@ -20,26 +27,7 @@ class FindNextCard
 
     public function find(Box $box): ?Card
     {
-        $this->adjustCurrentSection($box);
-        $this->adjustFirstSection($box);
         return $this->getCard($box);
-    }
-
-    public static function getSectionLimit(int $section): int
-    {
-        return Box::SECTION_THRESHOLDS[$section];
-    }
-
-    private function adjustCurrentSection(Box $box): void
-    {
-        $currentSection = $box->getCurrentSection();
-        if ($this->shouldSkipToNextSection($currentSection)) {
-            $box->incrementCurrentSection();
-            $this->boxRepository->updateBoxSection($box);
-        } else if ($this->shouldRewindToFirstSection($currentSection)) {
-            $box->rewindToFirstSection();
-            $this->boxRepository->updateBoxSection($box);
-        }
     }
 
     private function getCard(Box $box)
@@ -59,45 +47,5 @@ class FindNextCard
         $this->boxRepository->updateBoxSection($box);
         $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
         return $this->cardRepository->get($cardId);
-    }
-
-    private function shouldSkipToNextSection(int $currentSection): bool
-    {
-        return $this->isNotLastSection($currentSection) && $this->isLimitExceededInNextSection($currentSection);
-    }
-
-    private function isNotLastSection($section): bool
-    {
-        return $section < Box::LAST_SECTION;
-    }
-
-    private function isLimitExceededInNextSection($currentSection): bool
-    {
-        $nextSection = $currentSection + 1;
-        $numberOfCardsInNextSection = $this->boxRepository->getNumberOfCardsInSection($nextSection);
-        return $this->isAboveLimit($numberOfCardsInNextSection, $nextSection);
-    }
-
-    private function isAboveLimit($numberOfCardsInNextSection, $nextSection)
-    {
-        return $numberOfCardsInNextSection >= self::getSectionLimit($nextSection);
-    }
-
-    private function shouldRewindToFirstSection(int $currentSection): bool
-    {
-        return $this->boxRepository->getNumberOfCardsInSection($currentSection) < self::getSectionLimit($currentSection) - Box::REWIND_LIMIT;
-    }
-
-    private function adjustFirstSection(Box $box): void
-    {
-        $currentSection = $box->getCurrentSection();
-        if ($this->shouldFillFirstSection($currentSection)) {
-            $this->boxRepository->moveCardsFromInboxToFirstSection(Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
-        }
-    }
-
-    private function shouldFillFirstSection(int $currentSection): bool
-    {
-        return $currentSection === 0 && $this->shouldRewindToFirstSection($currentSection);
     }
 }

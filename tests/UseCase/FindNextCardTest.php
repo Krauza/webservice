@@ -138,26 +138,7 @@ class FindNextCardTest extends PHPUnit_Framework_TestCase
         $findNextCard->find($this->boxMock);
     }
 
-    /**
-     * @test
-     */
-    public function shouldMoveMoreCardsFromInboxWhenFirstSectionIsEmpty()
-    {
-        $this->mockGetCard();
-        $this->boxMock->method('getCurrentSection')->willReturn(0);
-        $this->boxRepositoryMock->expects($this->any())
-            ->method('getNumberOfCardsInSection')->with($this->logicalOr(
-                $this->equalTo(1),
-                $this->equalTo(0)
-            ))
-            ->willReturn(4);
 
-        $this->boxRepositoryMock->expects($this->once())
-            ->method('moveCardsFromInboxToFirstSection')->with(Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
-
-        $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
-        $findNextCard->find($this->boxMock);
-    }
 
     /**
      * @test
