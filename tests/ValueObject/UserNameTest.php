@@ -1,6 +1,6 @@
 <?php
 
-use Krauza\ValueObject\UserName;
+use Krauza\Core\ValueObject\UserName;
 
 class UserNameTest extends PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,7 @@ class UserNameTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueHasWrongChars
+     * @expectedException Krauza\Core\Exception\ValueHasWrongChars
      */
     public function shouldThrowExceptionWhenUserNameHaveOtherCharsThanAlphaNumeric()
     {
@@ -25,7 +25,7 @@ class UserNameTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueIsTooShort
+     * @expectedException Krauza\Core\Exception\ValueIsTooShort
      */
     public function shouldThrowExceptionWhenUserNameHaveNotEnoughChars()
     {
@@ -34,7 +34,7 @@ class UserNameTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueIsTooLong
+     * @expectedException Krauza\Core\Exception\ValueIsTooLong
      */
     public function shouldThrowExceptionWhenUserNameIsTooLong()
     {

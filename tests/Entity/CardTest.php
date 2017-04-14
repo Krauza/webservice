@@ -1,8 +1,8 @@
 <?php
 
-use Krauza\Entity\Card;
-use Krauza\ValueObject\CardWord;
-use Krauza\ValueObject\EntityId;
+use Krauza\Core\Entity\Card;
+use Krauza\Core\ValueObject\CardWord;
+use Krauza\Core\ValueObject\EntityId;
 
 class CardTest extends PHPUnit_Framework_TestCase
 {

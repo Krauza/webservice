@@ -1,12 +1,12 @@
 <?php
 
-use Krauza\UseCase\CreateCard;
-use Krauza\Repository\CardRepository;
-use Krauza\Entity\Card;
-use Krauza\Policy\IdPolicy;
-use Krauza\ValueObject\EntityId;
-use Krauza\Repository\BoxRepository;
-use Krauza\Entity\Box;
+use Krauza\Core\UseCase\CreateCard;
+use Krauza\Core\Repository\CardRepository;
+use Krauza\Core\Entity\Card;
+use Krauza\Core\Policy\IdPolicy;
+use Krauza\Core\ValueObject\EntityId;
+use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Entity\Box;
 
 class AddNewCardServiceTest extends PHPUnit_Framework_TestCase
 {

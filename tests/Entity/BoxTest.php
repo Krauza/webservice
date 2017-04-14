@@ -1,8 +1,8 @@
 <?php
 
-use Krauza\Entity\Box;
-use Krauza\ValueObject\BoxName;
-use Krauza\ValueObject\EntityId;
+use Krauza\Core\Entity\Box;
+use Krauza\Core\ValueObject\BoxName;
+use Krauza\Core\ValueObject\EntityId;
 
 class BoxTest extends PHPUnit_Framework_TestCase
 {

@@ -1,9 +1,9 @@
 <?php
 
-use Krauza\UseCase\FindNextCard;
-use Krauza\Repository\BoxRepository;
-use Krauza\Repository\CardRepository;
-use Krauza\Entity\Box;
+use Krauza\Core\UseCase\FindNextCard;
+use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\CardRepository;
+use Krauza\Core\Entity\Box;
 
 class FindNextCardTest extends PHPUnit_Framework_TestCase
 {

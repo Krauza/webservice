@@ -1,6 +1,6 @@
 <?php
 
-use Krauza\ValueObject\BoxName;
+use Krauza\Core\ValueObject\BoxName;
 
 class BoxNameTest extends PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,7 @@ class BoxNameTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueIsTooShort
+     * @expectedException Krauza\Core\Exception\ValueIsTooShort
      */
     public function shouldThrowExceptionWhenBoxNameHaveNotEnoughChars()
     {
@@ -25,7 +25,7 @@ class BoxNameTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueIsTooLong
+     * @expectedException Krauza\Core\Exception\ValueIsTooLong
      */
     public function shouldThrowExceptionBoxUserNameIsTooLong()
     {

@@ -1,6 +1,6 @@
 <?php
 
-use Krauza\ValueObject\UserEmail;
+use Krauza\Core\ValueObject\UserEmail;
 
 class UserEmailTest extends PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,7 @@ class UserEmailTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueHasWrongFormat
+     * @expectedException Krauza\Core\Exception\ValueHasWrongFormat
      */
     public function shouldThrowExceptionWhenEmailAddressHasNotLocalPart()
     {
@@ -25,7 +25,7 @@ class UserEmailTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueHasWrongFormat
+     * @expectedException Krauza\Core\Exception\ValueHasWrongFormat
      */
     public function shouldThrowExceptionWhenEmailAddressHasWrongExtensionPart()
     {
@@ -34,7 +34,7 @@ class UserEmailTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueHasWrongFormat
+     * @expectedException Krauza\Core\Exception\ValueHasWrongFormat
      */
     public function shouldThrowExceptionWhenEmailAddressHasNotDomainPart()
     {
@@ -43,7 +43,7 @@ class UserEmailTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueHasWrongFormat
+     * @expectedException Krauza\Core\Exception\ValueHasWrongFormat
      */
     public function shouldThrowExceptionWhenEmailAddressHasNotAt()
     {

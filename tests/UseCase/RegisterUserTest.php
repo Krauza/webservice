@@ -1,9 +1,9 @@
 <?php
 
-use Krauza\UseCase\RegisterUser;
-use Krauza\Repository\UserRepository;
-use Krauza\Policy\IdPolicy;
-use Krauza\ValueObject\EntityId;
+use Krauza\Core\UseCase\RegisterUser;
+use Krauza\Core\Repository\UserRepository;
+use Krauza\Core\Policy\IdPolicy;
+use Krauza\Core\ValueObject\EntityId;
 
 class RegistrationServiceTest extends PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,7 @@ class RegistrationServiceTest extends PHPUnit_Framework_TestCase
         $userRepositoryMock = $this->getMock(UserRepository::class);
         $userRepositoryMock->expects($this->once())->method('add');
 
-        $passwordMock = $this->getMock(Krauza\Policy\PasswordPolicy::class);
+        $passwordMock = $this->getMock(Krauza\Core\Policy\PasswordPolicy::class);
 
         $registrationService = new RegisterUser($userRepositoryMock, $passwordMock, $idMock);
         $registrationService->register($data);

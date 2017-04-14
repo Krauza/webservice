@@ -1,9 +1,9 @@
 <?php
 
-use Krauza\Entity\Card;
-use Krauza\Factory\CardFactory;
-use Krauza\Policy\IdPolicy;
-use Krauza\ValueObject\EntityId;
+use Krauza\Core\Entity\Card;
+use Krauza\Core\Factory\CardFactory;
+use Krauza\Core\Policy\IdPolicy;
+use Krauza\Core\ValueObject\EntityId;
 
 class CardFactoryTest extends PHPUnit_Framework_TestCase
 {

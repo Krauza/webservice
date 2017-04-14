@@ -1,9 +1,9 @@
 <?php
 
-use Krauza\UseCase\AddAnswer;
-use Krauza\Repository\BoxRepository;
-use Krauza\Entity\Box;
-use Krauza\Entity\Card;
+use Krauza\Core\UseCase\AddAnswer;
+use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Entity\Box;
+use Krauza\Core\Entity\Card;
 
 class AddAnswerTest extends PHPUnit_Framework_TestCase
 {

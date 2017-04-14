@@ -1,7 +1,7 @@
 <?php
 
-use Krauza\Entity\User;
-use Krauza\ValueObject\EntityId;
+use Krauza\Core\Entity\User;
+use Krauza\Core\ValueObject\EntityId;
 
 class UserTest extends PHPUnit_Framework_TestCase
 {
@@ -12,7 +12,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->userName = 'name';
-        $this->userNameStub = $this->createStub(Krauza\ValueObject\UserName::class, $this->userName);
+        $this->userNameStub = $this->createStub(Krauza\Core\ValueObject\UserName::class, $this->userName);
         $this->user = new User($this->userNameStub);
         $this->user->setPassword('pass');
     }
@@ -33,7 +33,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function userShouldHavePossibilityToSetEmail()
     {
         $userEmail = 'test@test.test';
-        $userMailStub = $this->createStub(Krauza\ValueObject\UserEmail::class, $userEmail);
+        $userMailStub = $this->createStub(Krauza\Core\ValueObject\UserEmail::class, $userEmail);
 
         $this->user->setEmail($userMailStub);
         $this->assertEquals($userEmail, $this->user->getEmail());

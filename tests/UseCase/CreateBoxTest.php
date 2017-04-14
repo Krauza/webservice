@@ -1,10 +1,10 @@
 <?php
 
-use Krauza\UseCase\CreateBox;
-use Krauza\Repository\BoxRepository;
-use Krauza\Policy\IdPolicy;
-use Krauza\ValueObject\EntityId;
-use Krauza\Entity\User;
+use Krauza\Core\UseCase\CreateBox;
+use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Policy\IdPolicy;
+use Krauza\Core\ValueObject\EntityId;
+use Krauza\Core\Entity\User;
 
 class CreateBoxTest extends PHPUnit_Framework_TestCase
 {

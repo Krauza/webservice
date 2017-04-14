@@ -1,6 +1,6 @@
 <?php
 
-use Krauza\ValueObject\CardWord;
+use Krauza\Core\ValueObject\CardWord;
 
 class CardWordTest extends PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,7 @@ class CardWordTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueIsTooShort
+     * @expectedException Krauza\Core\Exception\ValueIsTooShort
      */
     public function shouldThrowExceptionWhenWordCardIsEmpty()
     {
@@ -25,7 +25,7 @@ class CardWordTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueIsTooShort
+     * @expectedException Krauza\Core\Exception\ValueIsTooShort
      */
     public function shouldThrowExceptionWhenWordCardIsTooShort()
     {
@@ -34,7 +34,7 @@ class CardWordTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Krauza\Exception\ValueIsTooLong
+     * @expectedException Krauza\Core\Exception\ValueIsTooLong
      */
     public function shouldThrowExceptionWhenWordIsTooLong()
     {

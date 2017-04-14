@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeclimate/php-test-reporter.git",
-                "reference": "8d60fccff8475b1f95e80c6d49166ac038366675"
+                "reference": "3cea87608673a5e4fab212da8d9e8ba1d377d946"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/8d60fccff8475b1f95e80c6d49166ac038366675",
-                "reference": "8d60fccff8475b1f95e80c6d49166ac038366675",
+                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/3cea87608673a5e4fab212da8d9e8ba1d377d946",
+                "reference": "3cea87608673a5e4fab212da8d9e8ba1d377d946",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 "codeclimate",
                 "coverage"
             ],
-            "time": "2017-03-28T15:33:00+00:00"
+            "time": "2017-04-10T16:12:53+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -218,16 +218,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe"
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5a5a9fc8025a08d8919be87d6884d5a92520cefe",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-01-26T22:05:40+00:00"
+            "time": "2017-04-12T18:52:22+00:00"
         },
         {
             "name": "padraic/humbug_get_contents",

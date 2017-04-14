@@ -1,9 +1,9 @@
 <?php
 
-use Krauza\Entity\User;
-use Krauza\Factory\UserFactory;
-use Krauza\Policy\IdPolicy;
-use Krauza\ValueObject\EntityId;
+use Krauza\Core\Entity\User;
+use Krauza\Core\Factory\UserFactory;
+use Krauza\Core\Policy\IdPolicy;
+use Krauza\Core\ValueObject\EntityId;
 
 class UserFactoryTest extends PHPUnit_Framework_TestCase
 {
@@ -14,7 +14,7 @@ class UserFactoryTest extends PHPUnit_Framework_TestCase
     {
         $idMock = $this->getMock(IdPolicy::class);
         $idMock->method('generate')->willReturn(new EntityId('1'));
-        $passwordMock = $this->getMock(Krauza\Policy\PasswordPolicy::class);
+        $passwordMock = $this->getMock(Krauza\Core\Policy\PasswordPolicy::class);
         $data = [
             'name' => 'User',
             'email' => 'test@test.test'
