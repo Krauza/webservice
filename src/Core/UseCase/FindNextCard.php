@@ -9,11 +9,6 @@ use Krauza\Core\Repository\CardRepository;
 
 class FindNextCard
 {
-    const SECTION_THRESHOLDS = [50, 100, 200, 320, 500];
-    const LAST_SECTION = 4;
-    const REWIND_LIMIT = 40;
-    const MAX_COUNT_OF_NEW_CARDS_FROM_INBOX = 20;
-
     private $boxRepository;
     private $cardRepository;
 
@@ -32,7 +27,7 @@ class FindNextCard
 
     public static function getSectionLimit(int $section): int
     {
-        return self::SECTION_THRESHOLDS[$section];
+        return Box::SECTION_THRESHOLDS[$section];
     }
 
     private function adjustCurrentSection(Box $box): void
@@ -73,7 +68,7 @@ class FindNextCard
 
     private function isNotLastSection($section): bool
     {
-        return $section < self::LAST_SECTION;
+        return $section < Box::LAST_SECTION;
     }
 
     private function isLimitExceededInNextSection($currentSection): bool
@@ -90,14 +85,14 @@ class FindNextCard
 
     private function shouldRewindToFirstSection(int $currentSection): bool
     {
-        return $this->boxRepository->getNumberOfCardsInSection($currentSection) < self::getSectionLimit($currentSection) - self::REWIND_LIMIT;
+        return $this->boxRepository->getNumberOfCardsInSection($currentSection) < self::getSectionLimit($currentSection) - Box::REWIND_LIMIT;
     }
 
     private function adjustFirstSection(Box $box): void
     {
         $currentSection = $box->getCurrentSection();
         if ($this->shouldFillFirstSection($currentSection)) {
-            $this->boxRepository->moveCardsFromInboxToFirstSection(self::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
+            $this->boxRepository->moveCardsFromInboxToFirstSection(Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
         }
     }
 

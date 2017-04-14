@@ -128,7 +128,7 @@ class FindNextCardTest extends PHPUnit_Framework_TestCase
                 $this->equalTo(3),
                 $this->equalTo(2)
             ))
-            ->willReturnOnConsecutiveCalls(20, FindNextCard::getSectionLimit(2) - (FindNextCard::REWIND_LIMIT + 1));
+            ->willReturnOnConsecutiveCalls(20, FindNextCard::getSectionLimit(2) - (Box::REWIND_LIMIT + 1));
 
         $this->boxMock->expects($this->once())->method('rewindToFirstSection');
         $this->boxRepositoryMock->expects($this->once())
@@ -153,7 +153,7 @@ class FindNextCardTest extends PHPUnit_Framework_TestCase
             ->willReturn(4);
 
         $this->boxRepositoryMock->expects($this->once())
-            ->method('moveCardsFromInboxToFirstSection')->with(FindNextCard::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
+            ->method('moveCardsFromInboxToFirstSection')->with(Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
 
         $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
         $findNextCard->find($this->boxMock);

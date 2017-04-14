@@ -17,8 +17,8 @@ class AddAnswer
     {
         $fromSection = $this->boxRepository->getBoxSectionByCard($box, $card);
 
-        if ($fromSection < 4) {
-            $toSection = $isCorrectAnswer ? $fromSection + 1 : 0;
+        if ($fromSection < Box::LAST_SECTION) {
+            $toSection = $isCorrectAnswer ? $fromSection + 1 : Box::FIRST_SECTION;
             $this->boxRepository->moveCardBetweenBoxSections($fromSection, $toSection, $box, $card);
         } else {
             $this->boxRepository->setCardAsArchived($box, $card);
