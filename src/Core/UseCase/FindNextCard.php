@@ -27,11 +27,6 @@ class FindNextCard
 
     public function find(Box $box): ?Card
     {
-        return $this->getCard($box);
-    }
-
-    private function getCard(Box $box)
-    {
         $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
 
         if ($cardId) {

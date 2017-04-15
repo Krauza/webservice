@@ -1,9 +1,8 @@
 <?php
 
-use Krauza\Core\UseCase\FindNextCard;
 use Krauza\Core\Repository\BoxRepository;
-use Krauza\Core\Repository\CardRepository;
 use Krauza\Core\Entity\Box;
+use Krauza\Core\UseCase\AdjustFirstSection;
 
 class AdjustFirstSectionTest extends PHPUnit_Framework_TestCase
 {
@@ -23,20 +22,11 @@ class AdjustFirstSectionTest extends PHPUnit_Framework_TestCase
         $this->boxMock = $this->getMockBuilder(Box::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function mockGetCard()
-    {
-        $this->boxRepositoryMock->expects($this->once())
-            ->method('getFirstCardFromBoxAtSection')
-            ->with($this->boxMock)
-            ->willReturn('1');
-    }
-
     /**
      * @test
      */
     public function shouldMoveMoreCardsFromInboxWhenFirstSectionIsEmpty()
     {
-        $this->mockGetCard();
         $this->boxMock->method('getCurrentSection')->willReturn(0);
         $this->boxRepositoryMock->expects($this->any())
             ->method('getNumberOfCardsInSection')->with($this->logicalOr(
@@ -48,7 +38,7 @@ class AdjustFirstSectionTest extends PHPUnit_Framework_TestCase
         $this->boxRepositoryMock->expects($this->once())
             ->method('moveCardsFromInboxToFirstSection')->with(Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
 
-        $findNextCard = new FindNextCard($this->boxRepositoryMock, $this->cardRepositoryMock);
-        $findNextCard->find($this->boxMock);
+        $adjustFirstSection = new AdjustFirstSection($this->boxRepositoryMock);
+        $adjustFirstSection->adjust($this->boxMock);
     }
 }
