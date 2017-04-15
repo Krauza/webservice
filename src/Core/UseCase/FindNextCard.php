@@ -27,20 +27,11 @@ class FindNextCard
 
     public function find(Box $box): ?Card
     {
-        $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
-
-        if ($cardId) {
-            return $this->cardRepository->get($cardId);
-        }
-
-        $newSection = $this->boxRepository->getNotEmptySection();
-        if ($newSection === null) {
+        $cardId = $this->boxRepository->getFirstCardFromBoxAtCurrentSection($box);
+        if (!$cardId) {
             return null;
         }
 
-        $box->setCurrentSection($newSection);
-        $this->boxRepository->updateBoxSection($box);
-        $cardId = $this->boxRepository->getFirstCardFromBoxAtSection($box);
         return $this->cardRepository->get($cardId);
     }
 }

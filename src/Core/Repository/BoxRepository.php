@@ -12,7 +12,7 @@ interface BoxRepository
     public function add(Box $box, User $user);
     public function addCardToInbox(Box $box, Card $card);
     public function updateBoxSection(Box $box);
-    public function getFirstCardFromBoxAtSection(Box $box);
+    public function getFirstCardFromBoxAtCurrentSection(Box $box);
     public function getNumberOfCardsInSection(int $section);
     public function moveCardsFromInboxToFirstSection(int $numberOfCards);
     public function getNotEmptySection();

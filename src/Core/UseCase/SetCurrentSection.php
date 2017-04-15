@@ -5,7 +5,7 @@ namespace Krauza\Core\UseCase;
 use Krauza\Core\Entity\Box;
 use Krauza\Core\Repository\BoxRepository;
 
-class AdjustCurrentSection
+class SetCurrentSection
 {
     /**
      * @var BoxRepository
@@ -25,6 +25,16 @@ class AdjustCurrentSection
             $this->boxRepository->updateBoxSection($box);
         } else if ($this->shouldRewindToFirstSection($currentSection)) {
             $box->rewindToFirstSection();
+            $this->boxRepository->updateBoxSection($box);
+        }
+
+        if ($this->currentSectionIsEmpty($box)) {
+            $newSection = $this->boxRepository->getNotEmptySection();
+            if ($newSection === null) {
+                return;
+            }
+
+            $box->setCurrentSection($newSection);
             $this->boxRepository->updateBoxSection($box);
         }
     }
@@ -54,5 +64,10 @@ class AdjustCurrentSection
     private function shouldRewindToFirstSection(int $currentSection): bool
     {
         return $this->boxRepository->getNumberOfCardsInSection($currentSection) < Box::getSectionLimit($currentSection) - Box::REWIND_LIMIT;
+    }
+
+    private function currentSectionIsEmpty(Box $box)
+    {
+        return $this->boxRepository->getNumberOfCardsInSection($box->getCurrentSection()) === 0;
     }
 }
