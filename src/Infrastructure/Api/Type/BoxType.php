@@ -11,8 +11,14 @@ class BoxType extends ObjectType
     {
         $config = [
             'fields' => [
-                'id' => Type::string(),
-                'name' => Type::string()
+                'id' => [
+                    'type' => Type::string(),
+                    'description' => 'The id of the box'
+                ],
+                'name' => [
+                    'type' => Type::string(),
+                    'description' => 'The name of the box'
+                ]
             ]
         ];
 
