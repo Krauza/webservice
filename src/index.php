@@ -20,7 +20,8 @@ $variableValues = isset($data['variables']) ? $data['variables'] : null;
 try {
     // Define your schema:
     $schema = new Schema([
-        'query' => TypeRegistry::getQueryType()
+        'query' => TypeRegistry::getQueryType(),
+        'mutation' => TypeRegistry::getMutationType()
     ]);
     $result = GraphQL::execute(
         $schema,
