@@ -9,6 +9,6 @@ class UniqueId implements IdPolicy
 {
     public function generate(): EntityId
     {
-        return uniqid();
+        return new EntityId(uniqid());
     }
 }

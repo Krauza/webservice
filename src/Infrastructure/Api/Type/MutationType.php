@@ -4,6 +4,7 @@ namespace Krauza\Infrastructure\Api\Type;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use Krauza\Infrastructure\Api\Action\CreateBox;
 use Krauza\Infrastructure\Api\TypeRegistry;
 
 class MutationType extends ObjectType
@@ -18,8 +19,8 @@ class MutationType extends ObjectType
                     'args' => [
                         'name' => Type::string()
                     ],
-                    'resolve' => function () {
-                        // action
+                    'resolve' => function ($rootValue, $args, $context) {
+                        return CreateBox::action($rootValue, $args, $context);
                     }
                 ]
             ]

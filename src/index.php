@@ -17,9 +17,9 @@ $container = new Container();
 $container['database_connection'] = function () {
     $config = new Configuration();
     $connectionParams = [
-        'dbname' => 'mydb',
-        'user' => 'user',
-        'password' => 'secret',
+        'dbname' => 'krauza',
+        'user' => 'root',
+        'password' => 'root',
         'host' => 'localhost',
         'driver' => 'pdo_mysql',
     ];
