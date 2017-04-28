@@ -2,6 +2,6 @@
 
 namespace Krauza\Core\Exception;
 
-class ValueIsTooShort extends \Exception
+class ValueIsTooShort extends FieldException
 {
 }

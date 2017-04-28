@@ -2,6 +2,6 @@
 
 namespace Krauza\Core\Exception;
 
-class ValueHasWrongChars extends \Exception
+class ValueHasWrongChars extends FieldException
 {
 }

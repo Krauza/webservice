@@ -9,14 +9,17 @@ class CreateBox
 {
     public static function action($rootValue, $args, $context)
     {
+        $response = ['box' => null, 'errors' => []];
+        $boxRepository = new BoxRepository($context['database_connection']);
+        $createBox = new CreateBoxUseCase($boxRepository, $context['id_policy']);
+
         try {
-            $boxRepository = new BoxRepository($context['database_connection']);
-            $createBox = new CreateBoxUseCase($boxRepository, $context['id_policy']);
-            $createBox->add($args, $context['current_user']);
+            $box = $createBox->add($args, $context['current_user']);
+            $response['box'] = ['id' => $box->getId(), 'name' => $box->getName()];
         } catch (\Exception $e) {
-            file_put_contents('php://stderr', $e);
+            array_push($response['errors'], ['key' => 'error', 'message' => $e->getMessage()]);
         }
 
-        return ['id' => 'test', 'name' => 'super test name'];
+        return $response;
     }
 }

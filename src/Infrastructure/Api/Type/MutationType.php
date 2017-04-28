@@ -15,9 +15,12 @@ class MutationType extends ObjectType
             'name' => 'Mutation',
             'fields' => [
                 'createBox' => [
-                    'type' => TypeRegistry::getBoxType(),
+                    'type' => TypeRegistry::getCreateBoxType(),
                     'args' => [
-                        'name' => Type::string()
+                        'name' => [
+                            'type' => Type::string(),
+                            'description' => 'Name of the box'
+                        ]
                     ],
                     'resolve' => function ($rootValue, $args, $context) {
                         return CreateBox::action($rootValue, $args, $context);

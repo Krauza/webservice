@@ -2,6 +2,7 @@
 
 namespace Krauza\Core\UseCase;
 
+use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\User;
 use Krauza\Core\Factory\BoxFactory;
 use Krauza\Core\Policy\IdPolicy;
@@ -18,9 +19,11 @@ class CreateBox
         $this->idPolicy = $idPolicy;
     }
 
-    public function add(array $data, User $user)
+    public function add(array $data, User $user): Box
     {
-        $card = BoxFactory::createBox($data, $this->idPolicy);
-        $this->boxRepository->add($card, $user);
+        $box = BoxFactory::createBox($data, $this->idPolicy);
+        $this->boxRepository->add($box, $user);
+
+        return $box;
     }
 }
