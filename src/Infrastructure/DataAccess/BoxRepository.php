@@ -21,7 +21,12 @@ final class BoxRepository implements IBoxRepository
 
     public function add(Box $box, User $user)
     {
-        $this->engine->insert('box', ['id' => $box->getId(), 'name' => $box->getName(), 'section' => $box->getCurrentSection()]);
+        $this->engine->insert('box', [
+            'id' => $box->getId(),
+            'name' => $box->getName(),
+            'section' => $box->getCurrentSection(),
+            'user_id' => $user->getId()
+        ]);
     }
 
     public function addCardToInbox(Box $box, Card $card)
