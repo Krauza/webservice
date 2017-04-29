@@ -2,7 +2,19 @@
 
 namespace Krauza\Core\Exception;
 
-class FieldException extends \Exception
+abstract class FieldException extends \Exception
 {
-    protected $message = 'Field is incorrect';
+    protected $fieldName;
+    protected $message;
+
+    public function __construct($field, $message)
+    {
+        $this->fieldName = $field;
+        $this->message = $message;
+    }
+
+    public function getFieldName()
+    {
+        return $this->fieldName;
+    }
 }

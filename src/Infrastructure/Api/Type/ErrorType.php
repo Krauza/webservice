@@ -11,6 +11,10 @@ class ErrorType extends ObjectType
     {
         $config = [
             'fields' => [
+                'errorType' => [
+                    'type' => Type::string(),
+                    'description' => 'The type of the error (infrastructure issue or breaking the domain contract)'
+                ],
                 'key' => [
                     'type' => Type::string(),
                     'description' => 'The key of the error'
