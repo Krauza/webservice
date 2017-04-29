@@ -17,11 +17,11 @@ class CardWord
         $cardWordLength = strlen($cardWord);
 
         if ($cardWordLength < self::MIN_WORD_LENGTH) {
-            throw new ValueIsTooShort;
+            throw new ValueIsTooShort((new \ReflectionClass($this))->getShortName());
         }
 
         if ($cardWordLength > self::MAX_WORD_LENGTH) {
-            throw new ValueIsTooLong;
+            throw new ValueIsTooLong((new \ReflectionClass($this))->getShortName());
         }
 
         $this->cardWord = $cardWord;

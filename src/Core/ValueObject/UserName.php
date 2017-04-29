@@ -25,7 +25,7 @@ class UserName
     private function checkUserNameChars($userName)
     {
         if (preg_match(self::ALLOWED_CHARS, $userName)) {
-            throw new ValueHasWrongChars;
+            throw new ValueHasWrongChars((new \ReflectionClass($this))->getShortName());
         }
     }
 
@@ -34,11 +34,11 @@ class UserName
         $nameLength = strlen($userName);
 
         if ($nameLength < self::MIN_NAME_LENGTH) {
-            throw new ValueIsTooShort;
+            throw new ValueIsTooShort((new \ReflectionClass($this))->getShortName());
         }
 
         if ($nameLength > self::MAX_NAME_LENGTH) {
-            throw new ValueIsTooLong;
+            throw new ValueIsTooLong((new \ReflectionClass($this))->getShortName());
         }
     }
 

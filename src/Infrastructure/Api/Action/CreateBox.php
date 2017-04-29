@@ -2,37 +2,49 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
+use Krauza\Core\Entity\User;
 use Krauza\Core\Exception\FieldException;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
+use Pimple\Container;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class CreateBox
 {
-    public static function action(array $data, $context): array
+    /**
+     * @var CreateBoxUseCase
+     */
+    private $boxUseCase;
+
+    /**
+     * @var User
+     */
+    private $currentUser;
+
+    public function __construct(Container $container)
+    {
+        $boxRepository = new BoxRepository($container['database_connection']);
+        $this->boxUseCase = new CreateBoxUseCase($boxRepository, $container['id_policy']);
+        $this->currentUser = $container['current_user'];
+    }
+
+    public function action(array $data): array
     {
         $box = null;
         $errors = [];
-        $boxRepository = new BoxRepository($context['database_connection']);
-        $createBox = new CreateBoxUseCase($boxRepository, $context['id_policy']);
 
         try {
-            $box = $createBox->add($data, $context['current_user']);
+            $box = $this->boxUseCase->add($data, $this->currentUser);
         } catch (FieldException $exception) {
-            array_push($errors, static::buildError('fieldException', $exception->getFieldName(), $exception->getMessage()));
+            array_push($errors, $this->buildError('fieldException', $exception->getFieldName(), $exception->getMessage()));
         } catch (Exception $exception) {
-            array_push($errors, static::buildError('infrastructureException', '', 'Something went wrong, try again.'));
+            array_push($errors, $this->buildError('infrastructureException', '', 'Something went wrong, try again.'));
         }
 
-        return static::buildResponse($box, $errors);
-    }
-
-    private static function buildResponse($box, $errors): array
-    {
         return ['box' => $box, 'errors' => $errors];
     }
 
-    private static function buildError(string $type, string $key, string $message): array
+    private function buildError(string $type, string $key, string $message): array
     {
         return ['errorType' => $type, 'key' => $key, 'message' => $message];
     }

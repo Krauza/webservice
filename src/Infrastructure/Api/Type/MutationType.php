@@ -23,7 +23,8 @@ class MutationType extends ObjectType
                         ]
                     ],
                     'resolve' => function ($rootValue, $args, $context) {
-                        return CreateBox::action($args, $context);
+                        $createBox = new CreateBox($context);
+                        return $createBox->action($args);
                     }
                 ]
             ]

@@ -13,7 +13,7 @@ class UserEmail
     public function __construct(string $email)
     {
         if (!preg_match(self::EMAIL_PATTERN, $email)) {
-            throw new ValueHasWrongFormat();
+            throw new ValueHasWrongFormat((new \ReflectionClass($this))->getShortName());
         }
 
         $this->userEmail = $email;

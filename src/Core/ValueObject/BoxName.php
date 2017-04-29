@@ -24,11 +24,11 @@ class BoxName
         $nameLength = strlen($boxName);
 
         if ($nameLength < self::MIN_NAME_LENGTH) {
-            throw new ValueIsTooShort;
+            throw new ValueIsTooShort((new \ReflectionClass($this))->getShortName());
         }
 
         if ($nameLength > self::MAX_NAME_LENGTH) {
-            throw new ValueIsTooLong;
+            throw new ValueIsTooLong((new \ReflectionClass($this))->getShortName());
         }
     }
 
