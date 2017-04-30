@@ -3,9 +3,10 @@
 use Krauza\Core\Policy\IdPolicy;
 use Krauza\Core\ValueObject\EntityId;
 use Krauza\Core\Entity\User;
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
 use Krauza\Infrastructure\Api\Action\CreateBox;
+use Doctrine\DBAL\Connection;
 
 class CreateBoxActionTest extends PHPUnit_Framework_TestCase
 {
@@ -21,10 +22,11 @@ class CreateBoxActionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $boxRepositoryMock = $this->getMock(BoxRepository::class);
         $this->idPolicyMock = $this->getMock(IdPolicy::class);
         $this->idPolicyMock->method('generate')->willReturn(new EntityId('1'));
         $userMock = $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();
+        $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $boxRepositoryMock = new BoxRepository($connectionMock);
         $boxUseCase = new CreateBoxUseCase($boxRepositoryMock, $this->idPolicyMock);
         $this->createBoxAction = new CreateBox($boxUseCase, $userMock);
     }

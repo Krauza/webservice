@@ -18,7 +18,6 @@ class BoxName
         $this->boxName = $boxName;
     }
 
-
     private function checkBoxNameLength($boxName)
     {
         $nameLength = strlen($boxName);
