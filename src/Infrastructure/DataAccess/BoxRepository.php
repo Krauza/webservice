@@ -73,4 +73,9 @@ final class BoxRepository implements IBoxRepository
     {
         // TODO: Implement setCardAsArchived() method.
     }
+
+    public function getById(string $id): Box
+    {
+        // TODO: Implement getById() method.
+    }
 }

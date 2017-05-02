@@ -2,7 +2,9 @@
 
 namespace Krauza\Infrastructure\Api;
 
+use Krauza\Infrastructure\Api\Type\CardType;
 use Krauza\Infrastructure\Api\Type\CreateBoxType;
+use Krauza\Infrastructure\Api\Type\CreateCardType;
 use Krauza\Infrastructure\Api\Type\ErrorType;
 use Krauza\Infrastructure\Api\Type\MutationType;
 use Krauza\Infrastructure\Api\Type\QueryType;
@@ -15,6 +17,8 @@ class TypeRegistry
     private static $mutationType;
     private static $errorType;
     private static $createBoxType;
+    private static $cardType;
+    private static $createCardType;
 
     public static function getQueryType(): QueryType
     {
@@ -31,6 +35,11 @@ class TypeRegistry
         return self::$boxType ?: (self::$boxType = new BoxType);
     }
 
+    public static function getCardType(): CardType
+    {
+        return self::$cardType ?: (self::$cardType = new CardType);
+    }
+
     public static function getErrorType(): ErrorType
     {
         return self::$errorType ?: (self::$errorType = new ErrorType);
@@ -39,5 +48,10 @@ class TypeRegistry
     public static function getCreateBoxType(): CreateBoxType
     {
         return self::$createBoxType ?: (self::$createBoxType = new CreateBoxType);
+    }
+
+    public static function getCreateCardType(): CreateCardType
+    {
+        return self::$createCardType ?: (self::$createCardType = new CreateCardType);
     }
 }
