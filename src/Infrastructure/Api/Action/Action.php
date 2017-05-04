@@ -12,10 +12,10 @@ abstract class Action
 
     abstract public function action(array $data): array;
 
-    protected function tryDoAction($callback): void
+    protected function tryDoAction(callable $actionFn): void
     {
         try {
-            $this->result = $callback();
+            $this->result = $actionFn();
         } catch (FieldException $exception) {
             $this->error = ErrorType::buildArray('fieldException', $exception->getFieldName(), $exception->getMessage());
         } catch (\Exception $exception) {
