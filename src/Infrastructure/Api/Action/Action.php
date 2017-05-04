@@ -3,6 +3,7 @@
 namespace Krauza\Infrastructure\Api\Action;
 
 use Krauza\Core\Exception\FieldException;
+use Krauza\Infrastructure\Api\Type\ErrorType;
 
 abstract class Action
 {
@@ -16,14 +17,9 @@ abstract class Action
         try {
             $this->result = $callback();
         } catch (FieldException $exception) {
-            $this->buildError('fieldException', $exception->getFieldName(), $exception->getMessage());
+            $this->error = ErrorType::buildArray('fieldException', $exception->getFieldName(), $exception->getMessage());
         } catch (\Exception $exception) {
-            $this->buildError('infrastructureException', '', 'Something went wrong, try again.');
+            $this->error = ErrorType::buildArray('infrastructureException', '', 'Something went wrong, try again.');
         }
-    }
-
-    protected function buildError(string $type, string $key, string $message): void
-    {
-        $this->error = ['errorType' => $type, 'key' => $key, 'message' => $message];
     }
 }

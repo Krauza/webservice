@@ -6,7 +6,7 @@ use Krauza\Core\Entity\User;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
 use Krauza\Infrastructure\Api\Type\BoxType;
 
-class CreateBox extends Action
+final class CreateBox extends Action
 {
     /**
      * @var CreateBoxUseCase

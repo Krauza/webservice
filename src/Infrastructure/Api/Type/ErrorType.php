@@ -28,4 +28,13 @@ class ErrorType extends ObjectType
 
         parent::__construct($config);
     }
+
+    public static function buildArray($errorType, $key, $message): array
+    {
+        return [
+            'errorType' => $errorType,
+            'key' => $key,
+            'message' => $message
+        ];
+    }
 }

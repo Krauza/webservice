@@ -4,6 +4,7 @@ namespace Krauza\Infrastructure\Api\Type;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use Krauza\Core\Entity\Card;
 
 class CardType extends ObjectType
 {
@@ -27,5 +28,14 @@ class CardType extends ObjectType
         ];
 
         parent::__construct($config);
+    }
+
+    public static function objectToArray(Card $card): array
+    {
+        return [
+            'id' => $card->getId(),
+            'obverse' => $card->getObverse(),
+            'reverse' => $card->getReverse()
+        ];
     }
 }

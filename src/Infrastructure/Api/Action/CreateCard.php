@@ -7,7 +7,7 @@ use Krauza\Core\Entity\Box;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
 use Krauza\Infrastructure\Api\Type\BoxType;
 
-class CreateCard extends Action
+final class CreateCard extends Action
 {
     /**
      * @var CreateCardUseCase
