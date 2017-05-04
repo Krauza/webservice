@@ -9,6 +9,9 @@ use Krauza\Core\Repository\BoxRepository as IBoxRepository;
 
 final class BoxRepository implements IBoxRepository
 {
+    private const TABLE_NAME = 'card';
+    private const TABLE_BOX_CARD = 'box_card';
+
     /**
      * @var \Doctrine\DBAL\Connection
      */
@@ -21,7 +24,7 @@ final class BoxRepository implements IBoxRepository
 
     public function add(Box $box, User $user)
     {
-        $this->engine->insert('box', [
+        $this->engine->insert(self::TABLE_NAME, [
             'id' => $box->getId(),
             'name' => $box->getName(),
             'section' => $box->getCurrentSection(),
@@ -31,7 +34,10 @@ final class BoxRepository implements IBoxRepository
 
     public function addCardToInbox(Box $box, Card $card)
     {
-        // TODO: Implement addCardToInbox() method.
+        $this->engine->insert(self::TABLE_BOX_CARD, [
+            'box_id' => $box->getId(),
+            'card_id' => $card->getId()
+        ]);
     }
 
     public function updateBoxSection(Box $box)

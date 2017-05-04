@@ -4,6 +4,7 @@ namespace Krauza\Infrastructure\Api\Type;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use Krauza\Core\Entity\Box;
 
 class BoxType extends ObjectType
 {
@@ -23,5 +24,10 @@ class BoxType extends ObjectType
         ];
 
         parent::__construct($config);
+    }
+
+    public static function objectToArray(Box $box)
+    {
+        return ['id' => $box->getId(), 'name' => $box->getName()];
     }
 }

@@ -5,6 +5,7 @@ namespace Krauza\Infrastructure\Api\Action;
 use Krauza\Core\Entity\User;
 use Krauza\Core\Exception\FieldException;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
+use Krauza\Infrastructure\Api\Type\BoxType;
 
 class CreateBox
 {
@@ -31,7 +32,7 @@ class CreateBox
 
         try {
             $newBox = $this->boxUseCase->add($data, $this->currentUser);
-            $box = ['id' => $newBox->getId(), 'name' => $newBox->getName()];
+            $box = BoxType::objectToArray($newBox);
         } catch (FieldException $exception) {
             $error = $this->buildError('fieldException', $exception->getFieldName(), $exception->getMessage());
         } catch (\Exception $exception) {
