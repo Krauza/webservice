@@ -9,6 +9,8 @@ abstract class Action
     protected $result;
     protected $error;
 
+    abstract public function action(array $data): array;
+
     protected function tryDoAction($callback): void
     {
         try {
