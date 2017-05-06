@@ -1,7 +1,7 @@
 <?php
 
 use Krauza\Core\UseCase\AddAnswer;
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
 
@@ -29,7 +29,7 @@ class AddAnswerTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->boxRepositoryMock = $this->getMock(BoxRepository::class);
+        $this->boxRepositoryMock = $this->getMock(BoxSectionsRepository::class);
         $this->boxMock = $this->getMockBuilder(Box::class)->disableOriginalConstructor()->getMock();
         $this->cardMock = $this->getMockBuilder(Card::class)->disableOriginalConstructor()->getMock();
         $this->addAnswer = new AddAnswer($this->boxRepositoryMock);
@@ -42,7 +42,7 @@ class AddAnswerTest extends PHPUnit_Framework_TestCase
     {
         $this->boxRepositoryMock->expects($this->once())->method('getBoxSectionByCard')->willReturn(0);
         $this->boxRepositoryMock->expects($this->once())->method('moveCardBetweenBoxSections')
-            ->with(0, 1, $this->boxMock, $this->cardMock);
+            ->with($this->boxMock, $this->cardMock, 0, 1);
 
         $this->addAnswer->answer(true, $this->boxMock, $this->cardMock);
     }
@@ -54,7 +54,7 @@ class AddAnswerTest extends PHPUnit_Framework_TestCase
     {
         $this->boxRepositoryMock->expects($this->once())->method('getBoxSectionByCard')->willReturn(3);
         $this->boxRepositoryMock->expects($this->once())->method('moveCardBetweenBoxSections')
-            ->with(3, 0, $this->boxMock, $this->cardMock);
+            ->with($this->boxMock, $this->cardMock, 3, 0);
 
         $this->addAnswer->answer(false, $this->boxMock, $this->cardMock);
     }

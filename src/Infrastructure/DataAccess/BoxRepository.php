@@ -6,10 +6,12 @@ use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
 use Krauza\Core\Entity\User;
 use Krauza\Core\Repository\BoxRepository as IBoxRepository;
+use Krauza\Core\ValueObject\BoxName;
+use Krauza\Core\ValueObject\EntityId;
 
 final class BoxRepository implements IBoxRepository
 {
-    private const TABLE_NAME = 'card';
+    private const TABLE_NAME = 'box';
     private const TABLE_BOX_CARD = 'box_card';
 
     /**
@@ -42,7 +44,7 @@ final class BoxRepository implements IBoxRepository
 
     public function updateBoxSection(Box $box)
     {
-        // TODO: Implement updateBoxSection() method.
+        $this->engine->update(self::TABLE_NAME, ['section' => $box->getCurrentSection()], ['id' => $box->getId()]);
     }
 
     public function getFirstCardFromBoxAtCurrentSection(Box $box)
@@ -82,6 +84,16 @@ final class BoxRepository implements IBoxRepository
 
     public function getById(string $id): Box
     {
-        // TODO: Implement getById() method.
+        $stmt = $this->engine->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE id = :id");
+        $stmt->bindValue('id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        $boxName = new BoxName($result['name']);
+        $id = new EntityId($result['id']);
+        $box = new Box($boxName, $result['section']);
+        $box->setId($id);
+
+        return $box;
     }
 }

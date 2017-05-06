@@ -4,6 +4,7 @@ namespace Krauza\Infrastructure\DataAccess;
 
 use Krauza\Core\Entity\Card;
 use Krauza\Core\Repository\CardRepository as ICardRepository;
+use Krauza\Core\ValueObject\CardWord;
 
 final class CardRepository implements ICardRepository
 {
@@ -30,6 +31,16 @@ final class CardRepository implements ICardRepository
 
     public function get(string $id): Card
     {
-        // TODO: Implement get() method.
+        $stmt = $this->engine->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE id = :id");
+        $stmt->bindValue('id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        $obverse = new CardWord($result['obverse']);
+        $reverse = new CardWord($result['reverse']);
+        $card = new Card($obverse, $reverse);
+        $card->setId($result['id']);
+
+        return $card;
     }
 }

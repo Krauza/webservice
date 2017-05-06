@@ -4,30 +4,30 @@ namespace Krauza\Core\UseCase;
 
 use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 use Krauza\Core\Repository\CardRepository;
 
 class FindNextCard
 {
     /**
-     * @var BoxRepository
+     * @var BoxSectionsRepository
      */
-    private $boxRepository;
+    private $boxSectionsRepository;
 
     /**
      * @var CardRepository
      */
     private $cardRepository;
 
-    public function __construct(BoxRepository $boxRepository, CardRepository $cardRepository)
+    public function __construct(BoxSectionsRepository $boxSectionsRepository, CardRepository $cardRepository)
     {
-        $this->boxRepository = $boxRepository;
+        $this->boxSectionsRepository = $boxSectionsRepository;
         $this->cardRepository = $cardRepository;
     }
 
     public function find(Box $box): ?Card
     {
-        $cardId = $this->boxRepository->getFirstCardFromBoxAtCurrentSection($box);
+        $cardId = $this->boxSectionsRepository->getFirstCardFromBoxAtCurrentSection($box);
         if (!$cardId) {
             return null;
         }

@@ -3,25 +3,25 @@
 namespace Krauza\Core\UseCase;
 
 use Krauza\Core\Entity\Box;
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 
 class AdjustFirstSection
 {
     /**
-     * @var BoxRepository
+     * @var BoxSectionsRepository
      */
-    private $boxRepository;
+    private $boxSectionsRepository;
 
-    public function __construct(BoxRepository $boxRepository)
+    public function __construct(BoxSectionsRepository $boxSectionsRepository)
     {
-        $this->boxRepository = $boxRepository;
+        $this->boxSectionsRepository = $boxSectionsRepository;
     }
 
     public function adjust(Box $box): void
     {
         $currentSection = $box->getCurrentSection();
         if ($this->shouldFillFirstSection($currentSection, $box)) {
-            $this->boxRepository->moveCardsFromInboxToFirstSection(Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
+            $this->boxSectionsRepository->moveCardsFromInboxToFirstSection($box, Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
         }
     }
 
@@ -32,6 +32,6 @@ class AdjustFirstSection
 
     private function firstSectionIsEmpty(Box $box): bool
     {
-        return $this->boxRepository->getNumberOfCardsInSection(Box::FIRST_SECTION) < Box::getSectionLimit(Box::FIRST_SECTION) - Box::REWIND_LIMIT;
+        return $this->boxSectionsRepository->getNumberOfCardsInSection($box, Box::FIRST_SECTION) < Box::getSectionLimit(Box::FIRST_SECTION) - Box::REWIND_LIMIT;
     }
 }

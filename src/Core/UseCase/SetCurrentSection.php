@@ -4,6 +4,7 @@ namespace Krauza\Core\UseCase;
 
 use Krauza\Core\Entity\Box;
 use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 
 class SetCurrentSection
 {
@@ -12,24 +13,30 @@ class SetCurrentSection
      */
     private $boxRepository;
 
-    public function __construct(BoxRepository $boxRepository)
+    /**
+     * @var BoxSectionsRepository
+     */
+    private $boxSectionsRepository;
+
+    public function __construct(BoxRepository $boxRepository, BoxSectionsRepository $boxSectionsRepository)
     {
         $this->boxRepository = $boxRepository;
+        $this->boxSectionsRepository = $boxSectionsRepository;
     }
 
     public function adjust(Box $box): void
     {
         $currentSection = $box->getCurrentSection();
-        if ($this->shouldSkipToNextSection($currentSection)) {
+        if ($this->shouldSkipToNextSection($box, $currentSection)) {
             $box->incrementCurrentSection();
             $this->boxRepository->updateBoxSection($box);
-        } else if ($this->shouldRewindToFirstSection($currentSection)) {
+        } else if ($this->shouldRewindToFirstSection($box, $currentSection)) {
             $box->rewindToFirstSection();
             $this->boxRepository->updateBoxSection($box);
         }
 
-        if ($this->currentSectionIsEmpty($box)) {
-            $newSection = $this->boxRepository->getNotEmptySection();
+        if ($this->isCurrentSectionEmpty($box)) {
+            $newSection = $this->boxSectionsRepository->getNotEmptySection();
             if ($newSection === null) {
                 return;
             }
@@ -39,9 +46,9 @@ class SetCurrentSection
         }
     }
 
-    private function shouldSkipToNextSection(int $currentSection): bool
+    private function shouldSkipToNextSection(Box $box, int $currentSection): bool
     {
-        return $this->isNotLastSection($currentSection) && $this->isLimitExceededInNextSection($currentSection);
+        return $this->isNotLastSection($currentSection) && $this->isLimitExceededInNextSection($box, $currentSection);
     }
 
     private function isNotLastSection($section): bool
@@ -49,10 +56,10 @@ class SetCurrentSection
         return $section < Box::LAST_SECTION;
     }
 
-    private function isLimitExceededInNextSection($currentSection): bool
+    private function isLimitExceededInNextSection(Box $box, $currentSection): bool
     {
         $nextSection = $currentSection + 1;
-        $numberOfCardsInNextSection = $this->boxRepository->getNumberOfCardsInSection($nextSection);
+        $numberOfCardsInNextSection = $this->boxSectionsRepository->getNumberOfCardsInSection($box, $nextSection);
         return $this->isAboveLimit($numberOfCardsInNextSection, $nextSection);
     }
 
@@ -61,13 +68,13 @@ class SetCurrentSection
         return $numberOfCardsInNextSection >= Box::getSectionLimit($nextSection);
     }
 
-    private function shouldRewindToFirstSection(int $currentSection): bool
+    private function shouldRewindToFirstSection(Box $box, int $currentSection): bool
     {
-        return $this->boxRepository->getNumberOfCardsInSection($currentSection) < Box::getSectionLimit($currentSection) - Box::REWIND_LIMIT;
+        return $this->boxSectionsRepository->getNumberOfCardsInSection($box, $currentSection) < Box::getSectionLimit($currentSection) - Box::REWIND_LIMIT;
     }
 
-    private function currentSectionIsEmpty(Box $box)
+    private function isCurrentSectionEmpty(Box $box)
     {
-        return $this->boxRepository->getNumberOfCardsInSection($box->getCurrentSection()) === 0;
+        return $this->boxSectionsRepository->getNumberOfCardsInSection($box, $box->getCurrentSection()) === 0;
     }
 }

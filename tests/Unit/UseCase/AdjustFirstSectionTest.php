@@ -1,6 +1,6 @@
 <?php
 
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 use Krauza\Core\Entity\Box;
 use Krauza\Core\UseCase\AdjustFirstSection;
 
@@ -18,7 +18,7 @@ class AdjustFirstSectionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->boxRepositoryMock = $this->getMock(BoxRepository::class);
+        $this->boxRepositoryMock = $this->getMock(BoxSectionsRepository::class);
         $this->boxMock = $this->getMockBuilder(Box::class)->disableOriginalConstructor()->getMock();
     }
 
@@ -29,14 +29,11 @@ class AdjustFirstSectionTest extends PHPUnit_Framework_TestCase
     {
         $this->boxMock->method('getCurrentSection')->willReturn(0);
         $this->boxRepositoryMock->expects($this->any())
-            ->method('getNumberOfCardsInSection')->with($this->logicalOr(
-                $this->equalTo(1),
-                $this->equalTo(0)
-            ))
+            ->method('getNumberOfCardsInSection')
             ->willReturn(4);
 
         $this->boxRepositoryMock->expects($this->once())
-            ->method('moveCardsFromInboxToFirstSection')->with(Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
+            ->method('moveCardsFromInboxToFirstSection')->with($this->boxMock, Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
 
         $adjustFirstSection = new AdjustFirstSection($this->boxRepositoryMock);
         $adjustFirstSection->adjust($this->boxMock);

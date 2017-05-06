@@ -7,7 +7,7 @@ use GraphQL\Type\Definition\Type;
 use Krauza\Infrastructure\Api\Action\CreateBox;
 use Krauza\Infrastructure\Api\Action\CreateCard;
 use Krauza\Infrastructure\Api\TypeRegistry;
-use Krauza\Infrastructure\DataAccess\BoxRepository;
+use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
@@ -51,7 +51,7 @@ class MutationType extends ObjectType
                         ]
                     ],
                     'resolve' => function ($rootValue, $args, $context) {
-                        $boxRepository = new BoxRepository($context['database_connection']);
+                        $boxRepository = new BoxSectionsRepository($context['database_connection']);
                         $cardRepository = new CardRepository($context['database_connection']);
                         $cardUseCase = new CreateCardUseCase($cardRepository, $boxRepository, $context['id_policy']);
                         $createCard = new CreateCard($cardUseCase, $boxRepository->getById($args['box_id']));

@@ -5,7 +5,7 @@ require __DIR__ . '/../../Utils/StringBuilder.php';
 use Krauza\Core\Policy\IdPolicy;
 use Krauza\Core\ValueObject\EntityId;
 use Krauza\Infrastructure\DataAccess\CardRepository;
-use Krauza\Infrastructure\DataAccess\BoxRepository;
+use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
 use Krauza\Infrastructure\Api\Action\CreateCard;
 use Krauza\Core\Factory\BoxFactory;
@@ -30,7 +30,7 @@ class CreateCardActionTest extends PHPUnit_Framework_TestCase
 
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
         $cardRepository = new CardRepository($connectionMock);
-        $boxRepository = new BoxRepository($connectionMock);
+        $boxRepository = new BoxSectionsRepository($connectionMock);
         $cardUseCase = new CreateCardUseCase($cardRepository, $boxRepository, $this->idPolicyMock);
 
         $box = BoxFactory::createBox(['name' => 'Box name', 'id' => '1'], $this->idPolicyMock);

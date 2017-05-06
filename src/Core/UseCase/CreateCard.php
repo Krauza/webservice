@@ -6,19 +6,19 @@ use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
 use Krauza\Core\Factory\CardFactory;
 use Krauza\Core\Policy\IdPolicy;
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 use Krauza\Core\Repository\CardRepository;
 
 class CreateCard
 {
     private $cardRepository;
-    private $boxRepository;
+    private $boxSectionsRepository;
     private $idPolicy;
 
-    public function __construct(CardRepository $cardRepository, BoxRepository $boxRepository, IdPolicy $idPolicy)
+    public function __construct(CardRepository $cardRepository, BoxSectionsRepository $boxSectionsRepository, IdPolicy $idPolicy)
     {
         $this->cardRepository = $cardRepository;
-        $this->boxRepository = $boxRepository;
+        $this->boxSectionsRepository = $boxSectionsRepository;
         $this->idPolicy = $idPolicy;
     }
 
@@ -32,6 +32,6 @@ class CreateCard
 
     public function addToBox(Card $card, Box $box)
     {
-        $this->boxRepository->addCardToInbox($box, $card);
+        $this->boxSectionsRepository->addCardToInbox($box, $card);
     }
 }

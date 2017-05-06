@@ -5,7 +5,7 @@ use Krauza\Core\Repository\CardRepository;
 use Krauza\Core\Entity\Card;
 use Krauza\Core\Policy\IdPolicy;
 use Krauza\Core\ValueObject\EntityId;
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 use Krauza\Core\Entity\Box;
 
 class AddNewCardServiceTest extends PHPUnit_Framework_TestCase
@@ -26,7 +26,7 @@ class AddNewCardServiceTest extends PHPUnit_Framework_TestCase
         $cardRepositoryMock = $this->getMock(CardRepository::class);
         $cardRepositoryMock->expects($this->once())->method('add');
 
-        $boxRepositoryMock = $this->getMock(BoxRepository::class);
+        $boxRepositoryMock = $this->getMock(BoxSectionsRepository::class);
         $boxRepositoryMock->expects($this->once())->method('addCardToInbox');
 
         $boxService = new CreateCard($cardRepositoryMock, $boxRepositoryMock, $idMock);

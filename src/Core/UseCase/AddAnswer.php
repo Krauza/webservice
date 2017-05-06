@@ -4,11 +4,16 @@ namespace Krauza\Core\UseCase;
 
 use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
-use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\BoxSectionsRepository;
 
 class AddAnswer
 {
-    public function __construct(BoxRepository $boxRepository)
+    /**
+     * @var BoxSectionsRepository
+     */
+    private $boxRepository;
+
+    public function __construct(BoxSectionsRepository $boxRepository)
     {
         $this->boxRepository = $boxRepository;
     }
@@ -19,7 +24,7 @@ class AddAnswer
 
         if ($fromSection < Box::LAST_SECTION) {
             $toSection = $isCorrectAnswer ? $fromSection + 1 : Box::FIRST_SECTION;
-            $this->boxRepository->moveCardBetweenBoxSections($fromSection, $toSection, $box, $card);
+            $this->boxRepository->moveCardBetweenBoxSections($box, $card, $fromSection, $toSection);
         } else {
             $this->boxRepository->setCardAsArchived($box, $card);
         }
