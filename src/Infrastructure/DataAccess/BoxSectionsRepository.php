@@ -30,7 +30,19 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
 
     public function getFirstCardFromBoxAtCurrentSection(Box $box): ?card
     {
-        // TODO: Implement getFirstCardFromBoxAtCurrentSection() method.
+        $sql = 'SELECT card_id FROM :tableName WHERE box_id = :box_id AND card_section = :current_section ORDER BY modified_date';
+        $result = $this->engine->fetchAssoc($sql, [
+            ':tableName' => self::TABLE_NAME,
+            ':box_id' => $box->getId(),
+            ':current_section' => $box->getCurrentSection()
+        ]);
+
+        if (empty($result)) {
+            return null;
+        }
+
+        $cardRepository = new CardRepository($this->engine);
+        return $cardRepository->get($result);
     }
 
     public function getNumberOfCardsInSection(Box $box, int $section): int
@@ -50,12 +62,17 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
 
     public function getBoxSectionByCard(Box $box, Card $card): int
     {
-        // TODO: Implement getBoxSectionByCard() method.
+        $sql = 'SELECT card_section FROM :tableName WHERE card_id = :card_id AND box_id = :box_id';
+        return $this->engine->fetchAssoc($sql, [
+            ':tableName' => self::TABLE_NAME,
+            ':box_id' => $box->getId(),
+            ':card_id' => $box->getId()
+        ]);
     }
 
     public function moveCardBetweenBoxSections(Box $box, Card $card, int $fromSection, int $toSection): void
     {
-        // TODO: Implement moveCardBetweenBoxSections() method.
+        $this->engine->update(self::TABLE_NAME, ['card_section' => $toSection], ['box_id' => $box->getId(), 'card_id' => $card->getId()]);
     }
 
     public function setCardAsArchived(Box $box, Card $card): void
