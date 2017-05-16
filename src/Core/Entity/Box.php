@@ -8,8 +8,10 @@ use Krauza\Core\ValueObject\EntityId;
 class Box implements Entity
 {
     const SECTION_THRESHOLDS = [50, 100, 200, 320, 500];
+    const INBOX = -1;
     const FIRST_SECTION = 0;
     const LAST_SECTION = 4;
+    const ARCHIVED = 5;
     const REWIND_LIMIT = 40;
     const MAX_COUNT_OF_NEW_CARDS_FROM_INBOX = 20;
 

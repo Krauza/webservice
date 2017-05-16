@@ -27,14 +27,14 @@ final class BoxRepository implements IBoxRepository
         $this->engine->insert(self::TABLE_NAME, [
             'id' => $box->getId(),
             'name' => $box->getName(),
-            'section' => $box->getCurrentSection(),
+            'current_section' => $box->getCurrentSection(),
             'user_id' => $user->getId()
         ]);
     }
 
     public function updateBoxSection(Box $box)
     {
-        $this->engine->update(self::TABLE_NAME, ['section' => $box->getCurrentSection()], ['id' => $box->getId()]);
+        $this->engine->update(self::TABLE_NAME, ['current_section' => $box->getCurrentSection()], ['id' => $box->getId()]);
     }
 
     public function getById(string $id): Box
@@ -46,7 +46,7 @@ final class BoxRepository implements IBoxRepository
 
         $boxName = new BoxName($result['name']);
         $id = new EntityId($result['id']);
-        $box = new Box($boxName, $result['section']);
+        $box = new Box($boxName, $result['current_section']);
         $box->setId($id);
 
         return $box;

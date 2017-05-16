@@ -33,7 +33,7 @@ class AdjustFirstSectionTest extends PHPUnit_Framework_TestCase
             ->willReturn(4);
 
         $this->boxRepositoryMock->expects($this->once())
-            ->method('moveCardsFromInboxToFirstSection')->with($this->boxMock, Box::MAX_COUNT_OF_NEW_CARDS_FROM_INBOX);
+            ->method('moveCardsFromInboxToFirstSection')->with($this->boxMock);
 
         $adjustFirstSection = new AdjustFirstSection($this->boxRepositoryMock);
         $adjustFirstSection->adjust($this->boxMock);

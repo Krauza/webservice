@@ -36,7 +36,7 @@ class SetCurrentSection
         }
 
         if ($this->isCurrentSectionEmpty($box)) {
-            $newSection = $this->boxSectionsRepository->getNotEmptySection();
+            $newSection = $this->boxSectionsRepository->getNotEmptySection($box);
             if ($newSection === null) {
                 return;
             }

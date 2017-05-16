@@ -122,7 +122,7 @@ class SetCurrentSectionTest extends PHPUnit_Framework_TestCase
         $this->boxRepositoryMock->expects($this->exactly(2))
             ->method('updateBoxSection')->with($this->equalTo($this->boxMock));
 
-        $this->boxSectionsRepositoryMock->expects($this->once())->method('getNotEmptySection')->willReturn(3);
+        $this->boxSectionsRepositoryMock->expects($this->once())->method('getNotEmptySection')->with($this->boxMock)->willReturn(3);
 
         $adjustCurrentSection = new SetCurrentSection($this->boxRepositoryMock, $this->boxSectionsRepositoryMock);
         $adjustCurrentSection->adjust($this->boxMock);

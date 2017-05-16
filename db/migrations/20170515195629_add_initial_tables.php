@@ -31,7 +31,7 @@ class AddInitialTables extends AbstractMigration
             ->addIndex(['id'], ['unique' => true])
             ->addColumn('user_id', 'string')
             ->addColumn('name', 'string')
-            ->addColumn('section', 'integer')
+            ->addColumn('current_section', 'integer')
             ->save();
     }
 
@@ -47,10 +47,11 @@ class AddInitialTables extends AbstractMigration
 
     private function addBoxCardTable()
     {
-        $table = $this->table('box', ['id' => false, 'primary_key' => 'id']);
+        $table = $this->table('box_card', ['id' => false]);
 
         $table->addColumn('box_id', 'string')
             ->addColumn('card_id', 'string')
+            ->addColumn('card_section', 'integer')
             ->save();
     }
 }
