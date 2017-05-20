@@ -1,37 +1,4 @@
-<header id="header">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 overflow">
-        <div class="social-icons pull-right">
-          <ul class="nav nav-pills">
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="navbar navbar-inverse" role="banner">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
-        <a class="navbar-brand" href="/">
-          <h1>Krauza</h1>
-        </a>
-      </div>
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="/">Home</a></li>
-          <li><a href="/">Boxes</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</header>
+<app-header></app-header>
 
 <section id="page-breadcrumb">
   <div class="vertical-center sun">
@@ -54,16 +21,8 @@
 
 <section>
   <div class="container">
-
+    <router-outlet></router-outlet>
   </div>
 </section>
 
-<footer id="footer">
-  <div class="container">
-    <div class="col-sm-12">
-      <div class="copyright-text text-center">
-        <p>&copy; Krauza</p>
-      </div>
-    </div>
-  </div>
-</footer>
+<app-footer></app-footer>
