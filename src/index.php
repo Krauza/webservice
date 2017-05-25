@@ -13,6 +13,10 @@ use Krauza\Infrastructure\Policy\UniqueId;
 
 use Pimple\Container;
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 $container = new Container();
 $container['database_connection'] = function () {
     $config = new Configuration();

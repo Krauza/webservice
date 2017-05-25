@@ -11,21 +11,25 @@ const getBoxes = gql`
   }
 `;
 
+interface BoxesReponse {
+  boxes
+}
+
 @Component({
   selector: 'app-boxes',
   templateUrl: './boxes.component.html',
   styleUrls: ['./boxes.component.scss']
 })
 export class BoxesComponent implements OnInit {
+  private boxes = [];
 
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
-    this.apollo.watchQuery({
+    this.apollo.watchQuery<BoxesReponse>({
       query: getBoxes
     }).subscribe(({data}) => {
-      console.log(data);
+      this.boxes = data.boxes;
     });
   }
-
 }
