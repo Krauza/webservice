@@ -7,6 +7,7 @@ use GraphQL\Type\Definition\Type;
 use Krauza\Infrastructure\Api\Action\CreateBox;
 use Krauza\Infrastructure\Api\Action\CreateCard;
 use Krauza\Infrastructure\Api\TypeRegistry;
+use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;

@@ -30,7 +30,10 @@ $container['id_policy'] = function () {
     return new UniqueId();
 };
 $container['current_user'] = function () {
-    return new \Krauza\Core\Entity\User(new \Krauza\Core\ValueObject\UserName('test'));
+    $user = new \Krauza\Core\Entity\User(new \Krauza\Core\ValueObject\UserName('test'));
+    $user->setId(new \Krauza\Core\ValueObject\EntityId('test'));
+
+    return $user;
 };
 
 if (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] === 'application/json') {

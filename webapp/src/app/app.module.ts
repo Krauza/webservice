@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
+import { ApolloClient } from 'apollo-client';
+import { ApolloModule } from 'apollo-angular';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -18,6 +20,12 @@ const appRoutes: Routes = [
   { path: '**', component: PageNotFoundComponent }
 ];
 
+const client = new ApolloClient();
+
+export function provideClient() : ApolloClient {
+  return client;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +40,8 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    ApolloModule.forRoot(provideClient)
   ],
   providers: [],
   bootstrap: [AppComponent]

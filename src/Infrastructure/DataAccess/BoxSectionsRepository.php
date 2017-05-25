@@ -70,7 +70,7 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
     public function getNotEmptySection(Box $box): ?int
     {
         $sql = 'SELECT card_section FROM :tableName WHERE box_id = :box_id AND card_section BETWEEN :firstSection AND :lastSection LIMIT 1';
-        $this->engine->fetchAssoc($sql, [
+        return $this->engine->fetchAssoc($sql, [
             ':tableName' => self::TABLE_NAME,
             ':box_id' => $box->getId(),
             ':firstSection' => Box::FIRST_SECTION,

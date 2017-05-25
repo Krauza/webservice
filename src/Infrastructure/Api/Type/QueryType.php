@@ -20,6 +20,15 @@ class QueryType extends ObjectType
         $config = [
             'name' => 'Query',
             'fields' => [
+                'boxes' => [
+                    'type' => Type::listOf(TypeRegistry::getBoxType()),
+                    'resolve' => function ($rootValue, $args, $context) {
+                        $boxRepository = new BoxRepository($context['database_connection']);
+                        return array_map(function ($box) {
+                            return BoxType::objectToArray($box);
+                        }, $boxRepository->getAllForUser($context['current_user']));
+                    }
+                ],
                 'box' => [
                     'type' => TypeRegistry::getBoxType(),
                     'args' => [

@@ -1,4 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+
+const getBoxes = gql`
+  query getBoxes {
+    boxes {
+      id,
+      name
+    }
+  }
+`;
 
 @Component({
   selector: 'app-boxes',
@@ -7,9 +18,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoxesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private apollo: Apollo) { }
 
   ngOnInit() {
+    this.apollo.watchQuery({
+      query: getBoxes
+    }).subscribe(({data}) => {
+      console.log(data);
+    });
   }
 
 }

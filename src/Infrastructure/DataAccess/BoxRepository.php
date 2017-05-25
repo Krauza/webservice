@@ -51,4 +51,21 @@ final class BoxRepository implements IBoxRepository
 
         return $box;
     }
+
+    public function getAllForUser(User $user): array
+    {
+        $sql = 'SELECT * FROM box WHERE user_id = :user_id';
+        $result = $this->engine->fetchAll($sql, [
+            ':user_id' => $user->getId()
+        ]);
+
+        return array_map(function ($el) {
+            $boxName = new BoxName($el['name']);
+            $id = new EntityId($el['id']);
+            $box = new Box($boxName, $el['current_section']);
+            $box->setId($id);
+
+            return $box;
+        }, $result);
+    }
 }
