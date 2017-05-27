@@ -13,6 +13,8 @@ import { NavigationComponent } from './header/navigation/navigation.component';
 import { BoxesComponent } from './boxes/boxes.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { BoxesListComponent } from './boxes/boxes-list/boxes-list.component';
+import { BoxCreateComponent } from './boxes/box-create/box-create.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomePageComponent },
@@ -38,7 +40,9 @@ export function provideClient() : ApolloClient {
     NavigationComponent,
     BoxesComponent,
     PageNotFoundComponent,
-    HomePageComponent
+    HomePageComponent,
+    BoxesListComponent,
+    BoxCreateComponent
   ],
   imports: [
     BrowserModule,

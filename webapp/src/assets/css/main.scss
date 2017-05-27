@@ -644,3 +644,45 @@ ul.elements li > i{
   border-radius: 100%;
   margin: 10px 0;
 }
+
+.btn-special {
+  border-radius: 3px;
+  box-shadow: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 5px;
+  margin-top: 5px;
+  padding: 10px;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.btn-submit {
+  background-color: #4fcccd;
+  border-bottom: 3px solid #2f9697;
+}
+
+.btn-red {
+  background-color: #ea2c00;
+  border-bottom: 3px solid #b72900;
+}
+
+.btn-green {
+  background-color: #8C9700;
+  border-bottom: 3px solid #5a6500;
+}
+
+.btn-yellow {
+  background-color: #FFCE61;
+  border-bottom: 3px solid #cba44d;
+  color: #977544;
+}
+
+.panel-special .panel-title {
+  font-size: 32px;
+}
+
+#main {
+  margin-top: 42px;
+}
