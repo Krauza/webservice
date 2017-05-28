@@ -15,6 +15,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HomePageComponent } from './home-page/home-page.component';
 import { BoxesListComponent } from './boxes/boxes-list/boxes-list.component';
 import { BoxCreateComponent } from './boxes/box-create/box-create.component';
+import { BoxFormComponent } from './boxes/box-form/box-form.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomePageComponent },
@@ -42,7 +43,8 @@ export function provideClient() : ApolloClient {
     PageNotFoundComponent,
     HomePageComponent,
     BoxesListComponent,
-    BoxCreateComponent
+    BoxCreateComponent,
+    BoxFormComponent
   ],
   imports: [
     BrowserModule,

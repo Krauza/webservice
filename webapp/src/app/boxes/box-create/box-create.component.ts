@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, EventEmitter, Output} from '@angular/core';
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Box} from "../../models/box";
+import {Router} from "@angular/router";
+import {BoxService} from "../../shared/box.service";
 
 @Component({
   selector: 'app-box-create',
@@ -6,8 +10,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./box-create.component.scss']
 })
 export class BoxCreateComponent implements OnInit {
-
-  constructor() { }
+  constructor(private boxService: BoxService, private router: Router) {
+  }
 
   ngOnInit() {
   }
