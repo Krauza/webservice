@@ -1,5 +1,4 @@
-import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
 import {Box} from "../../models/box";
 import {Router} from "@angular/router";
 import {BoxService} from "../../shared/box.service";
@@ -16,4 +15,10 @@ export class BoxCreateComponent implements OnInit {
   ngOnInit() {
   }
 
+  handleSave(box: Box) {
+    console.log(box);
+    this.boxService.createBox(box.name).subscribe(({result}) => {
+      console.log(result);
+    });
+  }
 }

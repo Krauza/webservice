@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
@@ -16,10 +16,12 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { BoxesListComponent } from './boxes/boxes-list/boxes-list.component';
 import { BoxCreateComponent } from './boxes/box-create/box-create.component';
 import { BoxFormComponent } from './boxes/box-form/box-form.component';
+import { BoxService } from "./shared/box.service";
 
 const appRoutes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'boxes', component: BoxesComponent },
+  { path: 'createBox', component: BoxCreateComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -49,11 +51,12 @@ export function provideClient() : ApolloClient {
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
     ApolloModule.forRoot(provideClient)
   ],
-  providers: [],
+  providers: [BoxService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

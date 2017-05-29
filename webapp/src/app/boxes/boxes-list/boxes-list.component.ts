@@ -12,8 +12,8 @@ export class BoxesListComponent implements OnInit {
   constructor(private boxService: BoxService) { }
 
   ngOnInit() {
-    this.boxService.getBoxes().subscribe(({data}) => {
-      this.boxes = data;
+    this.boxService.getBoxes().subscribe((boxes) => {
+      this.boxes = boxes;
     });
   }
 }

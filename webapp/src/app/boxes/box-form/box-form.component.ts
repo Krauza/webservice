@@ -15,17 +15,17 @@ export class BoxFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(128)]]
+      boxName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(128)]]
     });
   }
 
   ngOnInit() {
   }
 
-  onSubmit(value: Box) {
+  onSubmit(value) {
     this.onSave.emit({
       id: undefined,
-      name: value.name
+      name: value.boxName
     });
   }
 }
