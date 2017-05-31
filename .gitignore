@@ -1,5 +1,1 @@
 .idea
-
-appservice/vendor
-appservice/composer.lock
-appservice/phinx.yml
