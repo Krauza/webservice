@@ -7,7 +7,7 @@ import {BoxService} from "../../shared/box.service";
   styleUrls: ['./boxes-list.component.scss']
 })
 export class BoxesListComponent implements OnInit {
-  private boxes = [];
+  boxes = [];
 
   constructor(private boxService: BoxService) { }
 

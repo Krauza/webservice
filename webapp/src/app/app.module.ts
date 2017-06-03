@@ -17,6 +17,8 @@ import { BoxesListComponent } from './boxes/boxes-list/boxes-list.component';
 import { BoxCreateComponent } from './boxes/box-create/box-create.component';
 import { BoxFormComponent } from './boxes/box-form/box-form.component';
 import { BoxService } from "./shared/box.service";
+import { CardFormComponent } from './cards/card-form/card-form.component';
+import { CardCreateComponent } from './cards/card-create/card-create.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomePageComponent },
@@ -46,7 +48,9 @@ export function provideClient() : ApolloClient {
     HomePageComponent,
     BoxesListComponent,
     BoxCreateComponent,
-    BoxFormComponent
+    BoxFormComponent,
+    CardFormComponent,
+    CardCreateComponent
   ],
   imports: [
     BrowserModule,
