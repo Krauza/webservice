@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-md-4">
-        <button class="btn btn-special btn-yellow">Add new card</button>
+        <a [routerLink]="['/box', box.id, 'addCard']" class="btn btn-special btn-yellow">Add new card</a>
       </div>
       <div class="col-md-4">
         <button class="btn btn-special btn-red">Start learning</button>

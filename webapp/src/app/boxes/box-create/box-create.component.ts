@@ -16,9 +16,8 @@ export class BoxCreateComponent implements OnInit {
   }
 
   handleSave(box: Box) {
-    console.log(box);
-    this.boxService.createBox(box.name).subscribe(({result}) => {
-      console.log(result);
+    this.boxService.createBox(box.name).subscribe(() => {
+      this.router.navigate(['/boxes']);
     });
   }
 }

@@ -52,9 +52,10 @@ class MutationType extends ObjectType
                         ]
                     ],
                     'resolve' => function ($rootValue, $args, $context) {
-                        $boxRepository = new BoxSectionsRepository($context['database_connection']);
+                        $boxRepository = new BoxRepository($context['database_connection']);
+                        $boxSectionsRepository = new BoxSectionsRepository($context['database_connection']);
                         $cardRepository = new CardRepository($context['database_connection']);
-                        $cardUseCase = new CreateCardUseCase($cardRepository, $boxRepository, $context['id_policy']);
+                        $cardUseCase = new CreateCardUseCase($cardRepository, $boxSectionsRepository, $context['id_policy']);
                         $createCard = new CreateCard($cardUseCase, $boxRepository->getById($args['box_id']));
                         return $createCard->action($args);
                     }

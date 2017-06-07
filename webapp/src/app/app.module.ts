@@ -19,11 +19,15 @@ import { BoxFormComponent } from './boxes/box-form/box-form.component';
 import { BoxService } from "./shared/box.service";
 import { CardFormComponent } from './cards/card-form/card-form.component';
 import { CardCreateComponent } from './cards/card-create/card-create.component';
+import { CardService } from "./shared/card.service";
 
 const appRoutes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'boxes', component: BoxesComponent },
-  { path: 'createBox', component: BoxCreateComponent },
+  { path: 'box', children: [
+    { path: 'create', component: BoxCreateComponent },
+    { path: ':id/addCard', component: CardCreateComponent }
+  ]},
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -60,7 +64,7 @@ export function provideClient() : ApolloClient {
     RouterModule.forRoot(appRoutes),
     ApolloModule.forRoot(provideClient)
   ],
-  providers: [BoxService],
+  providers: [BoxService, CardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
