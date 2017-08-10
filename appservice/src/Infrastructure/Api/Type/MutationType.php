@@ -24,7 +24,7 @@ class MutationType extends ObjectType
                     'type' => TypeRegistry::getCreateBoxType(),
                     'args' => [
                         'name' => [
-                            'type' => Type::string(),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => 'Name of the box'
                         ]
                     ],
@@ -39,15 +39,15 @@ class MutationType extends ObjectType
                     'type' => TypeRegistry::getCreateCardType(),
                     'args' => [
                         'box_id' => [
-                            'type' => Type::string(),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => 'The id of the parent box'
                         ],
                         'obverse' => [
-                            'type' => Type::string(),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => 'The obverse of the card'
                         ],
                         'reverse' => [
-                            'type' => Type::string(),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => 'The reverse of the card'
                         ]
                     ],

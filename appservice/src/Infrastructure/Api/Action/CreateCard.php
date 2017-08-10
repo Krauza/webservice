@@ -5,7 +5,7 @@ namespace Krauza\Infrastructure\Api\Action;
 use Krauza\Core\Entity\Box;
 
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
-use Krauza\Infrastructure\Api\Type\BoxType;
+use Krauza\Infrastructure\Api\Type\CardType;
 
 final class CreateCard extends Action
 {
@@ -30,9 +30,9 @@ final class CreateCard extends Action
         $this->tryDoAction(function () use ($data) {
             $card = $this->cardUseCase->add($data);
             $this->cardUseCase->addToBox($card, $this->box);
-            return BoxType::objectToArray($this->box);
+            return CardType::objectToArray($card);
         });
 
-        return ['box' => $this->result, 'errors' => $this->error];
+        return ['card' => $this->result, 'errors' => $this->error];
     }
 }

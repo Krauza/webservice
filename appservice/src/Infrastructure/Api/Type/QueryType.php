@@ -33,7 +33,7 @@ class QueryType extends ObjectType
                     'type' => TypeRegistry::getBoxType(),
                     'args' => [
                         'id' => [
-                            'type' => Type::string(),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => 'The id of the box'
                         ]
                     ],

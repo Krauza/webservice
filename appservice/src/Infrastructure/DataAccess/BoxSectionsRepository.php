@@ -25,7 +25,7 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
         $this->engine->insert(self::TABLE_NAME, [
             'box_id' => $box->getId(),
             'card_id' => $card->getId(),
-            'section' => Box::INBOX
+            'card_section' => Box::INBOX
         ]);
     }
 
