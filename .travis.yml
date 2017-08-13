@@ -7,7 +7,6 @@ addons:
     repo_token: ffd7bf832393d9f1476e852e093f46709ddea80b72984f2f306ed35b8b9cbbc5
 
 before_script:
-  - cd appservice
   - composer self-update
   - composer install --prefer-source --no-interaction
 
