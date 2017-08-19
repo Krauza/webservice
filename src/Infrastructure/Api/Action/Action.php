@@ -8,6 +8,8 @@ use Krauza\Infrastructure\Api\Type\ErrorType;
 abstract class Action
 {
     protected $result;
+
+    /** @var \Exception */
     protected $error;
 
     abstract public function action(array $data): array;

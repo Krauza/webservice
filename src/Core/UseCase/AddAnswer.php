@@ -11,22 +11,22 @@ class AddAnswer
     /**
      * @var BoxSectionsRepository
      */
-    private $boxRepository;
+    private $boxSectionsRepository;
 
-    public function __construct(BoxSectionsRepository $boxRepository)
+    public function __construct(BoxSectionsRepository $boxSectionsRepository)
     {
-        $this->boxRepository = $boxRepository;
+        $this->boxSectionsRepository = $boxSectionsRepository;
     }
 
     public function answer(bool $isCorrectAnswer, Box $box, Card $card)
     {
-        $fromSection = $this->boxRepository->getBoxSectionByCard($box, $card);
+        $fromSection = $this->boxSectionsRepository->getBoxSectionByCard($box, $card);
 
         if ($fromSection < Box::LAST_SECTION) {
             $toSection = $isCorrectAnswer ? $fromSection + 1 : Box::FIRST_SECTION;
-            $this->boxRepository->moveCardBetweenBoxSections($box, $card, $fromSection, $toSection);
+            $this->boxSectionsRepository->moveCardBetweenBoxSections($box, $card, $fromSection, $toSection);
         } else {
-            $this->boxRepository->setCardAsArchived($box, $card);
+            $this->boxSectionsRepository->setCardAsArchived($box, $card);
         }
     }
 }

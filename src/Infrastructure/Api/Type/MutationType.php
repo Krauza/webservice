@@ -4,6 +4,7 @@ namespace Krauza\Infrastructure\Api\Type;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use Krauza\Infrastructure\Api\Action\AddAnswer;
 use Krauza\Infrastructure\Api\Action\CreateBox;
 use Krauza\Infrastructure\Api\Action\CreateCard;
 use Krauza\Infrastructure\Api\TypeRegistry;
@@ -12,6 +13,7 @@ use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
+use Krauza\Core\UseCase\AddAnswer as AddAnswerUseCase;
 
 class MutationType extends ObjectType
 {
@@ -58,6 +60,36 @@ class MutationType extends ObjectType
                         $cardUseCase = new CreateCardUseCase($cardRepository, $boxSectionsRepository, $context['id_policy']);
                         $createCard = new CreateCard($cardUseCase, $boxRepository->getById($args['box_id']));
                         return $createCard->action($args);
+                    }
+                ],
+                'addAnswer' => [
+                    'type' => Type::string(),
+                    'args' => [
+                        'answer' => [
+                            'type' => Type::nonNull(Type::boolean()),
+                            'description' => 'The answer for the card. User knew the answer or not.'
+                        ],
+                        'box_id' => [
+                            'type' => Type::nonNull(Type::string()),
+                            'description' => 'The id of the box'
+                        ],
+                        'card_id' => [
+                            'type' => Type::nonNull(Type::string()),
+                            'description' => 'The id of the card'
+                        ]
+                    ],
+                    'resolve' => function($rootValue, $args, $context) {
+                        $boxRepository = new BoxRepository($context['database_connection']);
+                        $cardRepository = new CardRepository($context['database_connection']);
+                        $boxSectionsRepository = new BoxSectionsRepository($context['database_connection']);
+                        $addAnswerUseCase = new AddAnswerUseCase($boxSectionsRepository);
+                        $addAnswer = new AddAnswer(
+                            $addAnswerUseCase,
+                            $cardRepository->get($args['card_id']),
+                            $boxRepository->getById($args['box_id'])
+                        );
+                        $result = $addAnswer->answer($args);
+                        return $result['error'] ? $result['error']->getMessage() : 'saved';
                     }
                 ]
             ]
