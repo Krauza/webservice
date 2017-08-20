@@ -7,6 +7,7 @@ use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
 use Krauza\Core\UseCase\AddAnswer as AddAnswerUseCase;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
+use Krauza\Infrastructure\Api\Type\AddAnswerType;
 use Krauza\Infrastructure\Api\Type\CardType;
 
 final class AddAnswer extends Action
@@ -37,9 +38,9 @@ final class AddAnswer extends Action
     {
         $this->tryDoAction(function () use ($data) {
             $this->addAnswerUseCase->answer($data['answer'], $this->box, $this->card);
-            return 'saved';
+            return AddAnswerType::objectToArray($this->box);
         });
 
-        return ['error' => $this->error];
+        return ['box' => $this->result, 'error' => $this->error];
     }
 }

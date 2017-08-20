@@ -75,7 +75,7 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
         $this->setSection($box->getId(), $card->getId(), Box::ARCHIVED);
     }
 
-    private function setSection(string $boxId, string $cardId, $section)
+    private function setSection(string $boxId, string $cardId, int $section)
     {
         $this->dbal->update(self::TABLE_NAME, ['card_section' => $section], ['box_id' => $boxId, 'card_id' => $cardId]);
     }

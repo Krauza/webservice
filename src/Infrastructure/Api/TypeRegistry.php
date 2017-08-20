@@ -2,6 +2,7 @@
 
 namespace Krauza\Infrastructure\Api;
 
+use Krauza\Infrastructure\Api\Type\AddAnswerType;
 use Krauza\Infrastructure\Api\Type\CardType;
 use Krauza\Infrastructure\Api\Type\CreateBoxType;
 use Krauza\Infrastructure\Api\Type\CreateCardType;
@@ -19,6 +20,7 @@ class TypeRegistry
     private static $createBoxType;
     private static $cardType;
     private static $createCardType;
+    private static $addAnswerType;
 
     public static function getQueryType(): QueryType
     {
@@ -53,5 +55,10 @@ class TypeRegistry
     public static function getCreateCardType(): CreateCardType
     {
         return self::$createCardType ?: (self::$createCardType = new CreateCardType);
+    }
+
+    public static function getAddAnswerType(): AddAnswerType
+    {
+        return self::$addAnswerType ?: (self::$addAnswerType = new AddAnswerType);
     }
 }

@@ -63,7 +63,7 @@ class MutationType extends ObjectType
                     }
                 ],
                 'addAnswer' => [
-                    'type' => Type::string(),
+                    'type' => TypeRegistry::getAddAnswerType(),
                     'args' => [
                         'answer' => [
                             'type' => Type::nonNull(Type::boolean()),
@@ -88,8 +88,7 @@ class MutationType extends ObjectType
                             $cardRepository->get($args['card_id']),
                             $boxRepository->getById($args['box_id'])
                         );
-                        $result = $addAnswer->answer($args);
-                        return $result['error'] ? $result['error']->getMessage() : 'saved';
+                        return $addAnswer->action($args);
                     }
                 ]
             ]
