@@ -1,6 +1,6 @@
 <?php
 
-namespace Krauza\Infrastructure\Api\Type;
+namespace Krauza\Infrastructure\Api\Type\Object;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;

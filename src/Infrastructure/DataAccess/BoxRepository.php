@@ -34,7 +34,7 @@ final class BoxRepository implements IBoxRepository
 
     public function updateBoxSection(Box $box)
     {
-        $this->engine->update(self::TABLE_NAME, ['current_section' => $box->getCurrentSection()], ['id' => $box->getId()]);
+        $this->engine->executeUpdate('UPDATE box SET current_section = ? WHERE id = ?', [$box->getCurrentSection(), $box->getId()]);
     }
 
     public function getById(string $id): Box

@@ -1,11 +1,12 @@
 <?php
 
-namespace Krauza\Infrastructure\Api\Type;
+namespace Krauza\Infrastructure\Api\Type\Mutation;
 
 use GraphQL\Type\Definition\ObjectType;
+use Krauza\Core\Entity\Box;
 use Krauza\Infrastructure\Api\TypeRegistry;
 
-class CreateBoxType extends ObjectType
+class AddAnswerType extends ObjectType
 {
     public function __construct()
     {
@@ -13,7 +14,7 @@ class CreateBoxType extends ObjectType
             'fields' => [
                 'box' => [
                     'type' => TypeRegistry::getBoxType(),
-                    'description' => 'Created box'
+                    'description' => 'Parent box'
                 ],
                 'errors' => [
                     'type' => TypeRegistry::getErrorType(),
@@ -23,5 +24,10 @@ class CreateBoxType extends ObjectType
         ];
 
         parent::__construct($config);
+    }
+
+    public static function objectToArray(Box $box)
+    {
+        return ['id' => $box->getId(), 'name' => $box->getName()];
     }
 }

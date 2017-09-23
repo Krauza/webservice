@@ -5,6 +5,7 @@ namespace Krauza\Infrastructure\DataAccess;
 use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
 use Krauza\Core\Repository\BoxSectionsRepository as IBoxSectionsRepository;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 final class BoxSectionsRepository implements IBoxSectionsRepository
 {
@@ -29,7 +30,7 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
         ]);
     }
 
-    public function getFirstCardFromBoxAtCurrentSection(Box $box): string
+    public function getFirstCardFromBoxAtCurrentSection(Box $box): ?string
     {
         $sql = 'SELECT card_id FROM box_card WHERE box_id = ? AND card_section = ? ORDER BY modified_date LIMIT 1';
         $result = $this->dbal->fetchAssoc($sql, [$box->getId(), $box->getCurrentSection()]);
@@ -38,8 +39,8 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
 
     public function getNumberOfCardsInSection(Box $box, int $section): int
     {
-        $sql = 'SELECT COUNT(*) FROM box_card WHERE box_id = ? AND card_section = ?';
-        return count($this->dbal->fetchAssoc($sql, [$box->getId(), $section]));
+        $sql = 'SELECT box_id FROM box_card WHERE box_id = ? AND card_section = ?';
+        return $this->dbal->executeQuery($sql, [$box->getId(), $section])->rowCount();
     }
 
     public function moveCardsFromInboxToFirstSection(Box $box): void
@@ -56,7 +57,7 @@ final class BoxSectionsRepository implements IBoxSectionsRepository
     public function getNotEmptySection(Box $box): ?int
     {
         $sql = 'SELECT card_section FROM box_card WHERE box_id = ? AND card_section BETWEEN ? AND ? LIMIT 1';
-        return $this->dbal->fetchAssoc($sql, [$box->getId(), Box::FIRST_SECTION, Box::LAST_SECTION]);
+        return $this->dbal->executeQuery($sql, [$box->getId(), Box::FIRST_SECTION, Box::LAST_SECTION])->fetchColumn(0);
     }
 
     public function getBoxSectionByCard(Box $box, Card $card): int
