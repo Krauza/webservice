@@ -2,14 +2,14 @@
 
 namespace Krauza\Infrastructure\Api;
 
-use Krauza\Infrastructure\Api\Type\AddAnswerType;
-use Krauza\Infrastructure\Api\Type\CardType;
-use Krauza\Infrastructure\Api\Type\CreateBoxType;
-use Krauza\Infrastructure\Api\Type\CreateCardType;
-use Krauza\Infrastructure\Api\Type\ErrorType;
+use Krauza\Infrastructure\Api\Type\Response\AddAnswerType;
+use Krauza\Infrastructure\Api\Type\Object\CardType;
+use Krauza\Infrastructure\Api\Type\Response\CreateBoxType;
+use Krauza\Infrastructure\Api\Type\Response\CreateCardType;
+use Krauza\Infrastructure\Api\Type\Object\ErrorType;
 use Krauza\Infrastructure\Api\Type\MutationType;
 use Krauza\Infrastructure\Api\Type\QueryType;
-use Krauza\Infrastructure\Api\Type\BoxType;
+use Krauza\Infrastructure\Api\Type\Object\BoxType;
 
 class TypeRegistry
 {

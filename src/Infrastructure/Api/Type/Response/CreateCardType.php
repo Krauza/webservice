@@ -1,19 +1,19 @@
 <?php
 
-namespace Krauza\Infrastructure\Api\Type\Mutation;
+namespace Krauza\Infrastructure\Api\Type\Response;
 
 use GraphQL\Type\Definition\ObjectType;
 use Krauza\Infrastructure\Api\TypeRegistry;
 
-class CreateBoxType extends ObjectType
+class CreateCardType extends ObjectType
 {
     public function __construct()
     {
         $config = [
             'fields' => [
-                'box' => [
-                    'type' => TypeRegistry::getBoxType(),
-                    'description' => 'Created box'
+                'card' => [
+                    'type' => TypeRegistry::getCardType(),
+                    'description' => 'Created card'
                 ],
                 'errors' => [
                     'type' => TypeRegistry::getErrorType(),
