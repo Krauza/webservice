@@ -2,12 +2,15 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
-use Krauza\Core\Entity\Box;
-
+use Krauza\Core\Entity\Card;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
-use Krauza\Infrastructure\Api\Type\CardType;
+use Krauza\Core\Repository\BoxRepository;
 
-final class CreateCard extends Action
+/**
+ * Class CreateCard
+ * @package Krauza\Infrastructure\Api\Action
+ */
+final class CreateCard
 {
     /**
      * @var CreateCardUseCase
@@ -15,24 +18,30 @@ final class CreateCard extends Action
     private $cardUseCase;
 
     /**
-     * @var Box
+     * @var BoxRepository
      */
-    private $box;
+    private $boxRepository;
 
-    public function __construct(CreateCardUseCase $cardUseCase, Box $box)
+    /**
+     * CreateCard constructor.
+     * @param CreateCardUseCase $cardUseCase
+     * @param BoxRepository $boxRepository
+     */
+    public function __construct(CreateCardUseCase $cardUseCase, BoxRepository $boxRepository)
     {
         $this->cardUseCase = $cardUseCase;
-        $this->box = $box;
+        $this->boxRepository = $boxRepository;
     }
 
-    public function action(array $data): array
+    /**
+     * @param array $data
+     * @return Card
+     */
+    public function action(array $data): Card
     {
-        $this->tryDoAction(function () use ($data) {
-            $card = $this->cardUseCase->add($data);
-            $this->cardUseCase->addToBox($card, $this->box);
-            return CardType::objectToArray($card);
-        });
-
-        return ['card' => $this->result, 'errors' => $this->error];
+        $box = $this->boxRepository->getById($data['box_id']);
+        $card = $this->cardUseCase->add($data);
+        $this->cardUseCase->addToBox($card, $box);
+        return $card;
     }
 }

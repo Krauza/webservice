@@ -10,7 +10,7 @@ use Krauza\Infrastructure\Api\Action\CreateBox as CreateBoxAction;
 
 class CreateBox
 {
-    public static function config()
+    public static function config(): array
     {
         return [
             'type' => TypeRegistry::getCreateBoxType(),

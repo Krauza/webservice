@@ -22,7 +22,7 @@ class CreateCard
         $this->idPolicy = $idPolicy;
     }
 
-    public function add(array $data)
+    public function add(array $data): Card
     {
         $card = CardFactory::createCard($data, $this->idPolicy);
         $this->cardRepository->add($card);

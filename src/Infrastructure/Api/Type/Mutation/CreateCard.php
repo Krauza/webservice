@@ -12,7 +12,7 @@ use Krauza\Infrastructure\DataAccess\CardRepository;
 
 class CreateCard
 {
-    public static function config()
+    public static function config(): array
     {
         return [
             'type' => TypeRegistry::getCreateCardType(),
@@ -35,7 +35,7 @@ class CreateCard
                 $boxSectionsRepository = new BoxSectionsRepository($context['database_connection']);
                 $cardRepository = new CardRepository($context['database_connection']);
                 $cardUseCase = new CreateCardUseCase($cardRepository, $boxSectionsRepository, $context['id_policy']);
-                $createCard = new CreateCardAction($cardUseCase, $boxRepository->getById($args['box_id']));
+                $createCard = new CreateCardAction($cardUseCase, $boxRepository);
                 return $createCard->action($args);
             }
         ];

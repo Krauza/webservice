@@ -9,7 +9,7 @@ use Krauza\Infrastructure\Api\Type\Object\BoxType;
 
 class GetBox
 {
-    public static function config()
+    public static function config(): array
     {
         return [
             'type' => TypeRegistry::getBoxType(),

@@ -9,8 +9,6 @@ use Krauza\Infrastructure\Api\Type\Object\BoxType;
 
 class GetUserBoxes
 {
-    private function __construct() {}
-
     public static function config(): array
     {
         return [

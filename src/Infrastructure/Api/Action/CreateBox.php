@@ -2,11 +2,15 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
+use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\User;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
-use Krauza\Infrastructure\Api\Type\BoxType;
 
-final class CreateBox extends Action
+/**
+ * Class CreateBox
+ * @package Krauza\Infrastructure\Api\Action
+ */
+final class CreateBox
 {
     /**
      * @var CreateBoxUseCase
@@ -18,19 +22,23 @@ final class CreateBox extends Action
      */
     private $currentUser;
 
+    /**
+     * CreateBox constructor.
+     * @param CreateBoxUseCase $boxUseCase
+     * @param User $currentUser
+     */
     public function __construct(CreateBoxUseCase $boxUseCase, User $currentUser)
     {
         $this->boxUseCase = $boxUseCase;
         $this->currentUser = $currentUser;
     }
 
-    public function action(array $data): array
+    /**
+     * @param array $data
+     * @return Box
+     */
+    public function action(array $data): Box
     {
-        $this->tryDoAction(function () use ($data) {
-            $newBox = $this->boxUseCase->add($data, $this->currentUser);
-            return BoxType::objectToArray($newBox);
-        });
-
-        return ['box' => $this->result, 'errors' => $this->error];
+        return $this->boxUseCase->add($data, $this->currentUser);
     }
 }

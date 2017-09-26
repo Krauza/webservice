@@ -22,7 +22,7 @@ final class BoxRepository implements IBoxRepository
         $this->engine = $engine;
     }
 
-    public function add(Box $box, User $user)
+    public function add(Box $box, User $user): void
     {
         $this->engine->insert(self::TABLE_NAME, [
             'id' => $box->getId(),
@@ -32,17 +32,18 @@ final class BoxRepository implements IBoxRepository
         ]);
     }
 
-    public function updateBoxSection(Box $box)
+    public function updateBoxSection(Box $box): void
     {
         $this->engine->executeUpdate('UPDATE box SET current_section = ? WHERE id = ?', [$box->getCurrentSection(), $box->getId()]);
     }
 
     public function getById(string $id): Box
     {
-        $stmt = $this->engine->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE id = :id");
-        $stmt->bindValue('id', $id);
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $result = $this->engine->fetchAssoc('SELECT * FROM box WHERE id = ?', [$id]);
+
+        if (empty($result)) {
+            throw new \Exception();
+        }
 
         $boxName = new BoxName($result['name']);
         $id = new EntityId($result['id']);

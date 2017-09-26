@@ -4,6 +4,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use GraphQL\GraphQL;
 use GraphQL\Schema;
+use GraphQL\Error\Error;
+use GraphQL\Error\FormattedError;
 use Krauza\Infrastructure\Api\TypeRegistry;
 
 use Doctrine\DBAL\Configuration;
@@ -52,19 +54,25 @@ $operationName = isset($data['operation']) ? $data['operation'] : null;
 $variableValues = isset($data['variables']) ? $data['variables'] : null;
 
 try {
+    $status = 200;
     $schema = new Schema([
         'query' => TypeRegistry::getQueryType(),
         'mutation' => TypeRegistry::getMutationType()
     ]);
-    $result = GraphQL::execute(
+    $result = GraphQL::executeQuery(
         $schema,
         $requestString,
         null,
         $container,
         $variableValues,
         $operationName
-    );
+    )->setErrorFormatter(function (Error $error) {
+        return [
+            'message' => $error->message
+        ];
+    })->toArray();
 } catch (Exception $exception) {
+    $status = 500;
     $result = [
         'errors' => [
             ['message' => $exception->getMessage()]
@@ -72,5 +80,5 @@ try {
     ];
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json', $status);
 echo json_encode($result);

@@ -12,10 +12,11 @@ use Krauza\Core\UseCase\AddAnswer as AddAnswerUseCase;
 
 class AddAnswer
 {
-    public static function config()
+    public static function config(): array
     {
         return [
             'type' => TypeRegistry::getAddAnswerType(),
+            'description' => 'Add answer for the card',
             'args' => [
                 'answer' => [
                     'type' => Type::nonNull(Type::boolean()),
@@ -35,11 +36,8 @@ class AddAnswer
                 $cardRepository = new CardRepository($context['database_connection']);
                 $boxSectionsRepository = new BoxSectionsRepository($context['database_connection']);
                 $addAnswerUseCase = new AddAnswerUseCase($boxSectionsRepository);
-                $addAnswer = new AddAnswerAction(
-                    $addAnswerUseCase,
-                    $cardRepository->get($args['card_id']),
-                    $boxRepository->getById($args['box_id'])
-                );
+
+                $addAnswer = new AddAnswerAction($addAnswerUseCase, $cardRepository, $boxRepository);
                 return $addAnswer->action($args);
             }
         ];

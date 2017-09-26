@@ -12,7 +12,7 @@ use Krauza\Core\UseCase\FindNextCard as FindNextCardUseCase;
 
 class GetNextCard
 {
-    public static function config()
+    public static function config(): array
     {
         return [
             'type' => TypeRegistry::getCardType(),
