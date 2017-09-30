@@ -6,7 +6,7 @@ use GraphQL\Type\Definition\Type;
 use Krauza\Core\Entity\Box;
 use Krauza\Infrastructure\Api\Type\BaseType;
 
-class BoxType extends BaseType
+final class BoxType extends BaseType
 {
     protected function getConfig(): array
     {

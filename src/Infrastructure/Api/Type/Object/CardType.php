@@ -6,7 +6,7 @@ use GraphQL\Type\Definition\Type;
 use Krauza\Core\Entity\Card;
 use Krauza\Infrastructure\Api\Type\BaseType;
 
-class CardType extends BaseType
+final class CardType extends BaseType
 {
     protected function getConfig(): array
     {

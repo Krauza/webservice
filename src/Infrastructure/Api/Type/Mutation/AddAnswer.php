@@ -10,7 +10,7 @@ use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
 use Krauza\Core\UseCase\AddAnswer as AddAnswerUseCase;
 
-class AddAnswer
+final class AddAnswer
 {
     public static function config(): array
     {

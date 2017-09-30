@@ -10,7 +10,7 @@ use Krauza\Infrastructure\Api\Action\CreateCard as CreateCardAction;
 use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
 
-class CreateCard
+final class CreateCard
 {
     public static function config(): array
     {

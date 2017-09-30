@@ -6,7 +6,7 @@ use Krauza\Infrastructure\Api\Type\BaseType;
 use Krauza\Infrastructure\Api\Type\Object\BoxType;
 use Krauza\Infrastructure\Api\Type\ResponseType;
 
-class CreateBoxType extends BaseType implements ResponseType
+final class CreateBoxType extends BaseType implements ResponseType
 {
     protected function getConfig(): array
     {

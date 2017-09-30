@@ -6,7 +6,7 @@ use GraphQL\Type\Definition\Type;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Infrastructure\Api\Type\Object\BoxType;
 
-class GetBox
+final class GetBox
 {
     public static function config(): array
     {

@@ -6,7 +6,7 @@ use Krauza\Infrastructure\Api\Type\Query\GetBox;
 use Krauza\Infrastructure\Api\Type\Query\GetNextCard;
 use Krauza\Infrastructure\Api\Type\Query\GetUserBoxes;
 
-class QueryType extends BaseType
+final class QueryType extends BaseType
 {
     protected function getConfig(): array
     {

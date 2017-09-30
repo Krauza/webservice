@@ -8,7 +8,7 @@ use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
 use Krauza\Infrastructure\Api\Action\CreateBox as CreateBoxAction;
 
-class CreateBox
+final class CreateBox
 {
     public static function config(): array
     {

@@ -10,7 +10,7 @@ use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
 use Krauza\Core\UseCase\FindNextCard as FindNextCardUseCase;
 
-class GetNextCard
+final class GetNextCard
 {
     public static function config(): array
     {

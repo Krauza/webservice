@@ -6,7 +6,7 @@ use Krauza\Infrastructure\Api\Type\Mutation\AddAnswer;
 use Krauza\Infrastructure\Api\Type\Mutation\CreateBox;
 use Krauza\Infrastructure\Api\Type\Mutation\CreateCard;
 
-class MutationType extends BaseType
+final class MutationType extends BaseType
 {
     protected function getConfig(): array
     {

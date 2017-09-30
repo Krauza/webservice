@@ -2,7 +2,6 @@
 
 namespace Krauza\Infrastructure\Api\Type\Response;
 
-use GraphQL\Type\Definition\ObjectType;
 use Krauza\Infrastructure\Api\Type\BaseType;
 use Krauza\Infrastructure\Api\Type\Object\BoxType;
 use Krauza\Infrastructure\Api\Type\Object\CardType;

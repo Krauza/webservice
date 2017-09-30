@@ -7,7 +7,7 @@ use Krauza\Infrastructure\Api\Type\Object\BoxType;
 use Krauza\Infrastructure\Api\Type\Object\CardType;
 use Krauza\Infrastructure\Api\Type\ResponseType;
 
-class AddAnswerType extends BaseType implements ResponseType
+final class AddAnswerType extends BaseType implements ResponseType
 {
     public function getConfig(): array
     {
