@@ -2,7 +2,6 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
-use Krauza\Core\Entity\Card;
 use Krauza\Core\UseCase\FindNextCard as FindNextCardUseCase;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 
@@ -35,11 +34,15 @@ final class FindNextCard
 
     /**
      * @param array $data
-     * @return Card
+     * @return array
      */
-    public function action(array $data): Card
+    public function action(array $data): array
     {
         $box = $this->boxRepository->getById($data['box_id']);
-        return $this->findNextCardUseCase->find($box);
+
+        return [
+            'card' => $this->findNextCardUseCase->find($box),
+            'box' => $box
+        ];
     }
 }

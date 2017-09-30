@@ -3,10 +3,10 @@
 namespace Krauza\Infrastructure\Api\Type\Response;
 
 use GraphQL\Type\Definition\ObjectType;
-use Krauza\Core\Entity\Box;
 use Krauza\Infrastructure\Api\Type\Object\BoxType;
+use Krauza\Infrastructure\Api\Type\Object\CardType;
 
-class CreateBoxType extends ObjectType
+final class GetNextCardType extends ObjectType
 {
     private static $instance;
 
@@ -14,9 +14,13 @@ class CreateBoxType extends ObjectType
     {
         $config = [
             'fields' => [
+                'card' => [
+                    'type' => CardType::getInstance(),
+                    'description' => 'Next card'
+                ],
                 'box' => [
                     'type' => BoxType::getInstance(),
-                    'description' => 'Created box'
+                    'description' => 'Parent box'
                 ]
             ]
         ];
@@ -29,10 +33,11 @@ class CreateBoxType extends ObjectType
         return self::$instance ?: (self::$instance = new self);
     }
 
-    public static function toResponseFormat(Box $box): array
+    public static function toResponseFormat(array $result): array
     {
         return [
-            'box' => BoxType::toResponseFormat($box)
+            'card' => CardType::toResponseFormat($result['card']),
+            'box' => BoxType::toResponseFormat($result['box'])
         ];
     }
 }

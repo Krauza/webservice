@@ -2,7 +2,7 @@
 
 namespace Krauza\Infrastructure\Api\Type\Mutation;
 
-use Krauza\Infrastructure\Api\TypeRegistry;
+use Krauza\Infrastructure\Api\Type\Response\AddAnswerType;
 use GraphQL\Type\Definition\Type;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Infrastructure\Api\Action\AddAnswer as AddAnswerAction;
@@ -15,7 +15,7 @@ class AddAnswer
     public static function config(): array
     {
         return [
-            'type' => TypeRegistry::getAddAnswerType(),
+            'type' => AddAnswerType::getInstance(),
             'description' => 'Add answer for the card',
             'args' => [
                 'answer' => [
@@ -38,7 +38,7 @@ class AddAnswer
                 $addAnswerUseCase = new AddAnswerUseCase($boxSectionsRepository);
 
                 $addAnswer = new AddAnswerAction($addAnswerUseCase, $cardRepository, $boxRepository);
-                return $addAnswer->action($args);
+                return AddAnswerType::toResponseFormat($addAnswer->action($args));
             }
         ];
     }

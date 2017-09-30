@@ -3,22 +3,24 @@
 namespace Krauza\Infrastructure\Api\Type\Response;
 
 use GraphQL\Type\Definition\ObjectType;
-use Krauza\Core\Entity\Box;
-use Krauza\Infrastructure\Api\TypeRegistry;
+use Krauza\Infrastructure\Api\Type\Object\BoxType;
+use Krauza\Infrastructure\Api\Type\Object\CardType;
 
 class AddAnswerType extends ObjectType
 {
+    private static $instance;
+
     public function __construct()
     {
         $config = [
             'fields' => [
-                'box' => [
-                    'type' => TypeRegistry::getBoxType(),
-                    'description' => 'Parent box'
+                'card' => [
+                    'type' => CardType::getInstance(),
+                    'description' => 'Answered card'
                 ],
-                'errors' => [
-                    'type' => TypeRegistry::getErrorType(),
-                    'description' => 'List of errors'
+                'box' => [
+                    'type' => BoxType::getInstance(),
+                    'description' => 'Parent box'
                 ]
             ]
         ];
@@ -26,8 +28,16 @@ class AddAnswerType extends ObjectType
         parent::__construct($config);
     }
 
-    public static function objectToArray(Box $box)
+    public static function getInstance(): self
     {
-        return ['id' => $box->getId(), 'name' => $box->getName()];
+        return self::$instance ?: (self::$instance = new self);
+    }
+
+    public static function toResponseFormat(array $result): array
+    {
+        return [
+            'card' => CardType::toResponseFormat($result['card']),
+            'box' => BoxType::toResponseFormat($result['box'])
+        ];
     }
 }

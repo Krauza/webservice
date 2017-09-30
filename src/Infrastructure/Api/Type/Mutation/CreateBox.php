@@ -2,7 +2,7 @@
 
 namespace Krauza\Infrastructure\Api\Type\Mutation;
 
-use Krauza\Infrastructure\Api\TypeRegistry;
+use Krauza\Infrastructure\Api\Type\Response\CreateBoxType;
 use GraphQL\Type\Definition\Type;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Core\UseCase\CreateBox as CreateBoxUseCase;
@@ -13,7 +13,7 @@ class CreateBox
     public static function config(): array
     {
         return [
-            'type' => TypeRegistry::getCreateBoxType(),
+            'type' => CreateBoxType::getInstance(),
             'args' => [
                 'name' => [
                     'type' => Type::nonNull(Type::string()),
@@ -24,7 +24,7 @@ class CreateBox
                 $boxRepository = new BoxRepository($context['database_connection']);
                 $boxUseCase = new CreateBoxUseCase($boxRepository, $context['id_policy']);
                 $createBox = new CreateBoxAction($boxUseCase, $context['current_user']);
-                return $createBox->action($args);
+                return CreateBoxType::toResponseFormat($createBox->action($args));
             }
         ];
     }

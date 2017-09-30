@@ -9,6 +9,8 @@ use Krauza\Infrastructure\Api\Type\Mutation\CreateCard;
 
 class MutationType extends ObjectType
 {
+    private static $instance;
+
     public function __construct()
     {
         $config = [
@@ -21,5 +23,10 @@ class MutationType extends ObjectType
         ];
 
         parent::__construct($config);
+    }
+
+    public static function getInstance(): self
+    {
+        return self::$instance ?: (self::$instance = new self);
     }
 }

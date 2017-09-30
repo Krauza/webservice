@@ -2,8 +2,8 @@
 
 namespace Krauza\Infrastructure\Api\Type\Mutation;
 
-use Krauza\Infrastructure\Api\TypeRegistry;
 use GraphQL\Type\Definition\Type;
+use Krauza\Infrastructure\Api\Type\Response\CreateCardType;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
 use Krauza\Infrastructure\Api\Action\CreateCard as CreateCardAction;
@@ -15,7 +15,7 @@ class CreateCard
     public static function config(): array
     {
         return [
-            'type' => TypeRegistry::getCreateCardType(),
+            'type' => CreateCardType::getInstance(),
             'args' => [
                 'box_id' => [
                     'type' => Type::nonNull(Type::string()),
@@ -36,7 +36,7 @@ class CreateCard
                 $cardRepository = new CardRepository($context['database_connection']);
                 $cardUseCase = new CreateCardUseCase($cardRepository, $boxSectionsRepository, $context['id_policy']);
                 $createCard = new CreateCardAction($cardUseCase, $boxRepository);
-                return $createCard->action($args);
+                return CreateCardType::toResponseFormat($createCard->action($args));
             }
         ];
     }

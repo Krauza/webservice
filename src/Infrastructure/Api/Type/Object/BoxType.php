@@ -8,6 +8,8 @@ use Krauza\Core\Entity\Box;
 
 class BoxType extends ObjectType
 {
+    private static $instance;
+
     public function __construct()
     {
         $config = [
@@ -26,7 +28,12 @@ class BoxType extends ObjectType
         parent::__construct($config);
     }
 
-    public static function objectToArray(Box $box)
+    public static function getInstance(): self
+    {
+        return self::$instance ?: (self::$instance = new self);
+    }
+
+    public static function toResponseFormat(Box $box)
     {
         return ['id' => $box->getId(), 'name' => $box->getName()];
     }

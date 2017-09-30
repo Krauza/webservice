@@ -3,10 +3,10 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use GraphQL\GraphQL;
-use GraphQL\Schema;
+use GraphQL\Type\Schema;
 use GraphQL\Error\Error;
-use GraphQL\Error\FormattedError;
-use Krauza\Infrastructure\Api\TypeRegistry;
+use Krauza\Infrastructure\Api\Type\QueryType;
+use Krauza\Infrastructure\Api\Type\MutationType;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
@@ -56,8 +56,8 @@ $variableValues = isset($data['variables']) ? $data['variables'] : null;
 try {
     $status = 200;
     $schema = new Schema([
-        'query' => TypeRegistry::getQueryType(),
-        'mutation' => TypeRegistry::getMutationType()
+        'query' => QueryType::getInstance(),
+        'mutation' => MutationType::getInstance()
     ]);
     $result = GraphQL::executeQuery(
         $schema,

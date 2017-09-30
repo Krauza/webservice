@@ -2,9 +2,9 @@
 
 namespace Krauza\Infrastructure\Api\Type\Query;
 
-use Krauza\Infrastructure\Api\Action\FindNextCard;
-use Krauza\Infrastructure\Api\TypeRegistry;
 use GraphQL\Type\Definition\Type;
+use Krauza\Infrastructure\Api\Action\FindNextCard;
+use Krauza\Infrastructure\Api\Type\Response\GetNextCardType;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
@@ -15,7 +15,7 @@ class GetNextCard
     public static function config(): array
     {
         return [
-            'type' => TypeRegistry::getCardType(),
+            'type' => GetNextCardType::getInstance(),
             'args' => [
                 'box_id' => [
                     'type' => Type::nonNull(Type::string()),
@@ -29,7 +29,7 @@ class GetNextCard
                 $nextCardUseCase = new FindNextCardUseCase($boxSectionsRepository, $boxRepository, $cardRepository);
 
                 $nextCard = new FindNextCard($nextCardUseCase, $boxRepository);
-                return $nextCard->action($args);
+                return GetNextCardType::toResponseFormat($nextCard->action($args));
             }
         ];
     }

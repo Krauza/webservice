@@ -2,7 +2,6 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
-use Krauza\Core\Entity\Box;
 use Krauza\Core\UseCase\AddAnswer as AddAnswerUseCase;
 use Krauza\Core\Repository\BoxRepository;
 use Krauza\Core\Repository\CardRepository;
@@ -43,14 +42,17 @@ final class AddAnswer
 
     /**
      * @param array $data
-     * @return Box
+     * @return array
      */
-    public function action(array $data): Box
+    public function action(array $data): array
     {
         $card = $this->cardRepository->get($data['card_id']);
         $box = $this->boxRepository->getById($data['box_id']);
-
         $this->addAnswerUseCase->answer($data['answer'], $box, $card);
-        return $box;
+
+        return [
+            'box' => $box,
+            'card' => $card
+        ];
     }
 }

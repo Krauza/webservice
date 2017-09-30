@@ -2,7 +2,6 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
-use Krauza\Core\Entity\Card;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
 use Krauza\Core\Repository\BoxRepository;
 
@@ -35,13 +34,17 @@ final class CreateCard
 
     /**
      * @param array $data
-     * @return Card
+     * @return array
      */
-    public function action(array $data): Card
+    public function action(array $data): array
     {
         $box = $this->boxRepository->getById($data['box_id']);
         $card = $this->cardUseCase->add($data);
         $this->cardUseCase->addToBox($card, $box);
-        return $card;
+
+        return [
+            'card' => $card,
+            'box' => $box
+        ];
     }
 }

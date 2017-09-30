@@ -2,7 +2,6 @@
 
 namespace Krauza\Infrastructure\Api\Type\Query;
 
-use Krauza\Infrastructure\Api\TypeRegistry;
 use GraphQL\Type\Definition\Type;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Infrastructure\Api\Type\Object\BoxType;
@@ -12,7 +11,7 @@ class GetBox
     public static function config(): array
     {
         return [
-            'type' => TypeRegistry::getBoxType(),
+            'type' => BoxType::getInstance(),
             'args' => [
                 'id' => [
                     'type' => Type::nonNull(Type::string()),
@@ -21,7 +20,7 @@ class GetBox
             ],
             'resolve' => function ($rootValue, $args, $context) {
                 $boxRepository = new BoxRepository($context['database_connection']);
-                return BoxType::objectToArray($boxRepository->getById($args['id']));
+                return BoxType::toResponseFormat($boxRepository->getById($args['id']));
             }
         ];
     }

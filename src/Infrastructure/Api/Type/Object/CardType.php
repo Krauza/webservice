@@ -8,6 +8,8 @@ use Krauza\Core\Entity\Card;
 
 class CardType extends ObjectType
 {
+    private static $instance;
+
     public function __construct()
     {
         $config = [
@@ -30,7 +32,12 @@ class CardType extends ObjectType
         parent::__construct($config);
     }
 
-    public static function objectToArray(Card $card): array
+    public static function getInstance(): self
+    {
+        return self::$instance ?: (self::$instance = new self);
+    }
+
+    public static function toResponseFormat(Card $card): array
     {
         return [
             'id' => $card->getId(),
