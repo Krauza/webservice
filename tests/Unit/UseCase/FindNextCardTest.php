@@ -52,13 +52,13 @@ class FindNextCardTest extends PHPUnit_Framework_TestCase
         $section = 1;
         $this->mockGetCard();
         $this->boxMock->method('getCurrentSection')->willReturn($section);
-        $this->boxRepositoryMock->expects($this->never())->method('updateBoxSection');
-        $findNextCard = new FindNextCard($this->boxSectionsRepositoryMock, $this->cardRepositoryMock);
+        $findNextCard = new FindNextCard($this->boxSectionsRepositoryMock, $this->boxRepositoryMock, $this->cardRepositoryMock);
         $findNextCard->find($this->boxMock);
     }
 
     /**
      * @test
+     * @expectedException Krauza\Core\Exception\BoxIsEmpty
      */
     public function shouldReturnNullWhenBoxHasNoCards()
     {
@@ -68,7 +68,7 @@ class FindNextCardTest extends PHPUnit_Framework_TestCase
             ->willReturn(null);
 
         $this->boxMock->method('getCurrentSection')->willReturn(0);
-        $findNextCard = new FindNextCard($this->boxSectionsRepositoryMock, $this->cardRepositoryMock);
-        $this->assertNull($findNextCard->find($this->boxMock));
+        $findNextCard = new FindNextCard($this->boxSectionsRepositoryMock, $this->boxRepositoryMock, $this->cardRepositoryMock);
+        $findNextCard->find($this->boxMock);
     }
 }
