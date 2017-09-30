@@ -3,16 +3,16 @@
 namespace Krauza\Infrastructure\Api\Type\Response;
 
 use GraphQL\Type\Definition\ObjectType;
+use Krauza\Infrastructure\Api\Type\BaseType;
 use Krauza\Infrastructure\Api\Type\Object\BoxType;
 use Krauza\Infrastructure\Api\Type\Object\CardType;
+use Krauza\Infrastructure\Api\Type\ResponseType;
 
-final class GetNextCardType extends ObjectType
+final class GetNextCardType extends BaseType implements ResponseType
 {
-    private static $instance;
-
-    public function __construct()
+    protected function getConfig(): array
     {
-        $config = [
+        return [
             'fields' => [
                 'card' => [
                     'type' => CardType::getInstance(),
@@ -24,13 +24,6 @@ final class GetNextCardType extends ObjectType
                 ]
             ]
         ];
-
-        parent::__construct($config);
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance ?: (self::$instance = new self);
     }
 
     public static function toResponseFormat(array $result): array

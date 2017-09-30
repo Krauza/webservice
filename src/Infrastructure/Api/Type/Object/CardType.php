@@ -2,17 +2,15 @@
 
 namespace Krauza\Infrastructure\Api\Type\Object;
 
-use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Krauza\Core\Entity\Card;
+use Krauza\Infrastructure\Api\Type\BaseType;
 
-class CardType extends ObjectType
+class CardType extends BaseType
 {
-    private static $instance;
-
-    public function __construct()
+    protected function getConfig(): array
     {
-        $config = [
+        return [
             'fields' => [
                 'id' => [
                     'type' => Type::string(),
@@ -28,13 +26,6 @@ class CardType extends ObjectType
                 ]
             ]
         ];
-
-        parent::__construct($config);
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance ?: (self::$instance = new self);
     }
 
     public static function toResponseFormat(Card $card): array

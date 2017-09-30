@@ -2,18 +2,15 @@
 
 namespace Krauza\Infrastructure\Api\Type;
 
-use GraphQL\Type\Definition\ObjectType;
 use Krauza\Infrastructure\Api\Type\Mutation\AddAnswer;
 use Krauza\Infrastructure\Api\Type\Mutation\CreateBox;
 use Krauza\Infrastructure\Api\Type\Mutation\CreateCard;
 
-class MutationType extends ObjectType
+class MutationType extends BaseType
 {
-    private static $instance;
-
-    public function __construct()
+    protected function getConfig(): array
     {
-        $config = [
+        return [
             'name' => 'Mutation',
             'fields' => [
                 'createBox' => CreateBox::config(),
@@ -21,12 +18,5 @@ class MutationType extends ObjectType
                 'addAnswer' => AddAnswer::config()
             ]
         ];
-
-        parent::__construct($config);
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance ?: (self::$instance = new self);
     }
 }

@@ -2,17 +2,15 @@
 
 namespace Krauza\Infrastructure\Api\Type\Object;
 
-use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Krauza\Core\Entity\Box;
+use Krauza\Infrastructure\Api\Type\BaseType;
 
-class BoxType extends ObjectType
+class BoxType extends BaseType
 {
-    private static $instance;
-
-    public function __construct()
+    protected function getConfig(): array
     {
-        $config = [
+        return [
             'fields' => [
                 'id' => [
                     'type' => Type::string(),
@@ -24,13 +22,6 @@ class BoxType extends ObjectType
                 ]
             ]
         ];
-
-        parent::__construct($config);
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance ?: (self::$instance = new self);
     }
 
     public static function toResponseFormat(Box $box)

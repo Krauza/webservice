@@ -10,7 +10,7 @@ use Krauza\Core\Repository\CardRepository;
  * Class AddAnswer
  * @package Krauza\Infrastructure\Api\Action
  */
-final class AddAnswer
+final class AddAnswer implements Action
 {
     /**
      * @var AddAnswerUseCase

@@ -9,7 +9,7 @@ use Krauza\Core\Repository\BoxRepository;
  * Class CreateCard
  * @package Krauza\Infrastructure\Api\Action
  */
-final class CreateCard
+final class CreateCard implements Action
 {
     /**
      * @var CreateCardUseCase

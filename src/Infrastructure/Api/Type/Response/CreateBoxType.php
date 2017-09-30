@@ -2,17 +2,15 @@
 
 namespace Krauza\Infrastructure\Api\Type\Response;
 
-use GraphQL\Type\Definition\ObjectType;
-use Krauza\Core\Entity\Box;
+use Krauza\Infrastructure\Api\Type\BaseType;
 use Krauza\Infrastructure\Api\Type\Object\BoxType;
+use Krauza\Infrastructure\Api\Type\ResponseType;
 
-class CreateBoxType extends ObjectType
+class CreateBoxType extends BaseType implements ResponseType
 {
-    private static $instance;
-
-    public function __construct()
+    protected function getConfig(): array
     {
-        $config = [
+        return [
             'fields' => [
                 'box' => [
                     'type' => BoxType::getInstance(),
@@ -20,19 +18,12 @@ class CreateBoxType extends ObjectType
                 ]
             ]
         ];
-
-        parent::__construct($config);
     }
 
-    public static function getInstance(): self
-    {
-        return self::$instance ?: (self::$instance = new self);
-    }
-
-    public static function toResponseFormat(Box $box): array
+    public static function toResponseFormat(array $data): array
     {
         return [
-            'box' => BoxType::toResponseFormat($box)
+            'box' => BoxType::toResponseFormat($data['box'])
         ];
     }
 }

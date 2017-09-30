@@ -9,7 +9,7 @@ use Krauza\Infrastructure\DataAccess\BoxRepository;
  * Class FindNextCard
  * @package Krauza\Infrastructure\Api\Action
  */
-final class FindNextCard
+final class FindNextCard implements Action
 {
     /**
      * @var FindNextCardUseCase
