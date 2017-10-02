@@ -4,7 +4,7 @@ php:
   - '7.1'
 addons:
   code_climate:
-    repo_token: ffd7bf832393d9f1476e852e093f46709ddea80b72984f2f306ed35b8b9cbbc5
+    repo_token: 7727735e43a13827fe1cba2a57a04ea9f6f665305c96a2f0d615c2d441d4ea2d
 
 before_script:
   - composer self-update
