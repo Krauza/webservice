@@ -5,7 +5,7 @@ namespace Krauza\Infrastructure\DataAccess;
 use Krauza\Core\Entity\Box;
 use Krauza\Core\Entity\Card;
 use Krauza\Core\Repository\BoxSectionsRepository as IBoxSectionsRepository;
-use Symfony\Component\Config\Definition\Exception\Exception;
+
 
 final class BoxSectionsRepository implements IBoxSectionsRepository
 {

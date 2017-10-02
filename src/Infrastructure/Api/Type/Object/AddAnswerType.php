@@ -1,10 +1,10 @@
 <?php
 
-namespace Krauza\Infrastructure\Api\Type\Response;
+namespace Krauza\Infrastructure\Api\Type\Object;
 
 use Krauza\Infrastructure\Api\Type\BaseType;
-use Krauza\Infrastructure\Api\Type\Object\BoxType;
-use Krauza\Infrastructure\Api\Type\Object\CardType;
+
+
 use Krauza\Infrastructure\Api\Type\ResponseType;
 
 final class AddAnswerType extends BaseType implements ResponseType

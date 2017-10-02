@@ -2,8 +2,8 @@
 
 namespace Krauza\Infrastructure\Api\Type\Mutation;
 
-use Krauza\Infrastructure\Api\Type\Response\AddAnswerType;
 use GraphQL\Type\Definition\Type;
+use Krauza\Infrastructure\Api\Type\Object\AddAnswerType;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Infrastructure\Api\Action\AddAnswer as AddAnswerAction;
 use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;

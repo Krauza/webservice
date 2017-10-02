@@ -4,7 +4,7 @@ namespace Krauza\Infrastructure\Api\Type\Query;
 
 use GraphQL\Type\Definition\Type;
 use Krauza\Infrastructure\Api\Action\FindNextCard;
-use Krauza\Infrastructure\Api\Type\Response\GetNextCardType;
+use Krauza\Infrastructure\Api\Type\Object\GetNextCardType;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Infrastructure\DataAccess\BoxSectionsRepository;
 use Krauza\Infrastructure\DataAccess\CardRepository;
