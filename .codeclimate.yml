@@ -2,10 +2,10 @@ languages:
   PHP: true
 ratings:
   paths:
-  - appservice/src/**
+  - src/**
 exclude_paths:
- - appservice/vendor/**
- - appservice/tests/**
+ - vendor/**
+ - tests/**
 engines:
   fixme:
     enabled: true
