@@ -3,7 +3,7 @@
 namespace Krauza\Infrastructure\Api\Type\Mutation;
 
 use GraphQL\Type\Definition\Type;
-use Krauza\Infrastructure\Api\Type\Response\CreateCardType;
+use Krauza\Infrastructure\Api\Type\Object\CreateCardType;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
 use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
 use Krauza\Infrastructure\Api\Action\CreateCard as CreateCardAction;
