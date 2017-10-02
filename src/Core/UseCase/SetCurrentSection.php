@@ -27,13 +27,6 @@ class SetCurrentSection
     public function adjust(Box $box): void
     {
         $currentSection = $box->getCurrentSection();
-        if ($this->shouldSkipToNextSection($box, $currentSection)) {
-            $box->incrementCurrentSection();
-            $this->boxRepository->updateBoxSection($box);
-        } else if ($this->shouldRewindToFirstSection($box, $currentSection)) {
-            $box->rewindToFirstSection();
-            $this->boxRepository->updateBoxSection($box);
-        }
 
         if ($this->isCurrentSectionEmpty($box)) {
             $newSection = $this->boxSectionsRepository->getNotEmptySection($box);
@@ -42,6 +35,18 @@ class SetCurrentSection
             }
 
             $box->setCurrentSection($newSection);
+            $this->boxRepository->updateBoxSection($box);
+            return;
+        }
+
+        if ($this->shouldSkipToNextSection($box, $currentSection)) {
+            $box->incrementCurrentSection();
+            $this->boxRepository->updateBoxSection($box);
+            return;
+        }
+
+        if ($this->shouldRewindToFirstSection($box, $currentSection)) {
+            $box->rewindToFirstSection();
             $this->boxRepository->updateBoxSection($box);
         }
     }

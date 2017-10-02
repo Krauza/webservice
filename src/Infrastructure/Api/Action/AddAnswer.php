@@ -2,45 +2,57 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
-use Krauza\Core\Entity\Box;
-
-use Krauza\Core\Entity\Card;
 use Krauza\Core\UseCase\AddAnswer as AddAnswerUseCase;
-use Krauza\Core\UseCase\CreateCard as CreateCardUseCase;
-use Krauza\Infrastructure\Api\Type\AddAnswerType;
-use Krauza\Infrastructure\Api\Type\CardType;
+use Krauza\Core\Repository\BoxRepository;
+use Krauza\Core\Repository\CardRepository;
 
-final class AddAnswer extends Action
+/**
+ * Class AddAnswer
+ * @package Krauza\Infrastructure\Api\Action
+ */
+final class AddAnswer implements Action
 {
     /**
-     * @var CreateCardUseCase
+     * @var AddAnswerUseCase
      */
     private $addAnswerUseCase;
 
     /**
-     * @var Box
+     * @var BoxRepository
      */
-    private $box;
+    private $boxRepository;
 
     /**
-     * @var Card
+     * @var CardRepository
      */
-    private $card;
+    private $cardRepository;
 
-    public function __construct(AddAnswerUseCase $addAnswerUseCase, Card $card, Box $box)
+    /**
+     * AddAnswer constructor.
+     * @param AddAnswerUseCase $addAnswerUseCase
+     * @param CardRepository $cardRepository
+     * @param BoxRepository $boxRepository
+     */
+    public function __construct(AddAnswerUseCase $addAnswerUseCase, CardRepository $cardRepository, BoxRepository $boxRepository)
     {
         $this->addAnswerUseCase = $addAnswerUseCase;
-        $this->box = $box;
-        $this->card = $card;
+        $this->boxRepository = $boxRepository;
+        $this->cardRepository = $cardRepository;
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     public function action(array $data): array
     {
-        $this->tryDoAction(function () use ($data) {
-            $this->addAnswerUseCase->answer($data['answer'], $this->box, $this->card);
-            return AddAnswerType::objectToArray($this->box);
-        });
+        $card = $this->cardRepository->get($data['card_id']);
+        $box = $this->boxRepository->getById($data['box_id']);
+        $this->addAnswerUseCase->answer($data['answer'], $box, $card);
 
-        return ['box' => $this->result, 'error' => $this->error];
+        return [
+            'box' => $box,
+            'card' => $card
+        ];
     }
 }

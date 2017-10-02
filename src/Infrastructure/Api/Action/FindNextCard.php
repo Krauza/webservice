@@ -2,14 +2,14 @@
 
 namespace Krauza\Infrastructure\Api\Action;
 
-use Krauza\Core\UseCase\AdjustFirstSection;
 use Krauza\Core\UseCase\FindNextCard as FindNextCardUseCase;
-use Krauza\Core\UseCase\SetCurrentSection;
-use Krauza\Infrastructure\Api\Type\CardType;
 use Krauza\Infrastructure\DataAccess\BoxRepository;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
-final class FindNextCard extends Action
+/**
+ * Class FindNextCard
+ * @package Krauza\Infrastructure\Api\Action
+ */
+final class FindNextCard implements Action
 {
     /**
      * @var FindNextCardUseCase
@@ -22,35 +22,27 @@ final class FindNextCard extends Action
     private $boxRepository;
 
     /**
-     * @var AdjustFirstSection
+     * FindNextCard constructor.
+     * @param FindNextCardUseCase $findNextCard
+     * @param BoxRepository $boxRepository
      */
-    private $adjustFirstSectionUseCase;
-
-    /**
-     * @var SetCurrentSection
-     */
-    private $adjustCurrentSection;
-
-    public function __construct(FindNextCardUseCase $findNextCard, AdjustFirstSection $adjustFirstSection,
-        SetCurrentSection $currentSection, BoxRepository $boxRepository)
+    public function __construct(FindNextCardUseCase $findNextCard, BoxRepository $boxRepository)
     {
         $this->findNextCardUseCase = $findNextCard;
         $this->boxRepository = $boxRepository;
-        $this->adjustFirstSectionUseCase = $adjustFirstSection;
-        $this->adjustCurrentSection = $currentSection;
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     public function action(array $data): array
     {
-        $this->tryDoAction(function () use ($data) {
-            $box = $this->boxRepository->getById($data['box_id']);
-            $this->adjustCurrentSection->adjust($box);
-            $this->adjustFirstSectionUseCase->adjust($box);
+        $box = $this->boxRepository->getById($data['box_id']);
 
-            $card = $this->findNextCardUseCase->find($box);
-            return $card ? CardType::objectToArray($card) : [];
-        });
-
-        return $this->result;
+        return [
+            'card' => $this->findNextCardUseCase->find($box),
+            'box' => $box
+        ];
     }
 }
